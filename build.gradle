@@ -1,0 +1,131 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+
+    id 'maven-publish'
+}
+
+group 'yxUI'
+version 'SNAPSHOT'
+
+ext {
+    uberJarName = "${group}-${version}-all.jar"
+    jarName = "${group}-${version}.jar"
+    libs = "${buildDir}/libs"
+
+    publication = mayor + "." + minor + "." + patch
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName = ''
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+// Building
+shadowJar {
+    manifest {
+        attributes(
+                'Main-Class': mainClassName
+        )
+    }
+
+    from(rootDir) {
+        include 'LICENSE'
+    }
+    from(rootDir) {
+        include '**/README.md'
+    }
+}
+
+// Publishing
+publishing {
+    repositories {
+        maven {
+            url = "${rootDir}/releases"
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+            groupId = 'yoyosource'
+            artifactId = group
+            version = publication
+
+            from components.java
+        }
+    }
+}
+
+task incrementMayor {
+    description 'Increment Mayor'
+    group "Versioning"
+
+    doLast {
+        mayor = Integer.parseInt(mayor) + 1
+        minor = 0
+        patch = 0
+        save()
+    }
+}
+
+task incrementMinor {
+    description 'Increment Minor'
+    group "Versioning"
+
+    doLast {
+        minor = Integer.parseInt(minor) + 1
+        patch = 0
+        save()
+    }
+}
+
+task incrementPatch {
+    description 'Increment Patch'
+    group "Versioning"
+
+    doLast {
+        patch = Integer.parseInt(patch) + 1
+        save()
+    }
+}
+
+private void save() {
+    File f = new File("${new File("${buildDir}").parentFile.toString()}/gradle.properties")
+    String[] strings = f.getText().split("\n")
+    for (int i = 0; i < strings.length; i++) {
+        if (strings[i].startsWith("mayor = ")) {
+            strings[i] = "mayor = " + mayor
+        } else if (strings[i].startsWith("minor = ")) {
+            strings[i] = "minor = " + minor
+        } else if (strings[i].startsWith("patch = ")) {
+            strings[i] = "patch = " + patch
+        }
+    }
+    f.text = String.join("\n", strings)
+}
+
+// building
+task buildProject {
+    description 'Build this Project'
+    group 'build'
+
+    dependsOn 'build'
+
+    doLast {
+        if ("${buildDir}" == null) {
+            return
+        }
+        delete fileTree("${libs}").matching {
+            exclude("${uberJarName}")
+        }
+        file(libs + "/" + uberJarName).renameTo(file(libs + "/" + jarName))
+    }
+}
