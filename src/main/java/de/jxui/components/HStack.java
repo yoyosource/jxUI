@@ -1,5 +1,6 @@
 package de.jxui.components;
 
+import de.jxui.utils.RenderContext;
 import de.jxui.utils.Size;
 
 import java.util.Arrays;
@@ -18,5 +19,15 @@ public class HStack extends Stack {
     @Override
     protected void mergeSize(Size current, Size calculated) {
         current.mergeWidth(calculated);
+    }
+
+    @Override
+    public void populateRenderContext(RenderContext renderContext) {
+        componentList.forEach(component -> {
+            if (component instanceof Spacer) {
+                renderContext.getHorizontalSpacer().add((Spacer) component);
+            }
+            component.populateRenderContext(renderContext);
+        });
     }
 }

@@ -1,6 +1,7 @@
 package de.jxui;
 
 import de.jxui.components.*;
+import de.jxui.utils.RenderContext;
 
 public class Test {
 
@@ -27,5 +28,8 @@ public class Test {
                 )
         );
         System.out.println(vStack.size());
+        RenderContext renderContext = new RenderContext();
+        vStack.populateRenderContext(renderContext);
+        System.out.println(renderContext);
     }
 }

@@ -1,5 +1,6 @@
 package de.jxui.components;
 
+import de.jxui.utils.RenderContext;
 import de.jxui.utils.Size;
 
 import java.util.Arrays;
@@ -26,5 +27,12 @@ public class ZStack extends Stack {
     @Override
     protected void mergeSize(Size current, Size calculated) {
         current.merge(calculated);
+    }
+
+    @Override
+    public void populateRenderContext(RenderContext renderContext) {
+        componentList.forEach(component -> {
+            component.populateRenderContext(renderContext);
+        });
     }
 }
