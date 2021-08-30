@@ -19,3 +19,4 @@
 - [ ] Spacer
 - [ ] List
 - [ ] Object watching
+- [ ] Gradient -> Color
