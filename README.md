@@ -1,7 +1,6 @@
 # jxUI
 
 ## Status
-- [ ] Groups
 - [ ] Stacks
   - [ ] VStacks
   - [ ] HStacks
