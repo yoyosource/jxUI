@@ -2,13 +2,20 @@
 
 ## Status
 
+- [ ] Groups
 - [ ] Stacks
   - [ ] VStacks
   - [ ] HStacks
   - [ ] ZStacks
 - [ ] Text
+  - [ ] Color
+  - [ ] Size
+  - [ ] Font
+  - [ ] Shadow?
 - [ ] Button
+  - [ ] Groups
 - [ ] Images
+  - [ ] Corner Radius
 - [ ] Spacer
 - [ ] List
 - [ ] Object watching
