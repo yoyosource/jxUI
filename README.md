@@ -1,7 +1,6 @@
 # jxUI
 
 ## Status
-
 - [ ] Groups
 - [ ] Stacks
   - [ ] VStacks
@@ -20,3 +19,8 @@
 - [ ] List
 - [ ] Object watching
 - [ ] Gradient -> Color
+
+## Draw
+- Calc Size of each node
+- Set Spacer size from layer to layer in percentage of spacers
+- Draw
