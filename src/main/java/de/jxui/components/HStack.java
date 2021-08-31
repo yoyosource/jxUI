@@ -1,15 +1,13 @@
 package de.jxui.components;
 
-import de.jxui.utils.Orientation;
+import de.jxui.utils.*;
 import de.jxui.utils.Point;
-import de.jxui.utils.Size;
-import de.jxui.utils.Spacers;
 
 import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HStack extends Stack {
+public class HStack extends Stack implements ComponentPadding<HStack> {
 
     public HStack(Component... components) {
         super(Size::mergeWidth);
@@ -26,25 +24,43 @@ public class HStack extends Stack {
         return this;
     }
 
+    public HStack padding() {
+        padding = new Padding();
+        return this;
+    }
+
+    public HStack padding(Padding padding) {
+        this.padding = padding;
+        return this;
+    }
+
     @Override
-    public void spacerSize(Size size, Spacers spacers) {
+    public void spacerSize(Size size, State state) {
         List<Spacer> spacerList = componentList.stream().filter(Spacer.class::isInstance).map(Spacer.class::cast).filter(spacer -> spacer.getSize() == -1).collect(Collectors.toList());
+        int splitSize = spacerList.size() + (spacers(Orientation.HORIZONTAL) > 0 ? 1 : 0);
         for (Spacer spacer : spacerList) {
-            spacers.getHorizontalSpacers().put(spacer, size.getWidth() / spacerList.size());
+            state.getHorizontalSpacers().put(spacer, size.getWidth() / splitSize);
         }
-        size.setWidth(0);
+        splitSize = size.getWidth() / (splitSize == 0 ? 1 : splitSize);
         componentList.forEach(component -> {
-            component.spacerSize(size.copy(), spacers);
+            Size current = size.copy();
+            current.setWidth(component.size().getWidth());
+            component.spacerSize(current, state);
         });
     }
 
     @Override
-    public void draw(Graphics2D g, Spacers spacers, Point point) {
+    public int spacers(Orientation orientation) {
+        return componentList.stream().map(component -> component.spacers(orientation)).mapToInt(value -> value).sum();
+    }
+
+    @Override
+    public void draw(Graphics2D g, State state, Point point) {
         Point current = new Point(point.getX(), point.getY());
         for (Component component : componentList) {
-            component.draw(g, spacers, current);
+            component.draw(g, state, current);
             current.setY(point.getY());
         }
-        point.addY(size().getHeight());
+        point.addY(actualSize(g, state).getHeight());
     }
 }

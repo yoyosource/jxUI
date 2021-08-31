@@ -1,15 +1,16 @@
 package de.jxui.components;
 
+import de.jxui.utils.Padding;
 import de.jxui.utils.Point;
 import de.jxui.utils.Size;
-import de.jxui.utils.Spacers;
+import de.jxui.utils.State;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.awt.*;
 
 @Accessors(chain = true)
-public class Text implements Component {
+public class Text implements Component, ComponentPadding<Text> {
 
     private String text;
 
@@ -18,6 +19,8 @@ public class Text implements Component {
 
     @Setter
     private Color color = new Color(0, 0, 0);
+
+    private Padding padding;
 
     public Text() {
         this("");
@@ -42,8 +45,25 @@ public class Text implements Component {
         return this;
     }
 
+    public Text color(Color color) {
+        this.color = color;
+        return this;
+    }
+
     public Text color(int r, int g, int b) {
         color = new Color(r, g, b);
+        return this;
+    }
+
+    @Override
+    public Text padding() {
+        padding = new Padding();
+        return this;
+    }
+
+    @Override
+    public Text padding(Padding padding) {
+        this.padding = padding;
         return this;
     }
 
@@ -51,14 +71,14 @@ public class Text implements Component {
     @SuppressWarnings("deprecated")
     public Size size() {
         FontMetrics fontMetrics = Toolkit.getDefaultToolkit().getFontMetrics(font);
-        return new Size(fontMetrics.stringWidth(text), fontMetrics.getHeight());
+        return new Size(fontMetrics.stringWidth(text), fontMetrics.getHeight()).add(padding);
     }
 
     @Override
-    public void draw(Graphics2D g, Spacers spacers, Point point) {
+    public void draw(Graphics2D g, State state, Point point) {
         g.setColor(color);
         g.setFont(font);
         g.drawString(text, point.getX(), point.getY() + size().getHeight());
-        point.addX(size().getWidth());
+        point.add(actualSize(g, state));
     }
 }

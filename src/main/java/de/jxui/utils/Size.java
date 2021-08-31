@@ -15,6 +15,15 @@ public class Size {
         return this;
     }
 
+    public Size add(Padding padding) {
+        if (padding == null) return this;
+        width += padding.getLeft();
+        width += padding.getRight();
+        height += padding.getBottom();
+        height += padding.getTop();
+        return this;
+    }
+
     public Size substract(Size size) {
         width -= size.width;
         height -= size.height;

@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Getter
 @ToString
-public class Spacers {
+public class State {
     private Map<Spacer, Integer> verticalSpacers = new IdentityHashMap<>();
     private Map<Spacer, Integer> horizontalSpacers = new IdentityHashMap<>();
 }

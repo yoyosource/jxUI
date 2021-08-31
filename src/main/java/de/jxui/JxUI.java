@@ -3,7 +3,7 @@ package de.jxui;
 import de.jxui.components.Component;
 import de.jxui.utils.Point;
 import de.jxui.utils.Size;
-import de.jxui.utils.Spacers;
+import de.jxui.utils.State;
 import lombok.NonNull;
 
 import java.awt.*;
@@ -32,16 +32,16 @@ public class JxUI {
         Size spacerSize = canvasSize.copy().substract(size);
         if (spacerSize.getWidth() < 0) spacerSize.setWidth(0);
         if (spacerSize.getHeight() < 0) spacerSize.setHeight(0);
-        Spacers spacers = new Spacers();
-        component.spacerSize(spacerSize, spacers);
+        State state = new State();
+        component.spacerSize(spacerSize, state);
 
-        /*System.out.println();
+        System.out.println();
         System.out.println(size + " " + canvasSize);
-        System.out.println(spacers);*/
+        System.out.println(state);
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        component.draw(graphics, spacers, new Point(0, 0));
+        component.draw(graphics, state, new Point(0, 0));
 
         canvas.getGraphics().drawImage(bufferedImage, 0, 0, (img, infoflags, x, y, width, height) -> true);
     }

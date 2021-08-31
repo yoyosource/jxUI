@@ -1,13 +1,12 @@
 package de.jxui.components;
 
+import de.jxui.utils.*;
 import de.jxui.utils.Point;
-import de.jxui.utils.Size;
-import de.jxui.utils.Spacers;
 
 import java.awt.*;
 import java.util.Arrays;
 
-public class ZStack extends Stack {
+public class ZStack extends Stack implements ComponentPadding<ZStack> {
 
     public ZStack(Component... components) {
         super(Size::merge);
@@ -27,18 +26,33 @@ public class ZStack extends Stack {
         return this;
     }
 
+    public ZStack padding() {
+        padding = new Padding();
+        return this;
+    }
+
+    public ZStack padding(Padding padding) {
+        this.padding = padding;
+        return this;
+    }
+
     @Override
-    public void spacerSize(Size size, Spacers spacers) {
+    public void spacerSize(Size size, State state) {
         componentList.forEach(component -> {
-            component.spacerSize(size.copy(), spacers);
+            component.spacerSize(size.copy(), state);
         });
     }
 
     @Override
-    public void draw(Graphics2D g, Spacers spacers, Point point) {
+    public int spacers(Orientation orientation) {
+        return componentList.stream().map(component -> component.spacers(orientation)).mapToInt(value -> value).sum();
+    }
+
+    @Override
+    public void draw(Graphics2D g, State state, Point point) {
         for (Component component : componentList) {
-            component.draw(g, spacers, new Point(point.getX(), point.getY()));
+            component.draw(g, state, new Point(point.getX(), point.getY()));
         }
-        point.add(size());
+        point.add(actualSize(g, state));
     }
 }

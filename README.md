@@ -22,5 +22,5 @@
 
 ## Draw
 - Calc Size of each node
-- Set Spacer size from layer to layer in percentage of spacers
+- Set Spacer size from layer to layer in percentage of state
 - Draw

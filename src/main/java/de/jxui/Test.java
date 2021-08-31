@@ -8,6 +8,7 @@ import java.awt.*;
 public class Test {
 
     public static void main(String[] args) {
+        /*
         HStack hStack = new HStack(
                 new Spacer(5),
                 new VStack(
@@ -18,14 +19,23 @@ public class Test {
                 ),
                 new Spacer(),
                 new VStack(
-                        new Text("North")
-                                .size(20),
+                        new HStack(
+                                new Spacer(),
+                                new Text("North")
+                                        .size(20),
+                                new Spacer()
+                        ),
                         new Spacer(),
                         new Text("Earth")
                                 .size(100),
                         new Spacer(),
-                        new Text("South")
-                                .size(20)
+                        new HStack(
+                                new Spacer(),
+                                new Text("South")
+                                        .size(20),
+                                new Spacer()
+                        ),
+                        new Spacer(5)
                 ),
                 new Spacer(),
                 new VStack(
@@ -35,6 +45,26 @@ public class Test {
                         new Spacer()
                 ),
                 new Spacer(5)
+        );
+        */
+
+        HStack hStack = new HStack(
+                new Text("1"),
+                new Spacer(),
+                new Text("2"),
+                new VStack(
+                        new Text("3"),
+                        new HStack(
+                                new Text("4"),
+                                new Text("Hello World")
+                                        .padding(),
+                                new Text("5"),
+                                new Spacer(),
+                                new Text("6")
+                        ),
+                        new Text("7")
+                ),
+                new Text("8")
         );
 
         JxUI jxUI = new JxUI(hStack);
