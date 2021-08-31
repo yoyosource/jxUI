@@ -1,6 +1,8 @@
 package de.jxui.components;
 
+import de.jxui.utils.Point;
 import de.jxui.utils.Size;
+import de.jxui.utils.Spacers;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -50,5 +52,13 @@ public class Text implements Component {
     public Size size() {
         FontMetrics fontMetrics = Toolkit.getDefaultToolkit().getFontMetrics(font);
         return new Size(fontMetrics.stringWidth(text), fontMetrics.getHeight());
+    }
+
+    @Override
+    public void draw(Graphics2D g, Spacers spacers, Point point) {
+        g.setColor(color);
+        g.setFont(font);
+        g.drawString(text, point.getX(), point.getY() + size().getHeight());
+        point.addX(size().getWidth());
     }
 }

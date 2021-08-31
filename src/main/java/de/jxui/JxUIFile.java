@@ -4,13 +4,12 @@ import de.jxui.components.Component;
 
 import java.io.File;
 
-public class JxUIFile {
+public class JxUIFile extends JxUI {
 
     private File file;
     private long lastModified;
 
     private Component oldComponent = null;
-    private Component component = null;
 
     public JxUIFile(File file) {
         if (!file.isFile()) {

@@ -1,35 +1,55 @@
 package de.jxui;
 
 import de.jxui.components.*;
-import de.jxui.utils.RenderContext;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class Test {
 
     public static void main(String[] args) {
-        VStack vStack = new VStack(
-                new Text("Hello World")
-                        .size(20),
-                new Text("Hello World")
-                        .size(20),
-                new HStack(
-                        new Text("Hello"),
+        HStack hStack = new HStack(
+                new Spacer(5),
+                new VStack(
                         new Spacer(),
-                        new Text("World")
+                        new Text("West")
+                                .size(20),
+                        new Spacer()
                 ),
-                new ZStack(
-                        new Text("Hello World"),
-                        new Text("Hello World")
-                                .size(13)
+                new Spacer(),
+                new VStack(
+                        new Text("North")
+                                .size(20),
+                        new Spacer(),
+                        new Text("Earth")
+                                .size(100),
+                        new Spacer(),
+                        new Text("South")
+                                .size(20)
                 ),
-                new ZStack(
-                        new Text("Hello World"),
-                        new Text("Hello World")
-                                .size(13)
-                )
+                new Spacer(),
+                new VStack(
+                        new Spacer(),
+                        new Text("East")
+                                .size(20),
+                        new Spacer()
+                ),
+                new Spacer(5)
         );
-        System.out.println(vStack.size());
-        RenderContext renderContext = new RenderContext();
-        vStack.populateRenderContext(renderContext);
-        System.out.println(renderContext);
+
+        JxUI jxUI = new JxUI(hStack);
+
+        JFrame jFrame = new JFrame();
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        Canvas canvas = new Canvas() {
+            @Override
+            public void paint(Graphics g) {
+                jxUI.draw(this);
+            }
+        };
+        canvas.setSize(4 * 100, 3 * 100);
+        jFrame.add(canvas);
+        jFrame.pack();
+        jFrame.setVisible(true);
     }
 }

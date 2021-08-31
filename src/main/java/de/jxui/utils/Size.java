@@ -15,6 +15,12 @@ public class Size {
         return this;
     }
 
+    public Size substract(Size size) {
+        width -= size.width;
+        height -= size.height;
+        return this;
+    }
+
     public Size mergeHeight(Size size) {
         width = Math.max(width, size.width);
         height += size.height;
@@ -31,5 +37,9 @@ public class Size {
         width = Math.max(width, size.width);
         height = Math.max(height, size.height);
         return this;
+    }
+
+    public Size copy() {
+        return new Size(width, height);
     }
 }
