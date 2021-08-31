@@ -1,21 +1,21 @@
 # jxUI
 
 ## Status
-- [ ] Stacks
-  - [ ] VStacks
-  - [ ] HStacks
-  - [ ] ZStacks
+- [x] Stacks
+  - [x] VStacks
+  - [x] HStacks
+  - [x] ZStacks
 - [ ] Text
-  - [ ] Color
-  - [ ] Size
-  - [ ] Font
+  - [x] Color
+  - [x] Size
+  - [x] Font
   - [ ] Shadow?
 - [ ] Button
   - [ ] Groups
 - [ ] Images
   - [ ] Corner Radius
-- [ ] Spacer
-  - [ ] size
+- [x] Spacer
+  - [x] size
 - [ ] List
 - [ ] Object watching
 - [ ] Gradient -> Color
