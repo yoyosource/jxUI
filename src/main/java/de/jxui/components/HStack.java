@@ -38,7 +38,7 @@ public class HStack extends Stack implements ComponentPadding<HStack> {
     @Override
     public void spacerSize(Size size, State state) {
         List<Spacer> spacerList = componentList.stream().filter(Spacer.class::isInstance).map(Spacer.class::cast).filter(spacer -> spacer.getSize() == -1).collect(Collectors.toList());
-        int splitSize = spacerList.size() + (spacers(Orientation.HORIZONTAL) > 0 ? 1 : 0);
+        int splitSize = spacerList.size() + (spacers(Orientation.HORIZONTAL) - spacerList.size() > 0 ? 1 : 0);
         for (Spacer spacer : spacerList) {
             state.getHorizontalSpacers().put(spacer, size.getWidth() / splitSize);
         }

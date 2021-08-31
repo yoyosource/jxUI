@@ -38,7 +38,7 @@ public class VStack extends Stack implements ComponentPadding<VStack> {
     @Override
     public void spacerSize(Size size, State state) {
         List<Spacer> spacerList = componentList.stream().filter(Spacer.class::isInstance).map(Spacer.class::cast).filter(spacer -> spacer.getSize() == -1).collect(Collectors.toList());
-        int splitSize = spacerList.size() + (spacers(Orientation.VERTICAL) > 0 ? 1 : 0);
+        int splitSize = spacerList.size() + (spacers(Orientation.VERTICAL) - spacerList.size() > 0 ? 1 : 0);
         for (Spacer spacer : spacerList) {
             state.getVerticalSpacers().put(spacer, size.getHeight() / splitSize);
         }
