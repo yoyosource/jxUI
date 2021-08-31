@@ -1,9 +1,11 @@
 package de.jxui;
 
 import de.jxui.components.*;
+import de.jxui.components.Image;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class Test {
 
@@ -65,6 +67,10 @@ public class Test {
                         new Text("7")
                 ),
                 new Text("8")
+        );
+        hStack = new HStack(
+                new Image(new File("/Users/jojo/IdeaProjects/jxUI/src/main/resources/img.png"))
+                        .padding()
         );
 
         JxUI jxUI = new JxUI(hStack);

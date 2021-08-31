@@ -5,10 +5,12 @@ import de.jxui.utils.Point;
 import de.jxui.utils.Size;
 import de.jxui.utils.State;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+@Slf4j
 public class JxUI {
 
     protected Component component;
@@ -35,9 +37,7 @@ public class JxUI {
         State state = new State();
         component.spacerSize(spacerSize, state);
 
-        System.out.println();
-        System.out.println(size + " " + canvasSize);
-        System.out.println(state);
+        log.debug(size + " " + canvasSize + " " + state);
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
