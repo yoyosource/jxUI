@@ -74,7 +74,7 @@ public class Test {
                         .padding()
         );
         CenteredStack centeredStack = new CenteredStack(
-                new Image(new File("/Users/jojo/IdeaProjects/jxUI/src/main/resources/img.png"))
+                new Image(Test.class.getResourceAsStream("/img.png"))
         );
 
         JxUI jxUI = new JxUI(centeredStack);
