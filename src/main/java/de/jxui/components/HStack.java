@@ -5,6 +5,7 @@ import de.jxui.utils.Point;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class HStack extends Stack implements ComponentPadding<HStack> {
@@ -41,10 +42,14 @@ public class HStack extends Stack implements ComponentPadding<HStack> {
         for (Spacer spacer : spacerList) {
             state.getHorizontalSpacers().put(spacer, size.getWidth() / splitSize);
         }
-        splitSize = size.getWidth() / (splitSize == 0 ? 1 : splitSize);
+        Set<Component> components = componentList.stream().filter(component -> component.spacers(Orientation.HORIZONTAL) > 0).collect(Collectors.toSet());
+        int componentSplitSize = size.getWidth() / (splitSize == 0 ? 1 : splitSize);
         componentList.forEach(component -> {
             Size current = size.copy();
             current.setWidth(component.size().getWidth());
+            if (components.contains(component)) {
+                current.setWidth(current.getWidth() + (componentSplitSize / components.size()));
+            }
             component.spacerSize(current, state);
         });
     }
