@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Image implements Component, ComponentPadding<Image> {
 
@@ -19,6 +20,14 @@ public class Image implements Component, ComponentPadding<Image> {
     public Image(File file) {
         try {
             bufferedImage = ImageIO.read(file);
+        } catch (IOException e) {
+            throw new SecurityException(e.getMessage(), e);
+        }
+    }
+
+    public Image(InputStream inputStream) {
+        try {
+            bufferedImage = ImageIO.read(inputStream);
         } catch (IOException e) {
             throw new SecurityException(e.getMessage(), e);
         }
@@ -44,6 +53,6 @@ public class Image implements Component, ComponentPadding<Image> {
     @Override
     public void draw(Graphics2D g, State state, Point point) {
         g.drawImage(bufferedImage, point.getX() + (padding != null ? padding.getLeft() : 0), point.getY() + (padding != null ? padding.getTop() : 0), (img, infoflags, x, y, width, height) -> true);
-        point.add(size());
+        point.add(actualSize(g, state));
     }
 }

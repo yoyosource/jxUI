@@ -2,6 +2,7 @@ package de.jxui;
 
 import de.jxui.components.*;
 import de.jxui.components.Image;
+import de.jxui.compounds.CenteredStack;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,8 +73,11 @@ public class Test {
                 new Image(new File("/Users/jojo/IdeaProjects/jxUI/src/main/resources/img.png"))
                         .padding()
         );
+        CenteredStack centeredStack = new CenteredStack(
+                new Image(new File("/Users/jojo/IdeaProjects/jxUI/src/main/resources/img.png"))
+        );
 
-        JxUI jxUI = new JxUI(hStack);
+        JxUI jxUI = new JxUI(centeredStack);
 
         JFrame jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
