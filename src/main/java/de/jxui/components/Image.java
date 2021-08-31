@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+// TODO: cropping, resizing, (overlay)
 public class Image implements Component, ComponentPadding<Image> {
 
     private Padding padding = null;
