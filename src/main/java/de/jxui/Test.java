@@ -3,6 +3,7 @@ package de.jxui;
 import de.jxui.components.*;
 import de.jxui.components.Image;
 import de.jxui.compounds.CenteredStack;
+import de.jxui.utils.Direction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,11 +71,15 @@ public class Test {
                 new Text("8")
         );
         hStack = new HStack(
-                new Image(new File("/Users/jojo/IdeaProjects/jxUI/src/main/resources/img.png"))
+                Image.fromResource("/img.png")
                         .padding()
+                        .offset(Direction.TOP, -100)
         );
+
         CenteredStack centeredStack = new CenteredStack(
-                new Image(Test.class.getResourceAsStream("/img.png"))
+                Image.fromResource("/img.png")
+                        .padding(Direction.BOTTOM, -100)
+                        .offset(Direction.TOP, -100)
         );
 
         JxUI jxUI = new JxUI(centeredStack);

@@ -32,6 +32,18 @@ public class Image extends Element<Image> {
         }
     }
 
+    public static Image fromResource(String resourceIdentifier) {
+        if (resourceIdentifier.startsWith("/")) {
+            return new Image(Image.class.getResourceAsStream(resourceIdentifier));
+        } else {
+            return new Image(Image.class.getResourceAsStream("/" + resourceIdentifier));
+        }
+    }
+
+    public static Image fromFile(String fileIdentifier) {
+        return new Image(new File(fileIdentifier));
+    }
+
     @Override
     public Size size() {
         return new Size(bufferedImage.getWidth(), bufferedImage.getHeight()).add(padding);
