@@ -1,9 +1,9 @@
 package de.jxui;
 
 import de.jxui.components.Component;
+import de.jxui.utils.DrawState;
 import de.jxui.utils.Point;
 import de.jxui.utils.Size;
-import de.jxui.utils.State;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,14 +34,14 @@ public class JxUI {
         Size spacerSize = canvasSize.copy().substract(size);
         if (spacerSize.getWidth() < 0) spacerSize.setWidth(0);
         if (spacerSize.getHeight() < 0) spacerSize.setHeight(0);
-        State state = new State();
-        component.spacerSize(spacerSize, state);
+        DrawState drawState = new DrawState();
+        component.spacerSize(spacerSize, drawState);
 
-        log.debug(size + " " + canvasSize + " " + state);
+        log.debug(size + " " + canvasSize + " " + drawState);
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        component.draw(graphics, state, new Point(0, 0));
+        component.draw(graphics, drawState, new Point(0, 0));
 
         canvas.getGraphics().drawImage(bufferedImage, 0, 0, (img, infoflags, x, y, width, height) -> true);
     }

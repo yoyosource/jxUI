@@ -14,6 +14,11 @@ public class Point {
         y += size.getHeight();
     }
 
+    public void add(Offset offset) {
+        x += offset.getLeft();
+        y += offset.getTop();
+    }
+
     public void addX(int dx) {
         x += dx;
     }

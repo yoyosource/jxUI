@@ -22,5 +22,5 @@
 
 ## Draw
 - Calc Size of each node
-- Set Spacer size from layer to layer in percentage of state
+- Set Spacer size from layer to layer in percentage of drawState
 - Draw

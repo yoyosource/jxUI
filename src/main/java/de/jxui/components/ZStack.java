@@ -6,7 +6,7 @@ import de.jxui.utils.Point;
 import java.awt.*;
 import java.util.Arrays;
 
-public class ZStack extends Stack implements ComponentPadding<ZStack> {
+public class ZStack extends Stack<ZStack> {
 
     public ZStack(Component... components) {
         super(Size::merge);
@@ -26,20 +26,10 @@ public class ZStack extends Stack implements ComponentPadding<ZStack> {
         return this;
     }
 
-    public ZStack padding() {
-        padding = new Padding();
-        return this;
-    }
-
-    public ZStack padding(Padding padding) {
-        this.padding = padding;
-        return this;
-    }
-
     @Override
-    public void spacerSize(Size size, State state) {
+    public void spacerSize(Size size, DrawState drawState) {
         componentList.forEach(component -> {
-            component.spacerSize(size.copy(), state);
+            component.spacerSize(size.copy(), drawState);
         });
     }
 
@@ -49,10 +39,12 @@ public class ZStack extends Stack implements ComponentPadding<ZStack> {
     }
 
     @Override
-    public void draw(Graphics2D g, State state, Point point) {
+    public void draw(Graphics2D g, DrawState drawState, Point point) {
         for (Component component : componentList) {
-            component.draw(g, state, new Point(point.getX(), point.getY()));
+            Point current = new Point(point.getX(), point.getY());
+            current.add(offset);
+            component.draw(g, drawState, current);
         }
-        point.add(actualSize(g, state));
+        point.add(actualSize(g, drawState));
     }
 }

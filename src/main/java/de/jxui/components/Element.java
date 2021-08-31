@@ -1,18 +1,16 @@
 package de.jxui.components;
 
-import de.jxui.utils.Point;
-import de.jxui.utils.*;
+import de.jxui.utils.Direction;
+import de.jxui.utils.Offset;
+import de.jxui.utils.Padding;
 import lombok.NonNull;
 
-import java.awt.*;
+public abstract class Element<T> implements Component, ComponentPadding<T>, ComponentOffset<T> {
 
-public abstract class Element<T> implements Component, ComponentPadding<T> {
+    protected Padding padding = new Padding(0, 0, 0, 0);
+    protected Offset offset = new Offset();
 
-    protected Component component;
-    protected Padding padding = null;
-
-    protected Element(@NonNull Component component) {
-        this.component = component;
+    protected Element() {
     }
 
     @Override
@@ -24,33 +22,46 @@ public abstract class Element<T> implements Component, ComponentPadding<T> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public T padding(Padding padding) {
+    public T padding(@NonNull Padding padding) {
         this.padding = padding;
         return (T) this;
     }
 
     @Override
-    public Size size() {
-        return component.size().add(padding);
+    @SuppressWarnings("unchecked")
+    public T padding(Direction direction, int value) {
+        switch (direction) {
+            case RIGHT -> padding.setRight(value);
+            case LEFT -> padding.setLeft(value);
+            case TOP -> padding.setTop(value);
+            case BOTTOM -> padding.setBottom(value);
+            default -> {}
+        }
+        return (T) this;
     }
 
     @Override
-    public Size actualSize(Graphics2D g, State state) {
-        return component.actualSize(g, state).add(padding);
+    @SuppressWarnings("unchecked")
+    public T offset() {
+        offset = new Offset();
+        return (T) this;
     }
 
     @Override
-    public void spacerSize(Size size, State state) {
-        component.spacerSize(size, state);
+    @SuppressWarnings("unchecked")
+    public T offset(@NonNull Offset offset) {
+        this.offset = offset;
+        return (T) this;
     }
 
     @Override
-    public int spacers(Orientation orientation) {
-        return component.spacers(orientation);
-    }
-
-    @Override
-    public void draw(Graphics2D g, State state, Point point) {
-        component.draw(g, state, point);
+    @SuppressWarnings("unchecked")
+    public T offset(Direction direction, int value) {
+        switch (direction) {
+            case LEFT -> offset.setLeft(value);
+            case TOP -> offset.setTop(value);
+            default -> {}
+        }
+        return (T) this;
     }
 }

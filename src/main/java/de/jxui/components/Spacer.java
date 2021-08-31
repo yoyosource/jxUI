@@ -1,9 +1,9 @@
 package de.jxui.components;
 
+import de.jxui.utils.DrawState;
 import de.jxui.utils.Orientation;
 import de.jxui.utils.Point;
 import de.jxui.utils.Size;
-import de.jxui.utils.State;
 import lombok.Getter;
 
 import java.awt.*;
@@ -39,11 +39,11 @@ public class Spacer implements Component {
     }
 
     @Override
-    public Size actualSize(Graphics2D g, State state) {
+    public Size actualSize(Graphics2D g, DrawState drawState) {
         if (orientation == Orientation.HORIZONTAL) {
-            return new Size(state.getHorizontalSpacers().getOrDefault(this, size), 0);
+            return new Size(drawState.getHorizontalSpacers().getOrDefault(this, size), 0);
         } else if (orientation == Orientation.VERTICAL) {
-            return new Size(0, state.getVerticalSpacers().getOrDefault(this, size));
+            return new Size(0, drawState.getVerticalSpacers().getOrDefault(this, size));
         } else {
             throw new SecurityException();
         }
@@ -55,11 +55,11 @@ public class Spacer implements Component {
     }
 
     @Override
-    public void draw(Graphics2D g, State state, Point point) {
+    public void draw(Graphics2D g, DrawState drawState, Point point) {
         if (orientation == Orientation.HORIZONTAL) {
-            point.addX(state.getHorizontalSpacers().getOrDefault(this, size));
+            point.addX(drawState.getHorizontalSpacers().getOrDefault(this, size));
         } else if (orientation == Orientation.VERTICAL) {
-            point.addY(state.getVerticalSpacers().getOrDefault(this, size));
+            point.addY(drawState.getVerticalSpacers().getOrDefault(this, size));
         } else {
             throw new SecurityException();
         }

@@ -1,14 +1,14 @@
 package de.jxui.components;
 
-import de.jxui.utils.*;
 import de.jxui.utils.Point;
+import de.jxui.utils.*;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class HStack extends Stack implements ComponentPadding<HStack> {
+public class HStack extends Stack<HStack> {
 
     public HStack(Component... components) {
         super(Size::mergeWidth);
@@ -25,22 +25,12 @@ public class HStack extends Stack implements ComponentPadding<HStack> {
         return this;
     }
 
-    public HStack padding() {
-        padding = new Padding();
-        return this;
-    }
-
-    public HStack padding(Padding padding) {
-        this.padding = padding;
-        return this;
-    }
-
     @Override
-    public void spacerSize(Size size, State state) {
+    public void spacerSize(Size size, DrawState drawState) {
         List<Spacer> spacerList = componentList.stream().filter(Spacer.class::isInstance).map(Spacer.class::cast).filter(spacer -> spacer.getSize() == -1).collect(Collectors.toList());
         int splitSize = spacerList.size() + (spacers(Orientation.HORIZONTAL) - spacerList.size() > 0 ? 1 : 0);
         for (Spacer spacer : spacerList) {
-            state.getHorizontalSpacers().put(spacer, size.getWidth() / splitSize);
+            drawState.getHorizontalSpacers().put(spacer, size.getWidth() / splitSize);
         }
         Set<Component> components = componentList.stream().filter(component -> component.spacers(Orientation.HORIZONTAL) > 0).collect(Collectors.toSet());
         int componentSplitSize = size.getWidth() / (splitSize == 0 ? 1 : splitSize);
@@ -50,7 +40,7 @@ public class HStack extends Stack implements ComponentPadding<HStack> {
             if (components.contains(component)) {
                 current.setWidth(current.getWidth() + (componentSplitSize / components.size()));
             }
-            component.spacerSize(current, state);
+            component.spacerSize(current, drawState);
         });
     }
 
@@ -60,12 +50,13 @@ public class HStack extends Stack implements ComponentPadding<HStack> {
     }
 
     @Override
-    public void draw(Graphics2D g, State state, Point point) {
+    public void draw(Graphics2D g, DrawState drawState, Point point) {
         Point current = new Point(point.getX(), point.getY());
+        current.add(offset);
         for (Component component : componentList) {
-            component.draw(g, state, current);
+            component.draw(g, drawState, current);
             current.setY(point.getY());
         }
-        point.addY(actualSize(g, state).getHeight());
+        point.addY(actualSize(g, drawState).getHeight());
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class VStack extends Stack implements ComponentPadding<VStack> {
+public class VStack extends Stack<VStack> {
 
     public VStack(Component... components) {
         super(Size::mergeHeight);
@@ -25,22 +25,12 @@ public class VStack extends Stack implements ComponentPadding<VStack> {
         return this;
     }
 
-    public VStack padding() {
-        padding = new Padding();
-        return this;
-    }
-
-    public VStack padding(Padding padding) {
-        this.padding = padding;
-        return this;
-    }
-
     @Override
-    public void spacerSize(Size size, State state) {
+    public void spacerSize(Size size, DrawState drawState) {
         List<Spacer> spacerList = componentList.stream().filter(Spacer.class::isInstance).map(Spacer.class::cast).filter(spacer -> spacer.getSize() == -1).collect(Collectors.toList());
         int splitSize = spacerList.size() + (spacers(Orientation.VERTICAL) - spacerList.size() > 0 ? 1 : 0);
         for (Spacer spacer : spacerList) {
-            state.getVerticalSpacers().put(spacer, size.getHeight() / splitSize);
+            drawState.getVerticalSpacers().put(spacer, size.getHeight() / splitSize);
         }
         Set<Component> components = componentList.stream().filter(component -> component.spacers(Orientation.VERTICAL) > 0).collect(Collectors.toSet());
         int componentSplitSize = size.getHeight() / (splitSize == 0 ? 1 : splitSize);
@@ -50,7 +40,7 @@ public class VStack extends Stack implements ComponentPadding<VStack> {
             if (components.contains(component)) {
                 current.setHeight(current.getHeight() + (componentSplitSize / components.size()));
             }
-            component.spacerSize(current, state);
+            component.spacerSize(current, drawState);
         });
     }
 
@@ -60,12 +50,13 @@ public class VStack extends Stack implements ComponentPadding<VStack> {
     }
 
     @Override
-    public void draw(Graphics2D g, State state, Point point) {
+    public void draw(Graphics2D g, DrawState drawState, Point point) {
         Point current = new Point(point.getX(), point.getY());
+        current.add(offset);
         for (Component component : componentList) {
-            component.draw(g, state, current);
+            component.draw(g, drawState, current);
             current.setX(point.getX());
         }
-        point.addX(actualSize(g, state).getWidth());
+        point.addX(actualSize(g, drawState).getWidth());
     }
 }
