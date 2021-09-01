@@ -1,6 +1,5 @@
 package de.jxui.components;
 
-import de.jxui.JxUI;
 import de.jxui.compounds.CenteredStack;
 import de.jxui.utils.DrawState;
 import de.jxui.utils.Point;
@@ -29,21 +28,25 @@ class DebugDraw {
     private void drawSpacer(Graphics2D g, Point point, Size size) {
         if (size.getWidth() == 0) {
             if (size.getHeight() < 0) {
-                g.setColor(Color.BLUE.brighter());
+                g.setColor(Color.GRAY);
                 g.drawRect(point.getX(), point.getY() + size.getHeight(), 1, size.getHeight() * -1);
             } else {
-                g.setColor(Color.BLUE);
+                g.setColor(Color.LIGHT_GRAY);
                 g.drawRect(point.getX(), point.getY(), 1, size.getHeight());
             }
+            g.drawRect(point.getX() - 2, point.getY() + size.getHeight(), 5, 1);
+            g.drawRect(point.getX() - 2, point.getY(), 5, 1);
         }
         if (size.getHeight() == 0) {
             if (size.getWidth() < 0) {
-                g.setColor(Color.BLUE.brighter());
+                g.setColor(Color.GRAY);
                 g.drawRect(point.getX() + size.getWidth(), point.getY(), size.getWidth() * -1, 1);
             } else {
-                g.setColor(Color.BLUE);
+                g.setColor(Color.LIGHT_GRAY);
                 g.drawRect(point.getX(), point.getY(), size.getWidth(), 1);
             }
+            g.drawRect(point.getX() + size.getWidth(), point.getY() - 2, 1, 5);
+            g.drawRect(point.getX(), point.getY() - 2, 1, 5);
         }
     }
 
