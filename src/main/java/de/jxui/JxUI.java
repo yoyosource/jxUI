@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 @Slf4j
 public class JxUI {
 
+    public static final boolean DEBUG = true;
+
     protected Component component;
 
     protected JxUI() {

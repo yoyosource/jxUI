@@ -52,6 +52,7 @@ public class Image extends Element<Image> {
     @Override
     public void draw(Graphics2D g, DrawState drawState, Point point) {
         g.drawImage(bufferedImage, point.getX() + padding.getLeft() + offset.getLeft(), point.getY() + padding.getTop() + offset.getTop(), (img, infoflags, x, y, width, height) -> true);
+        debugDraw(g, drawState, point);
         point.add(actualSize(g, drawState));
     }
 }

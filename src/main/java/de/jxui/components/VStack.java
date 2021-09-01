@@ -29,6 +29,7 @@ public class VStack extends Stack<VStack> {
     public void spacerSize(Size size, DrawState drawState) {
         List<Spacer> spacerList = componentList.stream().filter(Spacer.class::isInstance).map(Spacer.class::cast).filter(spacer -> spacer.getSize() == -1).collect(Collectors.toList());
         int splitSize = spacerList.size() + (spacers(Orientation.VERTICAL) - spacerList.size() > 0 ? 1 : 0);
+        System.out.println("v: " + spacerList.size() + " " + splitSize + " " + size);
         for (Spacer spacer : spacerList) {
             drawState.getVerticalSpacers().put(spacer, size.getHeight() / splitSize);
         }
@@ -51,6 +52,7 @@ public class VStack extends Stack<VStack> {
 
     @Override
     public void draw(Graphics2D g, DrawState drawState, Point point) {
+        debugDraw(g, drawState, point);
         Point current = new Point(point.getX(), point.getY());
         current.add(offset);
         for (Component component : componentList) {

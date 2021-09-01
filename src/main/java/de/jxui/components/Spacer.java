@@ -51,11 +51,13 @@ public class Spacer implements Component {
 
     @Override
     public int spacers(Orientation orientation) {
+        if (size != -1) return 0;
         return this.orientation == orientation ? 1 : 0;
     }
 
     @Override
     public void draw(Graphics2D g, DrawState drawState, Point point) {
+        debugDraw(g, drawState, point);
         if (orientation == Orientation.HORIZONTAL) {
             point.addX(drawState.getHorizontalSpacers().getOrDefault(this, size));
         } else if (orientation == Orientation.VERTICAL) {

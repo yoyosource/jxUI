@@ -1,57 +1,16 @@
 package de.jxui;
 
-import de.jxui.components.*;
 import de.jxui.components.Image;
+import de.jxui.components.*;
 import de.jxui.compounds.CenteredStack;
 import de.jxui.utils.Direction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 
 public class Test {
 
     public static void main(String[] args) {
-        /*
-        HStack hStack = new HStack(
-                new Spacer(5),
-                new VStack(
-                        new Spacer(),
-                        new Text("West")
-                                .size(20),
-                        new Spacer()
-                ),
-                new Spacer(),
-                new VStack(
-                        new HStack(
-                                new Spacer(),
-                                new Text("North")
-                                        .size(20),
-                                new Spacer()
-                        ),
-                        new Spacer(),
-                        new Text("Earth")
-                                .size(100),
-                        new Spacer(),
-                        new HStack(
-                                new Spacer(),
-                                new Text("South")
-                                        .size(20),
-                                new Spacer()
-                        ),
-                        new Spacer(5)
-                ),
-                new Spacer(),
-                new VStack(
-                        new Spacer(),
-                        new Text("East")
-                                .size(20),
-                        new Spacer()
-                ),
-                new Spacer(5)
-        );
-        */
-
         HStack hStack = new HStack(
                 new Text("1"),
                 new Spacer(),
@@ -70,11 +29,13 @@ public class Test {
                 ),
                 new Text("8")
         );
+        /*
         hStack = new HStack(
                 Image.fromResource("/img.png")
                         .padding()
                         .offset(Direction.TOP, -100)
         );
+        */
 
         CenteredStack centeredStack = new CenteredStack(
                 Image.fromResource("/img.png")
@@ -82,7 +43,7 @@ public class Test {
                         .offset(Direction.TOP, -100)
         );
 
-        JxUI jxUI = new JxUI(centeredStack);
+        JxUI jxUI = new JxUI(hStack);
 
         JFrame jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

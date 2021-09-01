@@ -40,6 +40,7 @@ public class ZStack extends Stack<ZStack> {
 
     @Override
     public void draw(Graphics2D g, DrawState drawState, Point point) {
+        debugDraw(g, drawState, point);
         for (Component component : componentList) {
             Point current = new Point(point.getX(), point.getY());
             current.add(offset);
