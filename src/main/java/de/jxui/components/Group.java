@@ -15,27 +15,22 @@ public abstract class Group<T> extends Element<T> {
     }
 
     @Override
-    public Size size() {
-        return component.size().add(padding);
+    public Size size(UserState userState) {
+        return component.size(userState);
     }
 
     @Override
-    public Size actualSize(Graphics2D g, DrawState drawState) {
-        return component.actualSize(g, drawState).add(padding);
+    public void size(Size size, UserState userState, DrawState drawState) {
+        component.size(size, userState, drawState);
     }
 
     @Override
-    public void spacerSize(Size size, DrawState drawState) {
-        component.spacerSize(size, drawState);
+    public int spacers(UserState userState, Orientation orientation) {
+        return component.spacers(userState, orientation);
     }
 
     @Override
-    public int spacers(Orientation orientation) {
-        return component.spacers(orientation);
-    }
-
-    @Override
-    public void draw(Graphics2D g, DrawState drawState, Point point) {
-        component.draw(g, drawState, point);
+    public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
+        component.draw(g, userState, drawState, point);
     }
 }

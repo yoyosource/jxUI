@@ -3,6 +3,7 @@ package de.jxui.components;
 import de.jxui.utils.DrawState;
 import de.jxui.utils.Point;
 import de.jxui.utils.Size;
+import de.jxui.utils.UserState;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -54,17 +55,17 @@ public class Text extends Element<Text> {
 
     @Override
     @SuppressWarnings("deprecated")
-    public Size size() {
+    public Size size(UserState userState) {
         FontMetrics fontMetrics = Toolkit.getDefaultToolkit().getFontMetrics(font);
         return new Size(fontMetrics.stringWidth(text), fontMetrics.getHeight()).add(padding);
     }
 
     @Override
-    public void draw(Graphics2D g, DrawState drawState, Point point) {
+    public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
         g.setColor(color);
         g.setFont(font);
-        g.drawString(text, point.getX() + offset.getLeft(), point.getY() + size().getHeight() + offset.getTop());
+        g.drawString(text, point.getX() + offset.getLeft(), point.getY() + size(null).getHeight() + offset.getTop());
         debugDraw(g, drawState, point);
-        point.add(actualSize(g, drawState));
+        point.add(drawState.getSizeMap().get(this));
     }
 }

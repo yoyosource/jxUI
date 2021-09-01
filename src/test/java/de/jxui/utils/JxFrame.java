@@ -10,6 +10,7 @@ public class JxFrame {
 
     public JxFrame(Component component) {
         JxUI jxUI = new JxUI(component);
+        jxUI.setDebug(true);
 
         JFrame jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

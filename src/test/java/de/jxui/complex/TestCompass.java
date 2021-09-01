@@ -4,6 +4,7 @@ import de.jxui.components.HStack;
 import de.jxui.components.Spacer;
 import de.jxui.components.Text;
 import de.jxui.components.VStack;
+import de.jxui.compounds.If;
 import de.jxui.utils.JxFrame;
 
 public class TestCompass {
@@ -26,11 +27,14 @@ public class TestCompass {
                                 new Spacer()
                         ),
                         new Spacer(),
-                        new HStack(
-                                new Spacer(),
-                                new Text("Earth")
-                                        .size(100),
-                                new Spacer()
+                        new If(
+                                userState -> userState.getCanvasWidth() > 600,
+                                new HStack(
+                                        new Spacer(),
+                                        new Text("Earth")
+                                                .size(100),
+                                        new Spacer()
+                                )
                         ),
                         new Spacer(),
                         new HStack(

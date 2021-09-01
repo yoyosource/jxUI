@@ -1,8 +1,8 @@
 package de.jxui.components;
 
-import de.jxui.utils.*;
+import de.jxui.utils.Size;
+import de.jxui.utils.UserState;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -17,19 +17,10 @@ public abstract class Stack<T> extends Element<T> {
     }
 
     @Override
-    public Size size() {
+    public Size size(UserState userState) {
         Size size = new Size(0, 0);
         componentList.forEach(component -> {
-            mergeSize.accept(size, component.size());
-        });
-        return size.add(padding);
-    }
-
-    @Override
-    public Size actualSize(Graphics2D g, DrawState drawState) {
-        Size size = new Size(0, 0);
-        componentList.forEach(component -> {
-            mergeSize.accept(size, component.actualSize(g, drawState));
+            mergeSize.accept(size, component.size(userState));
         });
         return size.add(padding);
     }

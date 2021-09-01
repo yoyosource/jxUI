@@ -27,25 +27,26 @@ public class ZStack extends Stack<ZStack> {
     }
 
     @Override
-    public void spacerSize(Size size, DrawState drawState) {
+    public void size(Size size, UserState userState, DrawState drawState) {
         componentList.forEach(component -> {
-            component.spacerSize(size.copy(), drawState);
+            component.size(size, userState, drawState);
         });
+        drawState.getSizeMap().put(this, size);
     }
 
     @Override
-    public int spacers(Orientation orientation) {
-        return componentList.stream().map(component -> component.spacers(orientation)).mapToInt(value -> value).sum();
+    public int spacers(UserState userState, Orientation orientation) {
+        return componentList.stream().map(component -> component.spacers(userState, orientation)).mapToInt(value -> value).sum();
     }
 
     @Override
-    public void draw(Graphics2D g, DrawState drawState, Point point) {
+    public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
         debugDraw(g, drawState, point);
         for (Component component : componentList) {
             Point current = new Point(point.getX(), point.getY());
             current.add(offset);
-            component.draw(g, drawState, current);
+            component.draw(g, userState, drawState, current);
         }
-        point.add(actualSize(g, drawState));
+        point.add(drawState.getSizeMap().get(this));
     }
 }

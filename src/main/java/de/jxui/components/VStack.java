@@ -26,39 +26,48 @@ public class VStack extends Stack<VStack> {
     }
 
     @Override
-    public void spacerSize(Size size, DrawState drawState) {
+    public void size(Size size, UserState userState, DrawState drawState) {
+        Size currentSize = size(userState);
+        Size spacerSize = size.copy().substract(currentSize);
+
         List<Spacer> spacerList = componentList.stream().filter(Spacer.class::isInstance).map(Spacer.class::cast).filter(spacer -> spacer.getSize() == -1).collect(Collectors.toList());
-        int splitSize = spacerList.size() + (spacers(Orientation.VERTICAL) - spacerList.size() > 0 ? 1 : 0);
-        System.out.println("v: " + spacerList.size() + " " + splitSize + " " + size);
+        int splitSize = spacerList.size() + (spacers(userState, Orientation.VERTICAL) - spacerList.size() > 0 ? 1 : 0);
+
+        System.out.println("v: " + spacerList.size() + " " + splitSize + " " + currentSize + " " + size);
         for (Spacer spacer : spacerList) {
-            drawState.getVerticalSpacers().put(spacer, size.getHeight() / splitSize);
+            spacer.size(size.copy().setHeight(spacerSize.getHeight() / splitSize), userState, drawState);
         }
-        Set<Component> components = componentList.stream().filter(component -> component.spacers(Orientation.VERTICAL) > 0).collect(Collectors.toSet());
+
+        Set<Component> components = componentList.stream().filter(component -> component.spacers(userState, Orientation.VERTICAL) > 0).collect(Collectors.toSet());
         int componentSplitSize = size.getHeight() / (splitSize == 0 ? 1 : splitSize);
         componentList.forEach(component -> {
-            Size current = size.copy();
-            current.setHeight(component.size().getHeight());
-            if (components.contains(component)) {
-                current.setHeight(current.getHeight() + (componentSplitSize / components.size()));
+            if (drawState.getSizeMap().containsKey(component)) {
+                return;
             }
-            component.spacerSize(current, drawState);
+            Size current = component.size(userState);
+            current.setWidth(size.getWidth());
+            if (components.contains(component)) {
+                current.setHeight(componentSplitSize);
+            }
+            component.size(current, userState, drawState);
         });
+        drawState.getSizeMap().put(this, size);
     }
 
     @Override
-    public int spacers(Orientation orientation) {
-        return componentList.stream().map(component -> component.spacers(orientation)).mapToInt(value -> value).sum();
+    public int spacers(UserState userState, Orientation orientation) {
+        return componentList.stream().map(component -> component.spacers(userState, orientation)).mapToInt(value -> value).sum();
     }
 
     @Override
-    public void draw(Graphics2D g, DrawState drawState, Point point) {
+    public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
         debugDraw(g, drawState, point);
         Point current = new Point(point.getX(), point.getY());
         current.add(offset);
         for (Component component : componentList) {
-            component.draw(g, drawState, current);
+            component.draw(g, userState, drawState, current);
             current.setX(point.getX());
         }
-        point.addX(actualSize(g, drawState).getWidth());
+        point.addX(drawState.getSizeMap().get(this).getWidth());
     }
 }

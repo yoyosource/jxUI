@@ -3,6 +3,7 @@ package de.jxui.components;
 import de.jxui.utils.DrawState;
 import de.jxui.utils.Point;
 import de.jxui.utils.Size;
+import de.jxui.utils.UserState;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -45,14 +46,14 @@ public class Image extends Element<Image> {
     }
 
     @Override
-    public Size size() {
+    public Size size(UserState userState) {
         return new Size(bufferedImage.getWidth(), bufferedImage.getHeight()).add(padding);
     }
 
     @Override
-    public void draw(Graphics2D g, DrawState drawState, Point point) {
+    public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
         g.drawImage(bufferedImage, point.getX() + padding.getLeft() + offset.getLeft(), point.getY() + padding.getTop() + offset.getTop(), (img, infoflags, x, y, width, height) -> true);
         debugDraw(g, drawState, point);
-        point.add(actualSize(g, drawState));
+        point.add(drawState.getSizeMap().get(this));
     }
 }

@@ -1,6 +1,6 @@
 package de.jxui.utils;
 
-import de.jxui.components.Spacer;
+import de.jxui.components.Component;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -10,6 +10,10 @@ import java.util.Map;
 @Getter
 @ToString
 public class DrawState {
-    private Map<Spacer, Integer> verticalSpacers = new IdentityHashMap<>();
-    private Map<Spacer, Integer> horizontalSpacers = new IdentityHashMap<>();
+    private boolean debug = false;
+    private Map<Component, Size> sizeMap = new IdentityHashMap<>();
+
+    public DrawState(boolean debug) {
+        this.debug = debug;
+    }
 }

@@ -8,11 +8,6 @@ import java.util.Map;
 
 public class UserState {
 
-    public static void main(String[] args) {
-        UserState userState = new UserState();
-        System.out.println(userState.mac());
-    }
-
     @Delegate
     private Map<Object, Object> state = new HashMap<>();
 
@@ -20,6 +15,12 @@ public class UserState {
     private boolean windows = false;
     private boolean mac = false;
     private boolean linux = false;
+
+    private final Size size;
+
+    public UserState(Size size) {
+        this.size = size;
+    }
 
     public boolean windows() {
         if (operatingSystem == null) getOperatingSystem();
@@ -48,5 +49,13 @@ public class UserState {
             }
         }
         return operatingSystem;
+    }
+
+    public int getCanvasWidth() {
+        return size.getWidth();
+    }
+
+    public int getCanvasHeight() {
+        return size.getHeight();
     }
 }
