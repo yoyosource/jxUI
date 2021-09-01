@@ -2,12 +2,14 @@ package de.jxui.components;
 
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class VStack extends Stack<VStack> {
 
     public VStack(Component... components) {
@@ -33,7 +35,7 @@ public class VStack extends Stack<VStack> {
         List<Spacer> spacerList = componentList.stream().filter(Spacer.class::isInstance).map(Spacer.class::cast).filter(spacer -> spacer.getSize() == -1).collect(Collectors.toList());
         int splitSize = spacerList.size() + (spacers(userState, Orientation.VERTICAL) - spacerList.size() > 0 ? 1 : 0);
 
-        System.out.println("v: " + spacerList.size() + " " + splitSize + " " + currentSize + " " + size);
+        log.debug("Spacer: {}   Splitting: {}   Size: {}   AllowedSize: {}", spacerList.size(), splitSize, currentSize, size);
         for (Spacer spacer : spacerList) {
             spacer.size(size.copy().setHeight(spacerSize.getHeight() / splitSize), userState, drawState);
         }

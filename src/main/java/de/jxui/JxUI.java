@@ -49,7 +49,7 @@ public class JxUI {
         size.setWidth(canvasSize.getWidth());
         size.setHeight(canvasSize.getHeight());
         component.size(canvasSize, userState, drawState);
-        System.out.println(drawState.getSizeMap());
+        log.debug("DrawState: {}", drawState.getSizeMap());
 
         log.debug(canvasSize + " " + drawState);
         graphics.setColor(Color.WHITE);
