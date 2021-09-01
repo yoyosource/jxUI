@@ -52,6 +52,6 @@ public interface Component {
         return 0;
     }
 
-    void draw(Graphics2D g, DrawState drawState, Point current); // Draw the current component to the Screen
+    void draw(Graphics2D g, UserState userState, DrawState drawState, Point current); // Draw the current component to the Screen
 }
 ```
