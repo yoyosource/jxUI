@@ -47,6 +47,11 @@ public interface Component {
     // DrawState saves the Size object to every Component for the draw() call later on
     void size(Size size, UserState userState, DrawState drawState); // Calculate Spacer and Divider sizing of current component and every sub component if needed
 
+    // Count spacers of current and deeper Objects
+    default int spacers(Orientation orientation) {
+        return 0;
+    }
+
     void draw(Graphics2D g, DrawState drawState, Point current); // Draw the current component to the Screen
 }
 ```
