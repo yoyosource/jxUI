@@ -16,6 +16,7 @@ import java.util.Arrays;
 public class Test {
 
     public static void main(String[] args) {
+        /*
         HStack hStack = new HStack(
                 new Text("1"),
                 new Spacer(),
@@ -50,6 +51,7 @@ public class Test {
                 ),
                 new Text("8")
         );
+        */
         /*
         hStack = new HStack(
                 Image.fromResource("/img.png")
@@ -109,8 +111,14 @@ public class Test {
         );
         */
 
+        HStack hStack = new HStack(
+                new Spacer(),
+                new Divider(),
+                new Spacer()
+        );
+
         JxUI jxUI = new JxUI(hStack);
-        jxUI.setDebug(true);
+        jxUI.setDebug(false);
 
         JFrame jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
