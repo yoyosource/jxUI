@@ -3,6 +3,7 @@ package de.jxui;
 import de.jxui.components.Image;
 import de.jxui.components.*;
 import de.jxui.compounds.CenteredStack;
+import de.jxui.compounds.StateComponent;
 import de.jxui.compounds.Switch;
 import de.jxui.utils.Direction;
 import de.jxui.utils.UserState;
@@ -79,6 +80,12 @@ public class Test {
                         .Default(
                                 new Text("Other")
                         ),
+                new Spacer(),
+                new StateComponent(
+                        userState -> {
+                            return new Text(userState.getCanvasWidth() + "x" + userState.getCanvasHeight());
+                        }
+                ),
                 new Spacer()
         );
 
