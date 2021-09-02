@@ -65,7 +65,7 @@ public class Text extends Element<Text> {
         g.setColor(color);
         g.setFont(font);
         g.drawString(text, point.getX() + offset.getLeft() + padding.getLeft(), point.getY() + size(null).getHeight() + offset.getTop() + padding.getTop());
-        debugDraw(g, drawState, point.add(offset));
+        debugDraw(g, drawState, point.add(offset).add(padding));
         point.add(drawState.getSizeMap().get(this));
     }
 }

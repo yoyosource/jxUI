@@ -20,8 +20,8 @@ public class Size {
     public Size add(Padding padding) {
         width += padding.getLeft();
         width += padding.getRight();
-        height += padding.getBottom();
         height += padding.getTop();
+        height += padding.getBottom();
         return this;
     }
 
