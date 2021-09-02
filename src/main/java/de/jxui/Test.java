@@ -3,7 +3,9 @@ package de.jxui;
 import de.jxui.components.Image;
 import de.jxui.components.*;
 import de.jxui.compounds.CenteredStack;
+import de.jxui.compounds.Repeat;
 import de.jxui.utils.Direction;
+import de.jxui.utils.Orientation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -107,15 +109,18 @@ public class Test {
         */
 
         ZStack zStack = new ZStack(
-                new VStack(
-                        new Spacer(),
-                        new Divider(),
-                        new Spacer()
+                new Repeat(
+                        10,
+                        () -> new VStack(new Divider(), new Spacer())
+                ).Prefix(
+                        new VStack(new Spacer())
                 ),
-                new HStack(
-                        new Spacer(),
-                        new Divider(),
-                        new Spacer()
+                new Repeat(
+                        Orientation.HORIZONTAL,
+                        10,
+                        () -> new HStack(new Divider(), new Spacer())
+                ).Prefix(
+                        new HStack(new Spacer())
                 )
         );
 

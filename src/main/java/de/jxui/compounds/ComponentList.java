@@ -1,8 +1,7 @@
 package de.jxui.compounds;
 
 import de.jxui.components.Component;
-import de.jxui.components.HStack;
-import de.jxui.components.VStack;
+import de.jxui.components.*;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 import lombok.NonNull;
@@ -11,32 +10,54 @@ import java.awt.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class List<T> implements Component {
+public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Suffix<ComponentList<T>> {
 
     private Function<T, Component> componentFunction;
     private java.util.List<T> list;
 
     private Orientation orientation = Orientation.VERTICAL;
-    private Component component;
+    private Stack<?> component;
 
-    public List(@NonNull Function<T, Component> componentFunction, @NonNull java.util.List<T> list) {
+    private Component prefix = null;
+    private Component suffix = null;
+
+    public ComponentList(@NonNull Function<T, Component> componentFunction, @NonNull java.util.List<T> list) {
         this.componentFunction = componentFunction;
         this.list = list;
     }
 
-    public List(@NonNull Orientation orientation, @NonNull Function<T, Component> componentFunction, @NonNull java.util.List<T> list) {
+    public ComponentList(@NonNull Orientation orientation, @NonNull Function<T, Component> componentFunction, @NonNull java.util.List<T> list) {
         this.orientation = orientation;
         this.componentFunction = componentFunction;
         this.list = list;
     }
 
     @Override
+    public ComponentList<T> Prefix(Component component) {
+        this.prefix = component;
+        return this;
+    }
+
+    @Override
+    public ComponentList<T> Suffix(Component component) {
+        this.suffix = component;
+        return this;
+    }
+
+    @Override
     public Size size(UserState userState) {
         if (component == null) {
             if (orientation == Orientation.VERTICAL) {
-                component = new VStack(list.stream().map(componentFunction).collect(Collectors.toList()));
+                component = new VStack();
             } else {
-                component = new HStack(list.stream().map(componentFunction).collect(Collectors.toList()));
+                component = new HStack();
+            }
+            if (prefix != null) {
+                component.add(prefix);
+            }
+            list.stream().map(componentFunction).forEach(component::add);
+            if (suffix != null) {
+                component.add(suffix);
             }
         }
         return component.size(userState);

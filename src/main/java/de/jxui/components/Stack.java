@@ -16,6 +16,8 @@ public abstract class Stack<T> extends Element<T> {
         this.mergeSize = mergeSize;
     }
 
+    public abstract T add(Component component);
+
     @Override
     public Size size(UserState userState) {
         Size size = new Size(0, 0);
