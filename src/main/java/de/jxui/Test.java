@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class Test {
 
     public static void main(String[] args) {
-        /*HStack hStack = new HStack(
+        HStack hStack = new HStack(
                 new Text("1"),
                 new Spacer(),
                 new Text("2"),
@@ -49,7 +49,7 @@ public class Test {
                         new Text("7")
                 ),
                 new Text("8")
-        );*/
+        );
         /*
         hStack = new HStack(
                 Image.fromResource("/img.png")
@@ -64,6 +64,7 @@ public class Test {
                         .offset(Direction.TOP, -100)
         );
 
+        /*
         HStack hStack = new HStack(
                 new Spacer(),
                 new Switch()
@@ -106,6 +107,7 @@ public class Test {
                 ),
                 new Spacer()
         );
+        */
 
         JxUI jxUI = new JxUI(hStack);
         jxUI.setDebug(true);

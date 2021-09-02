@@ -43,8 +43,9 @@ public class VStack extends Stack<VStack> {
             spacer.size(size.copy().setHeight(spacerSize.getHeight() / splitSize), userState, drawState);
         }
 
-        Set<Component> components = componentList.stream().filter(component -> component.spacers(userState, Orientation.VERTICAL) > 0).collect(Collectors.toSet());
+        Set<Component> components = componentList.stream().filter(component -> !drawState.getSizeMap().containsKey(component)).filter(component -> component.spacers(userState, Orientation.VERTICAL) > 0).collect(Collectors.toSet());
         int componentSplitSize = spacerSize.getHeight() / (splitSize == 0 ? 1 : splitSize);
+        log.debug("Other Component sizes: {}   Components: {}", componentSplitSize, components.size());
         componentList.forEach(component -> {
             if (drawState.getSizeMap().containsKey(component)) {
                 return;
@@ -52,7 +53,7 @@ public class VStack extends Stack<VStack> {
             Size current = component.size(userState);
             current.setWidth(size.getWidth());
             if (components.contains(component)) {
-                current.setHeight(componentSplitSize / components.size());
+                current.setHeight(current.getHeight() + componentSplitSize / components.size());
             }
             component.size(current, userState, drawState);
         });

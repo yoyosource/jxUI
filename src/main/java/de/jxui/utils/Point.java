@@ -9,14 +9,22 @@ public class Point {
     private int x;
     private int y;
 
-    public void add(Size size) {
+    public Point add(Size size) {
         x += size.getWidth();
         y += size.getHeight();
+        return this;
     }
 
-    public void add(Offset offset) {
+    public Point add(Offset offset) {
         x += offset.getLeft();
         y += offset.getTop();
+        return this;
+    }
+
+    public Point add(Padding padding) {
+        x += padding.getLeft();
+        y += padding.getTop();
+        return this;
     }
 
     public void addX(int dx) {

@@ -10,6 +10,7 @@ public interface Component {
     default void size(Size size, UserState userState, DrawState drawState) {
         Size thisSize = size(userState);
         drawState.getSizeMap().put(this, thisSize);
+        // TODO: is this call needed
         size.substract(thisSize);
     }
     default int spacers(UserState userState, Orientation orientation) {

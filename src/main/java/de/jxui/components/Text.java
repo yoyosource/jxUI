@@ -64,8 +64,8 @@ public class Text extends Element<Text> {
     public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
         g.setColor(color);
         g.setFont(font);
-        g.drawString(text, point.getX() + offset.getLeft(), point.getY() + size(null).getHeight() + offset.getTop());
-        debugDraw(g, drawState, point);
+        g.drawString(text, point.getX() + offset.getLeft() + padding.getLeft(), point.getY() + size(null).getHeight() + offset.getTop() + padding.getTop());
+        debugDraw(g, drawState, point.add(offset));
         point.add(drawState.getSizeMap().get(this));
     }
 }

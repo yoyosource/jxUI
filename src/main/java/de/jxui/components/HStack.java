@@ -43,8 +43,9 @@ public class HStack extends Stack<HStack> {
             spacer.size(size.copy().setWidth(spacerSize.getWidth() / splitSize), userState, drawState);
         }
 
-        Set<Component> components = componentList.stream().filter(component -> component.spacers(userState, Orientation.HORIZONTAL) > 0).collect(Collectors.toSet());
+        Set<Component> components = componentList.stream().filter(component -> !drawState.getSizeMap().containsKey(component)).filter(component -> component.spacers(userState, Orientation.HORIZONTAL) > 0).collect(Collectors.toSet());
         int componentSplitSize = spacerSize.getWidth() / (splitSize == 0 ? 1 : splitSize);
+        log.debug("Other Component sizes: {}   Components: {}", componentSplitSize, components.size());
         componentList.forEach(component -> {
             if (drawState.getSizeMap().containsKey(component)) {
                 return;
@@ -52,7 +53,7 @@ public class HStack extends Stack<HStack> {
             Size current = component.size(userState);
             current.setHeight(size.getHeight());
             if (components.contains(component)) {
-                current.setWidth(componentSplitSize / components.size());
+                current.setWidth(current.getWidth() + componentSplitSize / components.size());
             }
             component.size(current, userState, drawState);
         });
