@@ -15,19 +15,14 @@
     - [ ] Groups
 - [ ] Images
     - [ ] Corner Radius
+    - [ ] Cropping
+    - [ ] Resizing
 - [x] Spacer
     - [x] size
-- [ ] List
-- [ ] Object watching
+- [x] List
 - [ ] Gradient -> Color
 
 ## Draw
-
-- Calc Size of each node
-- Set Spacer size from layer to layer in percentage of drawState
-- Draw
-
-## Draw rework
 
 - Draw State (User State of IF's and LIST's)
 - Calculating size with a State and the Size of the Canvas

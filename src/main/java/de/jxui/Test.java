@@ -3,15 +3,10 @@ package de.jxui;
 import de.jxui.components.Image;
 import de.jxui.components.*;
 import de.jxui.compounds.CenteredStack;
-import de.jxui.components.StateComponent;
-import de.jxui.compounds.List;
-import de.jxui.compounds.Switch;
 import de.jxui.utils.Direction;
-import de.jxui.utils.UserState;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class Test {
 
@@ -111,13 +106,36 @@ public class Test {
         );
         */
 
-        HStack hStack = new HStack(
-                new Spacer(),
-                new Divider(),
-                new Spacer()
+        ZStack zStack = new ZStack(
+                new VStack(
+                        new Spacer(),
+                        new Divider(),
+                        new Spacer()
+                ),
+                new HStack(
+                        new Spacer(),
+                        new Divider(),
+                        new Spacer()
+                )
         );
 
-        JxUI jxUI = new JxUI(hStack);
+        HStack hStack = new HStack(
+                new VStack(
+                        new HStack(new Spacer()),
+                        new Spacer(),
+                        new Divider(),
+                        new Spacer()
+                ),
+                new Divider(),
+                new VStack(
+                        new Spacer(),
+                        new Divider(),
+                        new Spacer(),
+                        new HStack(new Spacer())
+                )
+        );
+
+        JxUI jxUI = new JxUI(zStack);
         jxUI.setDebug(false);
 
         JFrame jFrame = new JFrame();
