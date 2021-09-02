@@ -1,6 +1,5 @@
-package de.jxui.compounds;
+package de.jxui.components;
 
-import de.jxui.components.Component;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 

@@ -5,6 +5,7 @@ import de.jxui.utils.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,11 +13,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class HStack extends Stack<HStack> {
 
-    public HStack(Component... components) {
+    public HStack(List<Component> components) {
         super(Size::mergeWidth);
-        for (Component component : components) {
-            add(component);
-        }
+        components.forEach(this::add);
+    }
+
+    public HStack(Component... components) {
+        this(Arrays.asList(components));
     }
 
     public HStack add(Component component) {
@@ -41,7 +44,7 @@ public class HStack extends Stack<HStack> {
         }
 
         Set<Component> components = componentList.stream().filter(component -> component.spacers(userState, Orientation.HORIZONTAL) > 0).collect(Collectors.toSet());
-        int componentSplitSize = size.getWidth() / (splitSize == 0 ? 1 : splitSize);
+        int componentSplitSize = spacerSize.getWidth() / (splitSize == 0 ? 1 : splitSize);
         componentList.forEach(component -> {
             if (drawState.getSizeMap().containsKey(component)) {
                 return;
@@ -49,7 +52,7 @@ public class HStack extends Stack<HStack> {
             Size current = component.size(userState);
             current.setHeight(size.getHeight());
             if (components.contains(component)) {
-                current.setWidth(componentSplitSize);
+                current.setWidth(componentSplitSize / components.size());
             }
             component.size(current, userState, drawState);
         });
@@ -70,6 +73,6 @@ public class HStack extends Stack<HStack> {
             component.draw(g, userState, drawState, current);
             current.setY(point.getY());
         }
-        point.addY(drawState.getSizeMap().get(this).getHeight());
+        point.add(drawState.getSizeMap().get(this));
     }
 }

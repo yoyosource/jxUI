@@ -5,6 +5,7 @@ import de.jxui.utils.Point;
 import de.jxui.utils.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Switch implements Component {
         private Component component;
     }
 
-    public Switch Case(Predicate<UserState> predicate, Component component) {
+    public Switch Case(Predicate<UserState> predicate, @NonNull Component component) {
         caseList.add(new Case(predicate, component));
         return this;
     }

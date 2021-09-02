@@ -5,17 +5,17 @@ import de.jxui.utils.Point;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.List;
 
 public class ZStack extends Stack<ZStack> {
 
-    public ZStack(Component... components) {
+    public ZStack(List<Component> components) {
         super(Size::merge);
-        for (Component component : components) {
-            if (component instanceof Spacer) {
-                throw new SecurityException();
-            }
-        }
-        componentList.addAll(Arrays.asList(components));
+        components.forEach(this::add);
+    }
+
+    public ZStack(Component... components) {
+        this(Arrays.asList(components));
     }
 
     public ZStack add(Component component) {

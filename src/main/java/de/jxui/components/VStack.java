@@ -5,6 +5,7 @@ import de.jxui.utils.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,11 +13,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class VStack extends Stack<VStack> {
 
-    public VStack(Component... components) {
+    public VStack(List<Component> components) {
         super(Size::mergeHeight);
-        for (Component component : components) {
-            add(component);
-        }
+        components.forEach(this::add);
+    }
+
+    public VStack(Component... components) {
+        this(Arrays.asList(components));
     }
 
     public VStack add(Component component) {
@@ -41,7 +44,7 @@ public class VStack extends Stack<VStack> {
         }
 
         Set<Component> components = componentList.stream().filter(component -> component.spacers(userState, Orientation.VERTICAL) > 0).collect(Collectors.toSet());
-        int componentSplitSize = size.getHeight() / (splitSize == 0 ? 1 : splitSize);
+        int componentSplitSize = spacerSize.getHeight() / (splitSize == 0 ? 1 : splitSize);
         componentList.forEach(component -> {
             if (drawState.getSizeMap().containsKey(component)) {
                 return;
@@ -49,7 +52,7 @@ public class VStack extends Stack<VStack> {
             Size current = component.size(userState);
             current.setWidth(size.getWidth());
             if (components.contains(component)) {
-                current.setHeight(componentSplitSize);
+                current.setHeight(componentSplitSize / components.size());
             }
             component.size(current, userState, drawState);
         });
@@ -70,6 +73,6 @@ public class VStack extends Stack<VStack> {
             component.draw(g, userState, drawState, current);
             current.setX(point.getX());
         }
-        point.addX(drawState.getSizeMap().get(this).getWidth());
+        point.add(drawState.getSizeMap().get(this));
     }
 }

@@ -3,6 +3,7 @@ package de.jxui.compounds;
 import de.jxui.components.Component;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
+import lombok.NonNull;
 
 import java.awt.*;
 import java.util.function.Predicate;
@@ -13,7 +14,7 @@ public class If implements Component {
     private Component trueComponent;
     private Component falseComponent;
 
-    public If(Predicate<UserState> predicate, Component component) {
+    public If(Predicate<UserState> predicate, @NonNull Component component) {
         this.predicate = predicate;
         this.trueComponent = component;
     }

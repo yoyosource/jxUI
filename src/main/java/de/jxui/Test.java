@@ -3,13 +3,15 @@ package de.jxui;
 import de.jxui.components.Image;
 import de.jxui.components.*;
 import de.jxui.compounds.CenteredStack;
-import de.jxui.compounds.StateComponent;
+import de.jxui.components.StateComponent;
+import de.jxui.compounds.List;
 import de.jxui.compounds.Switch;
 import de.jxui.utils.Direction;
 import de.jxui.utils.UserState;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class Test {
 
@@ -83,13 +85,30 @@ public class Test {
                 new Spacer(),
                 new StateComponent(
                         userState -> {
-                            return new Text(userState.getCanvasWidth() + "x" + userState.getCanvasHeight());
+                            if (userState.getCanvasWidth() > userState.getCanvasHeight()) {
+                                return new Text("Width");
+                            } else if (userState.getCanvasHeight() > userState.getCanvasWidth()) {
+                                return new Text("Height");
+                            } else {
+                                return new Text("Same");
+                            }
                         }
+                ),
+                new Spacer(),
+                new List<>(
+                        s -> {
+                            return new VStack(
+                                    new Text(s),
+                                    new Spacer()
+                            );
+                        },
+                        Arrays.asList("Hello", "World", "Hello World")
                 ),
                 new Spacer()
         );
 
         JxUI jxUI = new JxUI(hStack);
+        jxUI.setDebug(true);
 
         JFrame jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
