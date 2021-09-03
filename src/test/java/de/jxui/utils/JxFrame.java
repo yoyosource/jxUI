@@ -20,6 +20,7 @@ public class JxFrame {
                 jxUI.draw(this);
             }
         };
+        jxUI.addListenersTo(canvas);
         canvas.setSize(4 * 100, 3 * 100);
         jFrame.add(canvas);
         jFrame.pack();

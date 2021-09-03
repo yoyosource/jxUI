@@ -1,5 +1,6 @@
 package de.jxui.components;
 
+import de.jxui.events.Event;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 
@@ -15,6 +16,9 @@ public interface Component {
     }
     default int spacers(UserState userState, Orientation orientation) {
         return 0;
+    }
+    default void event(UserState userState, DrawState drawState, Point point, Event event) {
+        System.out.println(event);
     }
     default void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
     }
