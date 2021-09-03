@@ -1,8 +1,9 @@
 package de.jxui;
 
+import de.jxui.action.ButtonAction;
 import de.jxui.components.*;
 import de.jxui.compounds.Button;
-import de.jxui.compounds.CenteredStack;
+import de.jxui.compounds.Centered;
 import de.jxui.compounds.Repeat;
 import de.jxui.utils.Orientation;
 
@@ -57,7 +58,7 @@ public class Test {
         */
 
         /*
-        CenteredStack centeredStack = new CenteredStack(
+        CenteredStack centered = new CenteredStack(
                 Image.fromResource("/img.png")
                         .padding(Direction.BOTTOM, -100)
                         .offset(Direction.TOP, -100)
@@ -143,20 +144,15 @@ public class Test {
         );
         */
 
-        CenteredStack centeredStack = new CenteredStack(
+        Centered centered = new Centered(
                 new Button(
-                        (userState, mouseClickEvent) -> {
-                            userState.put("clicks", (int) userState.getOrDefault("clicks", 0) + 1);
-                            return true;
-                        },
-                        new StateComponent(
-                                userState -> new Text("Clicks: " + userState.getOrDefault("clicks", 0))
-                        )
+                        ButtonAction.NumberIncrement("clicks", 1),
+                        new TextTemplate("Clicks: {clicks|'0'}")
                 )
         );
 
-        JxUI jxUI = new JxUI(centeredStack);
-        jxUI.setDebug(false);
+        JxUI jxUI = new JxUI(centered);
+        jxUI.setDebug(true);
 
         JFrame jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

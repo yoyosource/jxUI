@@ -1,6 +1,7 @@
 package de.jxui.compounds;
 
 import de.jxui.components.Component;
+import de.jxui.events.Event;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 import lombok.AllArgsConstructor;
@@ -74,6 +75,19 @@ public class Switch implements Component {
             return defaultComponent.spacers(userState, orientation);
         } else {
             return 0;
+        }
+    }
+
+    @Override
+    public void event(UserState userState, DrawState drawState, Point point, Event event) {
+        for (Case current : caseList) {
+            if (current.predicate.test(userState)) {
+                current.component.event(userState, drawState, point, event);
+                return;
+            }
+        }
+        if (defaultComponent != null) {
+            defaultComponent.event(userState, drawState, point, event);
         }
     }
 

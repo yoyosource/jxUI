@@ -1,21 +1,21 @@
 package de.jxui.compounds;
 
-import de.jxui.action.ButtonAction;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
 import de.jxui.events.MouseClickEvent;
-import de.jxui.utils.Point;
 import de.jxui.utils.*;
+import de.jxui.utils.Point;
 
 import java.awt.*;
+import java.util.function.BiPredicate;
 
-public class Button implements Component {
+public class Move implements Component {
 
-    private ButtonAction buttonAction;
+    private BiPredicate<UserState, MouseClickEvent> mouseEvent;
     private Component component;
 
-    public Button(ButtonAction buttonAction, Component component) {
-        this.buttonAction = buttonAction;
+    public Move(BiPredicate<UserState, MouseClickEvent> mouseEvent, Component component) {
+        this.mouseEvent = mouseEvent;
         this.component = component;
     }
 
@@ -42,7 +42,7 @@ public class Button implements Component {
             Point clickPoint = mouseClickEvent.getPoint();
             if (clickPoint.getX() >= point.getX() && clickPoint.getX() <= point.getX() + size.getWidth()) {
                 if (clickPoint.getY() >= point.getY() && clickPoint.getY() <= point.getY() + size.getHeight()) {
-                    if (!buttonAction.run(userState, mouseClickEvent)) {
+                    if (!mouseEvent.test(userState, mouseClickEvent)) {
                         component.event(userState, drawState, point, event);
                     }
                 } else {
@@ -58,7 +58,6 @@ public class Button implements Component {
 
     @Override
     public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
-        debugDraw(g, drawState, point);
         component.draw(g, userState, drawState, point);
     }
 }

@@ -1,6 +1,7 @@
 package de.jxui.components;
 
-import de.jxui.compounds.CenteredStack;
+import de.jxui.compounds.Button;
+import de.jxui.compounds.Centered;
 import de.jxui.utils.DrawState;
 import de.jxui.utils.Point;
 import de.jxui.utils.Size;
@@ -18,8 +19,12 @@ class DebugDraw {
             drawSpacer(g, point, drawState.getSizeMap().get(component));
             return;
         }
-        if (component instanceof Stack || component instanceof CenteredStack) {
+        if (component instanceof Stack || component instanceof Centered) {
             drawStack(g, point, drawState.getSizeMap().get(component));
+            return;
+        }
+        if (component instanceof Button) {
+            drawButton(g, point, drawState.getSizeMap().get(component));
             return;
         }
         drawOther(g, point, drawState.getSizeMap().get(component));
@@ -56,6 +61,14 @@ class DebugDraw {
         if (size.getWidth() == 0) size.setWidth(1);
         if (size.getHeight() == 0) size.setHeight(1);
         g.drawRect(point.getX(), point.getY(), size.getWidth(), size.getHeight());
+    }
+
+    private void drawButton(Graphics2D g, Point point, Size size) {
+        g.setColor(new Color(128, 128, 128, 128));
+        size = size.copy();
+        if (size.getWidth() == 0) size.setWidth(1);
+        if (size.getHeight() == 0) size.setHeight(1);
+        g.fillRect(point.getX(), point.getY(), size.getWidth(), size.getHeight());
     }
 
     private void drawOther(Graphics2D g, Point point, Size size) {

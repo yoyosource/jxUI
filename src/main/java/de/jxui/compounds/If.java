@@ -1,6 +1,7 @@
 package de.jxui.compounds;
 
 import de.jxui.components.Component;
+import de.jxui.events.Event;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 import lombok.NonNull;
@@ -54,6 +55,15 @@ public class If implements Component {
             return falseComponent.spacers(userState, orientation);
         } else {
             return 0;
+        }
+    }
+
+    @Override
+    public void event(UserState userState, DrawState drawState, Point point, Event event) {
+        if (predicate.test(userState)) {
+            trueComponent.event(userState, drawState, point, event);
+        } else if (falseComponent != null) {
+            falseComponent.event(userState, drawState, point, event);
         }
     }
 

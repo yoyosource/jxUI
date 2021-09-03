@@ -11,16 +11,17 @@ public interface Component {
     default void size(Size size, UserState userState, DrawState drawState) {
         Size thisSize = size(userState);
         drawState.getSizeMap().put(this, thisSize);
-        // TODO: is this call needed
         size.substract(thisSize);
     }
     default int spacers(UserState userState, Orientation orientation) {
         return 0;
     }
     default void event(UserState userState, DrawState drawState, Point point, Event event) {
+        System.out.println(this);
         point.add(drawState.getSizeMap().get(this));
     }
     default void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
+        point.add(drawState.getSizeMap().get(this));
     }
 
     default void debugDraw(Graphics2D g, DrawState drawState, Point point) {

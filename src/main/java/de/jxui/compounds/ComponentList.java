@@ -2,6 +2,7 @@ package de.jxui.compounds;
 
 import de.jxui.components.Component;
 import de.jxui.components.*;
+import de.jxui.events.Event;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 import lombok.NonNull;
@@ -77,6 +78,14 @@ public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Su
             size(userState);
         }
         return component.spacers(userState, orientation);
+    }
+
+    @Override
+    public void event(UserState userState, DrawState drawState, Point point, Event event) {
+        if (component == null) {
+            size(userState);
+        }
+        component.event(userState, drawState, point, event);
     }
 
     @Override

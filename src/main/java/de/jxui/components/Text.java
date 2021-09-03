@@ -12,7 +12,7 @@ import java.awt.*;
 @Accessors(chain = true)
 public class Text extends Element<Text> {
 
-    private String text;
+    protected String text;
 
     @Setter
     private Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
@@ -64,7 +64,7 @@ public class Text extends Element<Text> {
     public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
         g.setColor(color);
         g.setFont(font);
-        g.drawString(text, point.getX() + offset.getLeft() + padding.getLeft(), point.getY() + size(null).getHeight() + offset.getTop() + padding.getTop());
+        g.drawString(text, point.getX() + offset.getLeft() + padding.getLeft(), point.getY() + drawState.getSizeMap().get(this).getHeight() + offset.getTop() + padding.getTop());
         debugDraw(g, drawState, point.add(offset).add(padding));
         point.add(drawState.getSizeMap().get(this));
     }

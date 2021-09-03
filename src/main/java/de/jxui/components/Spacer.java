@@ -1,7 +1,7 @@
 package de.jxui.components;
 
-import de.jxui.utils.*;
 import de.jxui.utils.Point;
+import de.jxui.utils.*;
 import lombok.Getter;
 
 import java.awt.*;

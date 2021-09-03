@@ -1,7 +1,7 @@
 package de.jxui;
 
 import de.jxui.components.Image;
-import de.jxui.compounds.CenteredStack;
+import de.jxui.compounds.Centered;
 import de.jxui.utils.JxFrame;
 
 public class TestImage {
@@ -17,7 +17,7 @@ public class TestImage {
     }
 
     private void testSimpleCenteredImage() {
-        CenteredStack centeredStack = new CenteredStack(
+        Centered centeredStack = new Centered(
                 new Image(TestImage.class.getResourceAsStream("/img.png"))
         );
         new JxFrame(centeredStack);

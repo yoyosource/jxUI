@@ -66,6 +66,7 @@ public class JxUI {
                 MouseClickEvent mouseClickEvent = new MouseClickEvent(e);
                 log.debug("Click: {}", mouseClickEvent);
                 component.event(userState, drawState, new Point(0, 0), mouseClickEvent);
+                log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();
                 }
@@ -82,6 +83,7 @@ public class JxUI {
                 MouseDragEvent mouseDragEvent = new MouseDragEvent(e);
                 log.debug("Drag: {}", mouseDragEvent);
                 component.event(userState, drawState, new Point(0, 0), mouseDragEvent);
+                log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();
                 }
@@ -97,6 +99,7 @@ public class JxUI {
                 MouseMoveEvent mouseMoveEvent = new MouseMoveEvent(e);
                 log.debug("Move: {}", mouseMoveEvent);
                 component.event(userState, drawState, new Point(0, 0), mouseMoveEvent);
+                log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();
                 }
@@ -110,6 +113,7 @@ public class JxUI {
                 KeyTypeEvent keyTypeEvent = new KeyTypeEvent(e);
                 log.debug("Keyboard: {}", keyTypeEvent);
                 component.event(userState, drawState, new Point(0, 0), keyTypeEvent);
+                log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();
                 }
@@ -123,7 +127,7 @@ public class JxUI {
     public void draw(Canvas canvas) {
         this.canvas = canvas;
         log.debug("Draw: " + canvas.getSize());
-        BufferedImage bufferedImage = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+        BufferedImage bufferedImage = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
