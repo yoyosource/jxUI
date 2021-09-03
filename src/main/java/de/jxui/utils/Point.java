@@ -34,4 +34,8 @@ public class Point {
     public void addY(int dy) {
         y += dy;
     }
+
+    public Point copy() {
+        return new Point(x, y);
+    }
 }

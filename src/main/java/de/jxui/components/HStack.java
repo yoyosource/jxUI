@@ -1,5 +1,6 @@
 package de.jxui.components;
 
+import de.jxui.events.Event;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 import lombok.extern.slf4j.Slf4j;
@@ -66,13 +67,25 @@ public class HStack extends Stack<HStack> {
     }
 
     @Override
-    public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
-        debugDraw(g, drawState, point);
+    public void event(UserState userState, DrawState drawState, Point point, Event event) {
         Point current = new Point(point.getX(), point.getY());
         current.add(offset);
         for (Component component : componentList) {
-            component.draw(g, userState, drawState, current);
-            current.setY(point.getY());
+            Point uses = current.copy();
+            component.event(userState, drawState, uses, event);
+            current.setX(uses.getX());
+        }
+        point.add(drawState.getSizeMap().get(this));
+    }
+
+    @Override
+    public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
+        debugDraw(g, drawState, point);
+        Point current = new Point(point.getX(), point.getY()).add(offset);
+        for (Component component : componentList) {
+            Point uses = current.copy();
+            component.draw(g, userState, drawState, uses);
+            current.setX(uses.getX());
         }
         point.add(drawState.getSizeMap().get(this));
     }

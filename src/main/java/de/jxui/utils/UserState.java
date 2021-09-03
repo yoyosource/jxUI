@@ -1,5 +1,6 @@
 package de.jxui.utils;
 
+import lombok.NonNull;
 import lombok.experimental.Delegate;
 
 import java.util.HashMap;
@@ -8,7 +9,11 @@ import java.util.Map;
 
 public class UserState {
 
-    @Delegate
+    private interface Ignored {
+        void put(Object key, Object value);
+    }
+
+    @Delegate(excludes = Ignored.class)
     private Map<Object, Object> state = new HashMap<>();
 
     private String operatingSystem = null;
@@ -17,9 +22,11 @@ public class UserState {
     private boolean linux = false;
 
     private final Size size;
+    private final Runnable changeRunnable;
 
-    public UserState(Size size) {
+    public UserState(@NonNull Size size, @NonNull Runnable changeRunnable) {
         this.size = size;
+        this.changeRunnable = changeRunnable;
     }
 
     public boolean windows() {
@@ -57,5 +64,21 @@ public class UserState {
 
     public int getCanvasHeight() {
         return size.getHeight();
+    }
+
+    public void put(Object key, Object value) {
+        Object currentValue = get(key);
+        if (currentValue == null && value == null) {
+            return;
+        }
+        if (currentValue == value) {
+            return;
+        }
+        state.put(key, value);
+        changeRunnable.run();
+    }
+
+    public String toString() {
+        return "State{" + state + "}";
     }
 }

@@ -29,6 +29,7 @@ public class StateComponent implements Component {
             size(userState);
         }
         component.size(size, userState, drawState);
+        drawState.getSizeMap().put(this, drawState.getSizeMap().get(component));
     }
 
     @Override

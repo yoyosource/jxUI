@@ -18,7 +18,7 @@ public interface Component {
         return 0;
     }
     default void event(UserState userState, DrawState drawState, Point point, Event event) {
-        System.out.println(event);
+        point.add(drawState.getSizeMap().get(this));
     }
     default void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
     }

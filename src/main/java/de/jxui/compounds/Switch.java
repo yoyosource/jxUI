@@ -53,11 +53,13 @@ public class Switch implements Component {
         for (Case current : caseList) {
             if (current.predicate.test(userState)) {
                 current.component.size(size, userState, drawState);
+                drawState.getSizeMap().put(this, drawState.getSizeMap().get(current.component));
                 return;
             }
         }
         if (defaultComponent != null) {
             defaultComponent.size(size, userState, drawState);
+            drawState.getSizeMap().put(this, drawState.getSizeMap().get(defaultComponent));
         }
     }
 

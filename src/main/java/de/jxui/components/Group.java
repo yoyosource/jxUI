@@ -1,5 +1,6 @@
 package de.jxui.components;
 
+import de.jxui.events.Event;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 import lombok.NonNull;
@@ -22,11 +23,18 @@ public abstract class Group<T> extends Element<T> {
     @Override
     public void size(Size size, UserState userState, DrawState drawState) {
         component.size(size, userState, drawState);
+        drawState.getSizeMap().put(this, drawState.getSizeMap().get(component));
     }
 
     @Override
     public int spacers(UserState userState, Orientation orientation) {
         return component.spacers(userState, orientation);
+    }
+
+    @Override
+    public void event(UserState userState, DrawState drawState, Point point, Event event) {
+        component.event(userState, drawState, point, event);
+        drawState.getSizeMap().put(this, drawState.getSizeMap().get(component));
     }
 
     @Override

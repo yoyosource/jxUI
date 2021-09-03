@@ -70,6 +70,7 @@ public class Repeat implements Component, Prefix<Repeat>, Suffix<Repeat> {
             size(userState);
         }
         component.size(size, userState, drawState);
+        drawState.getSizeMap().put(this, drawState.getSizeMap().get(component));
     }
 
     @Override

@@ -15,9 +15,11 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 @Slf4j
@@ -37,10 +39,18 @@ public class JxUI {
     @Getter
     @Accessors(chain = true)
     @NonNull
-    protected UserState userState = new UserState(size);
+    protected UserState userState = new UserState(size, () -> {
+        if (drawState == null) return;
+        drawState.setRepaint(true);
+    });
+
+    private Canvas canvas = null;
+    private Runnable repainter = () -> {
+        if (canvas == null) return;
+        draw(canvas);
+    };
 
     protected JxUI() {
-
     }
 
     public JxUI(@NonNull Component component) {
@@ -53,8 +63,12 @@ public class JxUI {
             public void mouseClicked(MouseEvent e) {
                 mouseLocation = new Point(e.getX(), e.getY());
                 if (drawState == null) return;
-                log.debug("Click: {}", e);
-                component.event(userState, drawState, new Point(0, 0), new MouseClickEvent(e));
+                MouseClickEvent mouseClickEvent = new MouseClickEvent(e);
+                log.debug("Click: {}", mouseClickEvent);
+                component.event(userState, drawState, new Point(0, 0), mouseClickEvent);
+                if (drawState.isRepaint()) {
+                    repainter.run();
+                }
             }
         });
         canvas.addMouseMotionListener(new MouseAdapter() {
@@ -65,8 +79,12 @@ public class JxUI {
                 if (System.currentTimeMillis() - lastMouseDragged < 10) return;
                 if (drawState == null) return;
                 lastMouseDragged = System.currentTimeMillis();
-                log.debug("Drag: {}", e);
-                component.event(userState, drawState, new Point(0, 0), new MouseDragEvent(e));
+                MouseDragEvent mouseDragEvent = new MouseDragEvent(e);
+                log.debug("Drag: {}", mouseDragEvent);
+                component.event(userState, drawState, new Point(0, 0), mouseDragEvent);
+                if (drawState.isRepaint()) {
+                    repainter.run();
+                }
             }
 
             long lastMouseMoved = 0;
@@ -76,8 +94,12 @@ public class JxUI {
                 if (System.currentTimeMillis() - lastMouseMoved < 10) return;
                 if (drawState == null) return;
                 lastMouseMoved = System.currentTimeMillis();
-                log.debug("Move: {}", e);
-                component.event(userState, drawState, new Point(0, 0), new MouseMoveEvent(e));
+                MouseMoveEvent mouseMoveEvent = new MouseMoveEvent(e);
+                log.debug("Move: {}", mouseMoveEvent);
+                component.event(userState, drawState, new Point(0, 0), mouseMoveEvent);
+                if (drawState.isRepaint()) {
+                    repainter.run();
+                }
             }
         });
         canvas.addKeyListener(new KeyAdapter() {
@@ -85,8 +107,12 @@ public class JxUI {
             public void keyTyped(KeyEvent e) {
                 if (drawState == null) return;
                 if (mouseLocation == null) return;
-                log.debug("Keyboard: {}", e);
-                component.event(userState, drawState, new Point(0, 0), new KeyTypeEvent(e));
+                KeyTypeEvent keyTypeEvent = new KeyTypeEvent(e);
+                log.debug("Keyboard: {}", keyTypeEvent);
+                component.event(userState, drawState, new Point(0, 0), keyTypeEvent);
+                if (drawState.isRepaint()) {
+                    repainter.run();
+                }
             }
         });
         canvas.setFocusTraversalKeysEnabled(false);
@@ -95,6 +121,7 @@ public class JxUI {
     }
 
     public void draw(Canvas canvas) {
+        this.canvas = canvas;
         log.debug("Draw: " + canvas.getSize());
         BufferedImage bufferedImage = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();

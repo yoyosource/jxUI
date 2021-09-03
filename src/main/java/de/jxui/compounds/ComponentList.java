@@ -8,7 +8,6 @@ import lombok.NonNull;
 
 import java.awt.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Suffix<ComponentList<T>> {
 
@@ -69,6 +68,7 @@ public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Su
             size(userState);
         }
         component.size(size, userState, drawState);
+        drawState.getSizeMap().put(this, drawState.getSizeMap().get(component));
     }
 
     @Override

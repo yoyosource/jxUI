@@ -39,8 +39,10 @@ public class If implements Component {
     public void size(Size size, UserState userState, DrawState drawState) {
         if (predicate.test(userState)) {
             trueComponent.size(size, userState, drawState);
+            drawState.getSizeMap().put(this, drawState.getSizeMap().get(trueComponent));
         } else if (falseComponent != null) {
             falseComponent.size(size, userState, drawState);
+            drawState.getSizeMap().put(this, drawState.getSizeMap().get(falseComponent));
         }
     }
 
