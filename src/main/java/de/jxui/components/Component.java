@@ -7,6 +7,8 @@ import de.jxui.utils.*;
 import java.awt.*;
 
 public interface Component {
+    default void cleanUp() {
+    }
     Size size(UserState userState);
     default void size(Size size, UserState userState, DrawState drawState) {
         Size thisSize = size(userState);
@@ -17,7 +19,6 @@ public interface Component {
         return 0;
     }
     default void event(UserState userState, DrawState drawState, Point point, Event event) {
-        System.out.println(this);
         point.add(drawState.getSizeMap().get(this));
     }
     default void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {

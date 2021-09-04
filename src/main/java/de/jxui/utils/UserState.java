@@ -11,6 +11,8 @@ public class UserState {
 
     private interface Ignored {
         void put(Object key, Object value);
+        Object get(Object key);
+        Object getOrDefault(Object key, Object defaultValue);
     }
 
     @Delegate(excludes = Ignored.class)
@@ -71,11 +73,18 @@ public class UserState {
         if (currentValue == null && value == null) {
             return;
         }
-        if (currentValue == value) {
-            return;
-        }
         state.put(key, value);
         changeRunnable.run();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T get(Object key) {
+        return (T) state.get(key);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getOrDefault(Object key, T defaultValue) {
+        return (T) state.getOrDefault(key, defaultValue);
     }
 
     public String toString() {

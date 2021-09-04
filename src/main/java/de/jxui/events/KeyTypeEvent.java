@@ -11,6 +11,7 @@ public class KeyTypeEvent implements Event {
 
     private char keyChar;
     private int keyCode;
+    private int extendedKeyCode;
     private int modifier;
 
     public KeyTypeEvent(KeyEvent keyEvent) {
@@ -19,6 +20,7 @@ public class KeyTypeEvent implements Event {
         }
         this.keyChar = keyEvent.getKeyChar();
         this.keyCode = keyEvent.getKeyCode();
+        this.extendedKeyCode = keyEvent.getExtendedKeyCode();
         this.modifier = keyEvent.getModifiersEx();
     }
 }

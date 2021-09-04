@@ -125,17 +125,21 @@ public class JxUI {
     }
 
     public void draw(Canvas canvas) {
+        log.debug("Cleanup");
+        component.cleanUp();
+
         this.canvas = canvas;
         log.debug("Draw: " + canvas.getSize());
         BufferedImage bufferedImage = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        drawState = new DrawState(debug);
+        DrawState drawState = new DrawState(debug);
         Size canvasSize = new Size(canvas.getWidth(), canvas.getHeight());
         size.setWidth(canvasSize.getWidth());
         size.setHeight(canvasSize.getHeight());
         component.size(canvasSize, userState, drawState);
+        this.drawState = drawState;
         log.debug("DrawState: {}", drawState.getSizeMap());
 
         log.debug(canvasSize + " " + drawState);

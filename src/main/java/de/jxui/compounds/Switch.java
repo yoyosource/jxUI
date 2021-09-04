@@ -36,6 +36,16 @@ public class Switch implements Component {
     }
 
     @Override
+    public void cleanUp() {
+        caseList.forEach(current -> {
+            current.component.cleanUp();
+        });
+        if (defaultComponent != null) {
+            defaultComponent.cleanUp();
+        }
+    }
+
+    @Override
     public Size size(UserState userState) {
         for (Case current : caseList) {
             if (current.predicate.test(userState)) {

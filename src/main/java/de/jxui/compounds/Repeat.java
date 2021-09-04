@@ -17,9 +17,9 @@ public class Repeat implements Component, Prefix<Repeat>, Suffix<Repeat>, Joinin
     private int count;
     private Function<Integer, Component> componentSupplier;
 
-    private Component prefix;
-    private Component joining;
-    private Component suffix;
+    private Supplier<Component> prefix;
+    private Supplier<Component> joining;
+    private Supplier<Component> suffix;
 
     private Stack<?> component = null;
 
@@ -43,21 +43,27 @@ public class Repeat implements Component, Prefix<Repeat>, Suffix<Repeat>, Joinin
     }
 
     @Override
-    public Repeat Prefix(Component component) {
+    public Repeat Prefix(Supplier<Component> component) {
         this.prefix = component;
         return this;
     }
 
     @Override
-    public Repeat Joining(Component component) {
+    public Repeat Joining(Supplier<Component> component) {
         this.joining = component;
         return this;
     }
 
     @Override
-    public Repeat Suffix(Component component) {
+    public Repeat Suffix(Supplier<Component> component) {
         this.suffix = component;
         return this;
+    }
+
+    @Override
+    public void cleanUp() {
+        component.cleanUp();
+        component = null;
     }
 
     @Override
@@ -69,16 +75,16 @@ public class Repeat implements Component, Prefix<Repeat>, Suffix<Repeat>, Joinin
                 component = new HStack();
             }
             if (prefix != null) {
-                component.add(prefix);
+                component.add(prefix.get());
             }
             for (int i = 0; i < count; i++) {
                 if (i != 0) {
-                    component.add(joining);
+                    component.add(joining.get());
                 }
                 component.add(componentSupplier.apply(i));
             }
             if (suffix != null) {
-                component.add(suffix);
+                component.add(suffix.get());
             }
         }
         return component.size(userState);
@@ -114,6 +120,5 @@ public class Repeat implements Component, Prefix<Repeat>, Suffix<Repeat>, Joinin
         if (component != null) {
             component.draw(g, userState, drawState, point);
         }
-        component = null;
     }
 }

@@ -19,6 +19,11 @@ public abstract class Stack<T> extends Element<T> {
     public abstract T add(Component component);
 
     @Override
+    public void cleanUp() {
+        componentList.forEach(Component::cleanUp);
+    }
+
+    @Override
     public Size size(UserState userState) {
         Size size = new Size(0, 0);
         componentList.forEach(component -> {

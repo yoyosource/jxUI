@@ -8,6 +8,10 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 @Accessors(chain = true)
 public class Text extends Element<Text> {
@@ -57,15 +61,42 @@ public class Text extends Element<Text> {
     @SuppressWarnings("deprecated")
     public Size size(UserState userState) {
         FontMetrics fontMetrics = Toolkit.getDefaultToolkit().getFontMetrics(font);
-        return new Size(fontMetrics.stringWidth(text), fontMetrics.getHeight()).add(padding);
+        Size size = new Size(0, 0);
+        split(text, '\n', s -> {
+            size.setWidth(Math.max(size.getWidth(), fontMetrics.stringWidth(s)));
+            size.setHeight(size.getHeight() + fontMetrics.getHeight());
+        });
+        return size.add(padding);
     }
 
     @Override
     public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
         g.setColor(color);
         g.setFont(font);
-        g.drawString(text, point.getX() + offset.getLeft() + padding.getLeft(), point.getY() + drawState.getSizeMap().get(this).getHeight() + offset.getTop() + padding.getTop());
+        Point current = point.copy();
+        split(text, '\n', s -> {
+            current.addY(g.getFontMetrics().getHeight());
+            g.drawString(s, current.getX() + offset.getLeft() + padding.getLeft(), current.getY() + offset.getTop() + padding.getTop());
+        });
         debugDraw(g, drawState, point.add(offset).add(padding));
         point.add(drawState.getSizeMap().get(this));
+    }
+
+    private void split(String s, char delimiter, Consumer<String> stringConsumer) {
+        StringBuilder st = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == delimiter) {
+                stringConsumer.accept(st.toString());
+                st = new StringBuilder();
+                if (i == s.length() - 1) {
+                    stringConsumer.accept(st.toString());
+                }
+            } else {
+                st.append(s.charAt(i));
+            }
+        }
+        if (st.length() > 0) {
+            stringConsumer.accept(st.toString());
+        }
     }
 }

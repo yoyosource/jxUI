@@ -1,9 +1,9 @@
 package de.jxui;
 
-import de.jxui.action.ButtonAction;
+import de.jxui.action.KeyTypeAction;
 import de.jxui.components.*;
-import de.jxui.compounds.Button;
 import de.jxui.compounds.Centered;
+import de.jxui.compounds.event.Keyboard;
 import de.jxui.compounds.Repeat;
 import de.jxui.utils.Orientation;
 
@@ -115,14 +115,14 @@ public class Test {
                         10,
                         () -> new VStack(new Divider(), new Spacer())
                 ).Prefix(
-                        new VStack(new Spacer())
+                        () -> new VStack(new Spacer())
                 ),
                 new Repeat(
                         Orientation.HORIZONTAL,
                         10,
                         () -> new HStack(new Divider(), new Spacer())
                 ).Prefix(
-                        new HStack(new Spacer())
+                        () -> new HStack(new Spacer())
                 )
         );
 
@@ -145,9 +145,20 @@ public class Test {
         */
 
         Centered centered = new Centered(
-                new Button(
+                /*new Button(
                         ButtonAction.NumberIncrement("clicks", 1),
                         new TextTemplate("Clicks: {clicks|'0'}")
+                )*/
+                /*new Move(
+                        (userState, mouseMoveEvent) -> {
+                            System.out.println("Hover");
+                            return true;
+                        },
+                        new Text("Hello World")
+                )*/
+                new Keyboard(
+                        KeyTypeAction.Text("text"),
+                        new TextTemplate("{text|''}")
                 )
         );
 

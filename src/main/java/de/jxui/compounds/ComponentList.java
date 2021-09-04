@@ -9,6 +9,7 @@ import lombok.NonNull;
 
 import java.awt.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Suffix<ComponentList<T>> {
 
@@ -18,8 +19,8 @@ public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Su
     private Orientation orientation = Orientation.VERTICAL;
     private Stack<?> component;
 
-    private Component prefix = null;
-    private Component suffix = null;
+    private Supplier<Component> prefix = null;
+    private Supplier<Component> suffix = null;
 
     public ComponentList(@NonNull Function<T, Component> componentFunction, @NonNull java.util.List<T> list) {
         this.componentFunction = componentFunction;
@@ -33,15 +34,21 @@ public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Su
     }
 
     @Override
-    public ComponentList<T> Prefix(Component component) {
+    public ComponentList<T> Prefix(Supplier<Component> component) {
         this.prefix = component;
         return this;
     }
 
     @Override
-    public ComponentList<T> Suffix(Component component) {
+    public ComponentList<T> Suffix(Supplier<Component> component) {
         this.suffix = component;
         return this;
+    }
+
+    @Override
+    public void cleanUp() {
+        component.cleanUp();
+        component = null;
     }
 
     @Override
@@ -53,11 +60,11 @@ public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Su
                 component = new HStack();
             }
             if (prefix != null) {
-                component.add(prefix);
+                component.add(prefix.get());
             }
             list.stream().map(componentFunction).forEach(component::add);
             if (suffix != null) {
-                component.add(suffix);
+                component.add(suffix.get());
             }
         }
         return component.size(userState);
@@ -93,6 +100,5 @@ public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Su
         if (component != null) {
             component.draw(g, userState, drawState, point);
         }
-        component = null;
     }
 }

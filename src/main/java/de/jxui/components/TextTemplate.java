@@ -56,12 +56,12 @@ public class TextTemplate extends Text {
                                 break;
                             }
                             if (userState.containsKey(s)) {
-                                current.append(userState.get(s));
+                                current.append(userState.<Object>get(s));
                                 break;
                             }
                         }
                     } else {
-                        current.append(userState.get(token.text));
+                        current.append(userState.<Object>get(token.text));
                     }
                 } else {
                     current.append(token.text);

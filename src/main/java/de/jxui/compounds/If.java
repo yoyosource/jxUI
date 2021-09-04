@@ -26,6 +26,14 @@ public class If implements Component {
     }
 
     @Override
+    public void cleanUp() {
+        trueComponent.cleanUp();
+        if (falseComponent != null) {
+            falseComponent.cleanUp();
+        }
+    }
+
+    @Override
     public Size size(UserState userState) {
         if (predicate.test(userState)) {
             return trueComponent.size(userState);

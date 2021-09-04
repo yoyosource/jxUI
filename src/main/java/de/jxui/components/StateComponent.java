@@ -16,6 +16,12 @@ public class StateComponent implements Component {
     }
 
     @Override
+    public void cleanUp() {
+        component.cleanUp();
+        component = null;
+    }
+
+    @Override
     public Size size(UserState userState) {
         if (component == null) {
             component = componentFunction.apply(userState);
@@ -45,6 +51,5 @@ public class StateComponent implements Component {
         if (component != null) {
             component.draw(g, userState, drawState, point);
         }
-        component = null;
     }
 }

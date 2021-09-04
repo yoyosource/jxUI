@@ -1,27 +1,33 @@
-package de.jxui.compounds;
+package de.jxui.compounds.event;
 
+import de.jxui.action.MoveAction;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
-import de.jxui.events.MouseClickEvent;
-import de.jxui.utils.*;
+import de.jxui.events.MouseMoveEvent;
 import de.jxui.utils.Point;
+import de.jxui.utils.*;
 
 import java.awt.*;
 import java.util.function.BiPredicate;
 
 public class Move implements Component {
 
-    private BiPredicate<UserState, MouseClickEvent> mouseEvent;
+    private MoveAction moveAction;
     private Component component;
 
-    public Move(BiPredicate<UserState, MouseClickEvent> mouseEvent, Component component) {
-        this.mouseEvent = mouseEvent;
+    public Move(MoveAction moveAction, Component component) {
+        this.moveAction = moveAction;
         this.component = component;
     }
 
     @Override
     public Size size(UserState userState) {
         return component.size(userState);
+    }
+
+    @Override
+    public void cleanUp() {
+        component.cleanUp();
     }
 
     @Override
@@ -37,12 +43,12 @@ public class Move implements Component {
 
     @Override
     public void event(UserState userState, DrawState drawState, Point point, Event event) {
-        if (event instanceof MouseClickEvent mouseClickEvent) {
+        if (event instanceof MouseMoveEvent mouseMoveEvent) {
             Size size = drawState.getSizeMap().get(this);
-            Point clickPoint = mouseClickEvent.getPoint();
+            Point clickPoint = mouseMoveEvent.getPoint();
             if (clickPoint.getX() >= point.getX() && clickPoint.getX() <= point.getX() + size.getWidth()) {
                 if (clickPoint.getY() >= point.getY() && clickPoint.getY() <= point.getY() + size.getHeight()) {
-                    if (!mouseEvent.test(userState, mouseClickEvent)) {
+                    if (!moveAction.run(userState, mouseMoveEvent)) {
                         component.event(userState, drawState, point, event);
                     }
                 } else {

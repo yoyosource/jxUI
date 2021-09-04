@@ -1,4 +1,4 @@
-package de.jxui.compounds;
+package de.jxui.compounds.event;
 
 import de.jxui.action.ButtonAction;
 import de.jxui.components.Component;
