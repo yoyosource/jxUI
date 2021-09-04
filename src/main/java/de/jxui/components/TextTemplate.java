@@ -73,7 +73,7 @@ public class TextTemplate extends Text {
 
     @Override
     public Size size(UserState userState) {
-        super.text = textGenerator.apply(userState);
+        setText(textGenerator.apply(userState));
         return super.size(userState);
     }
 }

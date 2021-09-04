@@ -118,29 +118,32 @@ public class JxUI {
         canvas.requestFocus();
     }
 
+    private BufferedImage bufferedImage = null;
+
     public void draw(Canvas canvas) {
         log.debug("Cleanup");
         component.cleanUp();
 
+        if (bufferedImage == null || bufferedImage.getWidth() != canvas.getWidth() || bufferedImage.getHeight() != canvas.getHeight()) {
+            bufferedImage = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        }
+
         this.canvas = canvas;
         log.debug("Draw: " + canvas.getSize());
-        BufferedImage bufferedImage = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        DrawState drawState = new DrawState(debug);
+        drawState = new DrawState(debug);
         Size canvasSize = new Size(canvas.getWidth(), canvas.getHeight());
         size.setWidth(canvasSize.getWidth());
         size.setHeight(canvasSize.getHeight());
         component.size(canvasSize, userState, drawState);
-        this.drawState = drawState;
-        log.debug("DrawState: {}", drawState.getSizeMap());
+        log.debug("DrawState: {}   CanvasSize: {}", drawState.getSizeMap(), canvasSize);
 
-        log.debug(canvasSize + " " + drawState);
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         component.draw(graphics, userState, drawState, new Point(0, 0));
-        canvas.getGraphics().drawImage(bufferedImage, 0, 0, (img, infoflags, x, y, width, height) -> true);
+        canvas.getGraphics().drawImage(bufferedImage, 0, 0, (img, infoflags, x, y, width, height) -> false);
     }
 }

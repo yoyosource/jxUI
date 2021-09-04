@@ -183,6 +183,7 @@ public class Test {
         );
 
         JxUI jxUI = new JxUI(centered);
+        jxUI.getUserState().put("focus", "text");
         jxUI.setDebug(true);
 
         JFrame jFrame = new JFrame();

@@ -13,15 +13,16 @@ import java.util.function.Consumer;
 @Accessors(chain = true)
 public class Text extends Element<Text> {
 
-    protected String text;
-
-    @Setter
+    private String text;
+    private FontMetrics fontMetrics;
     private Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 
     @Setter
     private Color color = new Color(0, 0, 0);
 
     private Size minSize = new Size(0, 0);
+
+    private Size cachedSize = null;
 
     public Text() {
         this("");
@@ -31,18 +32,36 @@ public class Text extends Element<Text> {
         this.text = text;
     }
 
+    protected void setText(String text) {
+        cachedSize = null;
+        this.text = text;
+    }
+
     public Text size(int size) {
+        cachedSize = null;
+        fontMetrics = null;
         font = new Font(font.getFontName(), font.getStyle(), size);
         return this;
     }
 
     public Text style(int style) {
+        cachedSize = null;
+        fontMetrics = null;
         font = new Font(font.getFontName(), style, font.getSize());
         return this;
     }
 
     public Text font(String name) {
+        cachedSize = null;
+        fontMetrics = null;
         font = new Font(name, font.getStyle(), font.getSize());
+        return this;
+    }
+
+    public Text setFont(Font font) {
+        cachedSize = null;
+        fontMetrics = null;
+        this.font = font;
         return this;
     }
 
@@ -59,6 +78,7 @@ public class Text extends Element<Text> {
     public Text minSize(int width, int height) {
         if (width < 0) width = 0;
         if (height < 0) height = 0;
+        cachedSize = null;
         minSize.setWidth(width);
         minSize.setHeight(height);
         return this;
@@ -67,13 +87,20 @@ public class Text extends Element<Text> {
     @Override
     @SuppressWarnings("deprecated")
     public Size size(UserState userState) {
-        FontMetrics fontMetrics = Toolkit.getDefaultToolkit().getFontMetrics(font);
+        if (cachedSize != null) {
+            return cachedSize.copy();
+        }
+        if (fontMetrics == null) {
+            fontMetrics = Toolkit.getDefaultToolkit().getFontMetrics(font);
+        }
         Size size = new Size(0, 0);
         split(text, '\n', s -> {
             size.setWidth(Math.max(size.getWidth(), fontMetrics.stringWidth(s)));
             size.setHeight(size.getHeight() + fontMetrics.getHeight());
         });
-        return size.merge(minSize).add(padding);
+        size.merge(minSize).add(padding);
+        cachedSize = size;
+        return cachedSize.copy();
     }
 
     @Override
