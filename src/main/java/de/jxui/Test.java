@@ -1,8 +1,10 @@
 package de.jxui;
 
 import de.jxui.action.KeyTypeAction;
+import de.jxui.action.MoveAction;
 import de.jxui.components.*;
 import de.jxui.compounds.Centered;
+import de.jxui.compounds.event.Hover;
 import de.jxui.compounds.event.Keyboard;
 import de.jxui.compounds.Repeat;
 import de.jxui.utils.Orientation;
@@ -157,8 +159,26 @@ public class Test {
                         new Text("Hello World")
                 )*/
                 new Keyboard(
-                        KeyTypeAction.Text("text"),
-                        new TextTemplate("{text|''}")
+                        KeyTypeAction.Check("focus", "text", KeyTypeAction.Text("text")),
+                        new Hover(
+                                (userState, event) -> {
+                                    userState.put("focus", "text");
+                                    userState.put("color", new Color(0, 0, 0));
+                                    return true;
+                                },
+                                (userState, event) -> {
+                                    userState.remove("focus");
+                                    userState.remove("color");
+                                    return true;
+                                },
+                                new StateComponent<>(
+                                        new TextTemplate("{text|''}")
+                                                .minSize(20, 20),
+                                        (userState, component) -> {
+                                            component.color(userState.getOrDefault("color", new Color(128, 128, 128)));
+                                        }
+                                )
+                        )
                 )
         );
 

@@ -11,6 +11,7 @@ public class UserState {
 
     private interface Ignored {
         void put(Object key, Object value);
+        void remove(Object key);
         Object get(Object key);
         Object getOrDefault(Object key, Object defaultValue);
     }
@@ -74,6 +75,11 @@ public class UserState {
             return;
         }
         state.put(key, value);
+        changeRunnable.run();
+    }
+
+    public void remove(Object key) {
+        state.remove(key);
         changeRunnable.run();
     }
 

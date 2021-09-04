@@ -4,52 +4,42 @@ import de.jxui.utils.Point;
 import de.jxui.utils.*;
 
 import java.awt.*;
-import java.util.function.Function;
+import java.util.function.BiConsumer;
 
-public class StateComponent implements Component {
+public class StateComponent<T extends Component> implements Component {
 
-    private Function<UserState, Component> componentFunction;
-    private Component component = null;
+    private T component;
+    private BiConsumer<UserState, T> stateChange;
 
-    public StateComponent(Function<UserState, Component> componentFunction) {
-        this.componentFunction = componentFunction;
+    public StateComponent(T component, BiConsumer<UserState, T> stateChange) {
+        this.component = component;
+        this.stateChange = stateChange;
     }
 
     @Override
     public void cleanUp() {
         component.cleanUp();
-        component = null;
     }
 
     @Override
     public Size size(UserState userState) {
-        if (component == null) {
-            component = componentFunction.apply(userState);
-        }
+        stateChange.accept(userState, component);
         return component.size(userState);
     }
 
     @Override
     public void size(Size size, UserState userState, DrawState drawState) {
-        if (component == null) {
-            size(userState);
-        }
         component.size(size, userState, drawState);
         drawState.getSizeMap().put(this, drawState.getSizeMap().get(component));
     }
 
     @Override
     public int spacers(UserState userState, Orientation orientation) {
-        if (component == null) {
-            size(userState);
-        }
         return component.spacers(userState, orientation);
     }
 
     @Override
     public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
-        if (component != null) {
-            component.draw(g, userState, drawState, point);
-        }
+        component.draw(g, userState, drawState, point);
     }
 }

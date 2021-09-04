@@ -8,9 +8,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Spliterator;
 import java.util.function.Consumer;
 
 @Accessors(chain = true)
@@ -23,6 +20,8 @@ public class Text extends Element<Text> {
 
     @Setter
     private Color color = new Color(0, 0, 0);
+
+    private Size minSize = new Size(0, 0);
 
     public Text() {
         this("");
@@ -57,6 +56,14 @@ public class Text extends Element<Text> {
         return this;
     }
 
+    public Text minSize(int width, int height) {
+        if (width < 0) width = 0;
+        if (height < 0) height = 0;
+        minSize.setWidth(width);
+        minSize.setHeight(height);
+        return this;
+    }
+
     @Override
     @SuppressWarnings("deprecated")
     public Size size(UserState userState) {
@@ -66,7 +73,7 @@ public class Text extends Element<Text> {
             size.setWidth(Math.max(size.getWidth(), fontMetrics.stringWidth(s)));
             size.setHeight(size.getHeight() + fontMetrics.getHeight());
         });
-        return size.add(padding);
+        return size.merge(minSize).add(padding);
     }
 
     @Override

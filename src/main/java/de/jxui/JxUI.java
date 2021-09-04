@@ -73,13 +73,10 @@ public class JxUI {
             }
         });
         canvas.addMouseMotionListener(new MouseAdapter() {
-            long lastMouseDragged = 0;
             @Override
             public void mouseDragged(MouseEvent e) {
                 mouseLocation = new Point(e.getX(), e.getY());
-                if (System.currentTimeMillis() - lastMouseDragged < 10) return;
                 if (drawState == null) return;
-                lastMouseDragged = System.currentTimeMillis();
                 MouseDragEvent mouseDragEvent = new MouseDragEvent(e);
                 log.debug("Drag: {}", mouseDragEvent);
                 component.event(userState, drawState, new Point(0, 0), mouseDragEvent);
@@ -89,13 +86,10 @@ public class JxUI {
                 }
             }
 
-            long lastMouseMoved = 0;
             @Override
             public void mouseMoved(MouseEvent e) {
                 mouseLocation = new Point(e.getX(), e.getY());
-                if (System.currentTimeMillis() - lastMouseMoved < 10) return;
                 if (drawState == null) return;
-                lastMouseMoved = System.currentTimeMillis();
                 MouseMoveEvent mouseMoveEvent = new MouseMoveEvent(e);
                 log.debug("Move: {}", mouseMoveEvent);
                 component.event(userState, drawState, new Point(0, 0), mouseMoveEvent);

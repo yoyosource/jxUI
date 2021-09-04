@@ -4,19 +4,21 @@ import de.jxui.action.MoveAction;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
 import de.jxui.events.MouseMoveEvent;
-import de.jxui.utils.Point;
 import de.jxui.utils.*;
+import de.jxui.utils.Point;
 
 import java.awt.*;
-import java.util.function.BiPredicate;
 
-public class Move implements Component {
+public class Hover implements Component {
 
-    private MoveAction moveAction;
+    private MoveAction enterAction;
+    private MoveAction exitAction;
+    private boolean hovering = false;
     private Component component;
 
-    public Move(MoveAction moveAction, Component component) {
-        this.moveAction = moveAction;
+    public Hover(MoveAction enterAction, MoveAction exitAction, Component component) {
+        this.enterAction = enterAction;
+        this.exitAction = exitAction;
         this.component = component;
     }
 
@@ -48,13 +50,23 @@ public class Move implements Component {
             Point clickPoint = mouseMoveEvent.getPoint();
             if (clickPoint.getX() >= point.getX() && clickPoint.getX() <= point.getX() + size.getWidth()) {
                 if (clickPoint.getY() >= point.getY() && clickPoint.getY() <= point.getY() + size.getHeight()) {
-                    if (!moveAction.run(userState, mouseMoveEvent)) {
-                        component.event(userState, drawState, point, event);
+                    if (hovering) {
+                        return;
                     }
+                    enterAction.run(userState, mouseMoveEvent);
+                    hovering = true;
                 } else {
+                    if (hovering) {
+                        exitAction.run(userState, mouseMoveEvent);
+                        hovering = false;
+                    }
                     component.event(userState, drawState, point, event);
                 }
             } else {
+                if (hovering) {
+                    exitAction.run(userState, mouseMoveEvent);
+                    hovering = false;
+                }
                 component.event(userState, drawState, point, event);
             }
         } else {

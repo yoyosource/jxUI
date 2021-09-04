@@ -16,10 +16,12 @@ public class TestTicTacToe {
                     return new Repeat(Orientation.VERTICAL, 3, y -> {
                         return new Button(
                                 cellSet("" + x + y),
-                                new StateComponent(userState -> {
-                                    return new TextTemplate("{" + x + y + "|' '}")
-                                            .size((int) Math.sqrt(userState.getCanvasHeight() + userState.getCanvasWidth()));
-                                })
+                                new StateComponent<>(
+                                        new TextTemplate("{" + x + y + "|' '}"),
+                                        (userState, textTemplate) -> {
+                                            textTemplate.size(Math.min(userState.getCanvasHeight(), userState.getCanvasWidth()) / 10);
+                                        }
+                                )
                         );
                     }).Prefix(Spacer::new).Joining(Spacer::new).Suffix(Spacer::new);
                 }).Prefix(Spacer::new).Joining(Spacer::new).Suffix(Spacer::new)

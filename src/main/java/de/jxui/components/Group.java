@@ -16,6 +16,11 @@ public abstract class Group<T> extends Element<T> {
     }
 
     @Override
+    public void cleanUp() {
+        component.cleanUp();
+    }
+
+    @Override
     public Size size(UserState userState) {
         return component.size(userState);
     }

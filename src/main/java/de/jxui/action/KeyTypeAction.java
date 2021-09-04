@@ -1,10 +1,23 @@
 package de.jxui.action;
 
 import de.jxui.events.KeyTypeEvent;
+import lombok.NonNull;
 
 import java.awt.event.KeyEvent;
 
 public interface KeyTypeAction extends Action<KeyTypeEvent> {
+    static KeyTypeAction Check(String key, @NonNull Object value, KeyTypeAction keyTypeAction) {
+        return (userState, event) -> {
+            if (!userState.containsKey(key)) {
+                return false;
+            }
+            if (!value.equals(userState.get(key))) {
+                return false;
+            }
+            return keyTypeAction.run(userState, event);
+        };
+    }
+
     static KeyTypeAction Text(String key) {
         return (userState, event) -> {
             String current = userState.getOrDefault(key, "");

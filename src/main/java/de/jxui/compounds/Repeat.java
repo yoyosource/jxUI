@@ -62,7 +62,9 @@ public class Repeat implements Component, Prefix<Repeat>, Suffix<Repeat>, Joinin
 
     @Override
     public void cleanUp() {
-        component.cleanUp();
+        if (component != null) {
+            component.cleanUp();
+        }
         component = null;
     }
 

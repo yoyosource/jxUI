@@ -2,6 +2,7 @@ package de.jxui.action;
 
 import de.jxui.events.MouseClickEvent;
 import de.jxui.utils.UserState;
+import lombok.NonNull;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -63,7 +64,7 @@ public interface ButtonAction extends Action<MouseClickEvent> {
         };
     }
 
-    static ButtonAction StateToggle(String key, Object first, Object second) {
+    static ButtonAction StateToggle(String key, @NonNull Object first, @NonNull Object second) {
         return (userState, event) -> {
             if (userState.get(key).equals(second)) {
                 userState.put(key, first);
@@ -74,7 +75,7 @@ public interface ButtonAction extends Action<MouseClickEvent> {
         };
     }
 
-    static ButtonAction SetIfUnset(String key, Object value) {
+    static ButtonAction Set(String key, Object value) {
         return (userState, event) -> {
             if (!userState.containsKey(key)) {
                 userState.put(key, value);
@@ -83,7 +84,7 @@ public interface ButtonAction extends Action<MouseClickEvent> {
         };
     }
 
-    static ButtonAction SetIfUnset(String key, Function<UserState, Object> valueFunction) {
+    static ButtonAction Set(String key, Function<UserState, Object> valueFunction) {
         return (userState, event) -> {
             if (!userState.containsKey(key)) {
                 userState.put(key, valueFunction.apply(userState));
@@ -92,11 +93,18 @@ public interface ButtonAction extends Action<MouseClickEvent> {
         };
     }
 
-    static ButtonAction SetIfUnset(String key, BiFunction<UserState, MouseClickEvent, Object> valueFunction) {
+    static ButtonAction Set(String key, BiFunction<UserState, MouseClickEvent, Object> valueFunction) {
         return (userState, event) -> {
             if (!userState.containsKey(key)) {
                 userState.put(key, valueFunction.apply(userState, event));
             }
+            return true;
+        };
+    }
+
+    static ButtonAction Remove(String key) {
+        return (userState, event) -> {
+            userState.remove(key);
             return true;
         };
     }
