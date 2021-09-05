@@ -103,7 +103,7 @@ public class Text extends Element<Text> {
             fontMetrics = fontMetricsCache.computeIfAbsent(font, f -> Toolkit.getDefaultToolkit().getFontMetrics(f));
         }
         Size size = new Size(0, 0);
-        split(text, '\n', s -> {
+        split(text, s -> {
             size.setWidth(Math.max(size.getWidth(), fontMetrics.stringWidth(s)));
             size.setHeight(size.getHeight() + fontMetrics.getHeight());
         });
@@ -117,7 +117,7 @@ public class Text extends Element<Text> {
         g.setColor(color);
         g.setFont(font);
         Point current = point.copy();
-        split(text, '\n', s -> {
+        split(text, s -> {
             current.addY(g.getFontMetrics().getHeight());
             g.drawString(s, current.getX() + offset.getLeft() + padding.getLeft(), current.getY() + offset.getTop() + padding.getTop());
         });
@@ -125,10 +125,10 @@ public class Text extends Element<Text> {
         point.add(drawState.getSizeMap().get(this));
     }
 
-    private void split(String s, char delimiter, Consumer<String> stringConsumer) {
+    private void split(String s, Consumer<String> stringConsumer) {
         StringBuilder st = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == delimiter) {
+            if (s.charAt(i) == '\n') {
                 stringConsumer.accept(st.toString());
                 st = new StringBuilder();
                 if (i == s.length() - 1) {
