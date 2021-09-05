@@ -8,13 +8,21 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.awt.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 @Accessors(chain = true)
 public class Text extends Element<Text> {
 
+    private static Map<Font, FontMetrics> fontMetricsCache = new LinkedHashMap<>() {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<Font, FontMetrics> eldest) {
+            return super.size() > 100;
+        }
+    };
+
     private String text;
-    private FontMetrics fontMetrics;
     private Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 
     @Setter
@@ -22,6 +30,7 @@ public class Text extends Element<Text> {
 
     private Size minSize = new Size(0, 0);
 
+    private FontMetrics fontMetrics;
     private Size cachedSize = null;
 
     public Text() {
@@ -91,7 +100,7 @@ public class Text extends Element<Text> {
             return cachedSize.copy();
         }
         if (fontMetrics == null) {
-            fontMetrics = Toolkit.getDefaultToolkit().getFontMetrics(font);
+            fontMetrics = fontMetricsCache.computeIfAbsent(font, f -> Toolkit.getDefaultToolkit().getFontMetrics(f));
         }
         Size size = new Size(0, 0);
         split(text, '\n', s -> {

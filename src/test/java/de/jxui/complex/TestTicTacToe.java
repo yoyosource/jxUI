@@ -1,10 +1,12 @@
 package de.jxui.complex;
 
 import de.jxui.action.ButtonAction;
-import de.jxui.components.*;
-import de.jxui.compounds.event.Button;
+import de.jxui.components.Spacer;
+import de.jxui.components.StateComponent;
+import de.jxui.components.TextTemplate;
 import de.jxui.compounds.Centered;
-import de.jxui.compounds.Repeat;
+import de.jxui.compounds.Generate;
+import de.jxui.compounds.event.Button;
 import de.jxui.utils.JxFrame;
 import de.jxui.utils.Orientation;
 
@@ -12,8 +14,8 @@ public class TestTicTacToe {
 
     public static void main(String[] args) {
         Centered centered = new Centered(
-                new Repeat(Orientation.HORIZONTAL, 3, x -> {
-                    return new Repeat(Orientation.VERTICAL, 3, y -> {
+                new Generate(Orientation.HORIZONTAL, 3, x -> {
+                    return new Generate(Orientation.VERTICAL, 3, y -> {
                         return new Button(
                                 cellSet("" + x + y),
                                 new StateComponent<>(
@@ -37,7 +39,7 @@ public class TestTicTacToe {
             }
             String current;
             if (userState.containsKey("player")) {
-                current = (String) userState.get("player");
+                current = userState.get("player");
             } else {
                 current = "x";
             }
