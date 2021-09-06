@@ -173,7 +173,7 @@ public class Test {
                                         Action.Remove("focus", "color"),
                                         new VStack(
                                                 new StateComponent<>(
-                                                        new TextTemplate("{text|''}")
+                                                        () -> new TextTemplate("{text|''}")
                                                                 .minSize(20, 20),
                                                         (userState, component) -> {
                                                             component.color(userState.getOrDefault("color", new Color(128, 128, 128)));

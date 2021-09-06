@@ -15,6 +15,10 @@ public class StateComponent<T extends Component> implements Component {
     private T component;
     private BiConsumer<UserState, T> stateChange;
 
+    public StateComponent(Supplier<T> componentSupplier) {
+        this.componentSupplier = userState -> componentSupplier.get();
+    }
+
     public StateComponent(Function<UserState, T> componentSupplier) {
         this.componentSupplier = componentSupplier;
     }
