@@ -19,6 +19,8 @@ public class TestImage {
     private void testSimpleCenteredImage() {
         Centered centeredStack = new Centered(
                 new Image(TestImage.class.getResourceAsStream("/img.png"))
+                        .upscale(10)
+                        .downscale(10)
         );
         new JxFrame(centeredStack);
     }

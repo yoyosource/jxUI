@@ -11,6 +11,11 @@ import java.util.function.Predicate;
 public interface Action<T extends Event> {
     boolean run(UserState userState, T event);
 
+    @SuppressWarnings("unchecked")
+    static <K extends Event, T extends Action<K>> T Check(Predicate<K> predicate, Action<K> action) {
+        return (T) (Action<K>) (userState, event) -> predicate.test(event) && action.run(userState, event);
+    }
+
     static <K extends Event, T extends Action<K>> T Check(String key, @NonNull Object value, Action<K> action) {
         return Action.Check(key, value::equals, action);
     }
