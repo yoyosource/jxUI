@@ -40,11 +40,11 @@ public abstract class Stack<T> extends Element<T> {
         for (Spacer spacer : spacerList) {
             Size current = size.copy();
             if (orientation == Orientation.VERTICAL) {
-                current.setHeight(spacerSize.getHeight() / splitSize);
+                current.setHeight(size.getHeight() / splitSize);
             } else {
-                current.setWidth(spacerSize.getWidth() / splitSize);
+                current.setWidth(size.getWidth() / splitSize);
             }
-            spacer.size(currentSize, userState, drawState);
+            spacer.size(current, userState, drawState);
         }
 
         Set<Component> components = componentList.stream().filter(component -> !drawState.getSizeMap().containsKey(component)).filter(component -> component.spacers(userState, orientation) > 0).collect(Collectors.toSet());

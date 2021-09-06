@@ -4,10 +4,10 @@ import de.jxui.action.Action;
 import de.jxui.action.KeyTypeAction;
 import de.jxui.components.*;
 import de.jxui.components.compounds.Centered;
-import de.jxui.components.event.Hover;
-import de.jxui.components.eventcompounds.Input;
-import de.jxui.components.event.Keyboard;
 import de.jxui.components.compounds.Repeat;
+import de.jxui.components.event.Hover;
+import de.jxui.components.event.Keyboard;
+import de.jxui.components.eventcompounds.Input;
 import de.jxui.components.eventcompounds.Submit;
 import de.jxui.utils.Orientation;
 
