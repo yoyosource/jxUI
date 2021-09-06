@@ -1,6 +1,6 @@
 package de.jxui.compounds.event;
 
-import de.jxui.action.MoveAction;
+import de.jxui.action.Action;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
 import de.jxui.events.MouseMoveEvent;
@@ -8,14 +8,13 @@ import de.jxui.utils.Point;
 import de.jxui.utils.*;
 
 import java.awt.*;
-import java.util.function.BiPredicate;
 
 public class Move implements Component {
 
-    private MoveAction moveAction;
+    private Action<MouseMoveEvent> moveAction;
     private Component component;
 
-    public Move(MoveAction moveAction, Component component) {
+    public Move(Action<MouseMoveEvent> moveAction, Component component) {
         this.moveAction = moveAction;
         this.component = component;
     }

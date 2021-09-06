@@ -1,9 +1,11 @@
 package de.jxui.compounds.event;
 
+import de.jxui.action.Action;
 import de.jxui.action.ButtonAction;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
 import de.jxui.events.MouseClickEvent;
+import de.jxui.events.MouseMoveEvent;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 
@@ -11,10 +13,10 @@ import java.awt.*;
 
 public class Button implements Component {
 
-    private ButtonAction buttonAction;
+    private Action<MouseClickEvent> buttonAction;
     private Component component;
 
-    public Button(ButtonAction buttonAction, Component component) {
+    public Button(Action<MouseClickEvent> buttonAction, Component component) {
         this.buttonAction = buttonAction;
         this.component = component;
     }

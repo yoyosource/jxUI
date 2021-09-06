@@ -1,5 +1,6 @@
 package de.jxui;
 
+import de.jxui.action.Action;
 import de.jxui.action.KeyTypeAction;
 import de.jxui.action.MoveAction;
 import de.jxui.components.*;
@@ -7,6 +8,8 @@ import de.jxui.compounds.Centered;
 import de.jxui.compounds.event.Hover;
 import de.jxui.compounds.event.Keyboard;
 import de.jxui.compounds.Repeat;
+import de.jxui.compounds.event.Submit;
+import de.jxui.events.MouseMoveEvent;
 import de.jxui.utils.Orientation;
 
 import javax.swing.*;
@@ -158,30 +161,28 @@ public class Test {
                         },
                         new Text("Hello World")
                 )*/
-                new Keyboard(
-                        KeyTypeAction.Check("focus", "text", KeyTypeAction.Text("text")),
-                        new Hover(
-                                (userState, event) -> {
-                                    userState.put("focus", "text");
-                                    userState.put("color", new Color(0, 0, 0));
-                                    return true;
-                                },
-                                (userState, event) -> {
-                                    userState.remove("focus");
-                                    userState.remove("color");
-                                    return true;
-                                },
-                                new VStack(
-                                        new StateComponent<>(
-                                                new TextTemplate("{text|''}")
-                                                        .minSize(20, 20),
-                                                (userState, component) -> {
-                                                    component.color(userState.getOrDefault("color", new Color(128, 128, 128)));
-                                                }
+                new Submit(
+                        Action.Remove("text"),
+                        new Keyboard(
+                                Action.Check("focus", "text", KeyTypeAction.Long("text", 16)),
+                                new Hover(
+                                        Action.Chain(
+                                                Action.Set("focus", "text"),
+                                                Action.Set("color", new Color(0, 0, 0))
                                         ),
-                                        new StateComponent<>(() -> {
-                                            return new TextTemplate("{text|''}");
-                                        })
+                                        Action.Remove("focus", "color"),
+                                        new VStack(
+                                                new StateComponent<>(
+                                                        new TextTemplate("{text|''}")
+                                                                .minSize(20, 20),
+                                                        (userState, component) -> {
+                                                            component.color(userState.getOrDefault("color", new Color(128, 128, 128)));
+                                                        }
+                                                ),
+                                                new StateComponent<>(() -> {
+                                                    return new TextTemplate("{text|''}");
+                                                })
+                                        )
                                 )
                         )
                 )

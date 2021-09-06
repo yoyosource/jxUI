@@ -1,22 +1,22 @@
 package de.jxui.compounds.event;
 
-import de.jxui.action.MoveAction;
+import de.jxui.action.Action;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
 import de.jxui.events.MouseMoveEvent;
-import de.jxui.utils.*;
 import de.jxui.utils.Point;
+import de.jxui.utils.*;
 
 import java.awt.*;
 
 public class Hover implements Component {
 
-    private MoveAction enterAction;
-    private MoveAction exitAction;
+    private Action<MouseMoveEvent> enterAction;
+    private Action<MouseMoveEvent> exitAction;
     private boolean hovering = false;
     private Component component;
 
-    public Hover(MoveAction enterAction, MoveAction exitAction, Component component) {
+    public Hover(Action<MouseMoveEvent> enterAction, Action<MouseMoveEvent> exitAction, Component component) {
         this.enterAction = enterAction;
         this.exitAction = exitAction;
         this.component = component;
