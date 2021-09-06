@@ -1,6 +1,7 @@
 package de.jxui.action;
 
 import de.jxui.events.Event;
+import de.jxui.utils.ObjectUtils;
 import de.jxui.utils.UserState;
 import lombok.NonNull;
 
@@ -17,7 +18,7 @@ public interface Action<T extends Event> {
     }
 
     static <K extends Event, T extends Action<K>> T Check(String key, @NonNull Object value, Action<K> action) {
-        return Action.Check(key, value::equals, action);
+        return Action.Check(key, o -> ObjectUtils.equals(o, value), action);
     }
 
     @SuppressWarnings("unchecked")
