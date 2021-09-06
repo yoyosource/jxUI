@@ -15,8 +15,8 @@
     - [ ] Groups
 - [ ] Images
     - [ ] Corner Radius
-    - [ ] Cropping
-    - [ ] Resizing
+    - [x] Cropping
+    - [x] Resizing
 - [x] Spacer
     - [x] size
 - [x] List
