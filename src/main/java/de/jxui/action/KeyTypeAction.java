@@ -59,6 +59,7 @@ public class KeyTypeAction {
 
     public Action<KeyTypeEvent> Byte(String key, int radix, Predicate<Byte> predicate) {
         return Number(key, (s, character) -> {
+            if (s.equals("-")) return true;
             try {
                 return predicate.test(Byte.parseByte(s, radix));
             } catch (NumberFormatException e) {
@@ -81,6 +82,7 @@ public class KeyTypeAction {
 
     public Action<KeyTypeEvent> Short(String key, int radix, Predicate<Short> predicate) {
         return Number(key, (s, character) -> {
+            if (s.equals("-")) return true;
             try {
                 return predicate.test(Short.parseShort(s, radix));
             } catch (NumberFormatException e) {
@@ -103,6 +105,7 @@ public class KeyTypeAction {
 
     public Action<KeyTypeEvent> Int(String key, int radix, Predicate<Integer> predicate) {
         return Number(key, (s, character) -> {
+            if (s.equals("-")) return true;
             try {
                 return predicate.test(Integer.parseInt(s, radix));
             } catch (NumberFormatException e) {
@@ -125,6 +128,7 @@ public class KeyTypeAction {
 
     public Action<KeyTypeEvent> Long(String key, int radix, Predicate<Long> predicate) {
         return Number(key, (s, character) -> {
+            if (s.equals("-")) return true;
             try {
                 return predicate.test(Long.parseLong(s, radix));
             } catch (NumberFormatException e) {
@@ -139,6 +143,7 @@ public class KeyTypeAction {
 
     public Action<KeyTypeEvent> Float(String key, Predicate<Float> predicate) {
         return Number(key, (s, character) -> {
+            if (s.equals("-")) return true;
             try {
                 return predicate.test(Float.parseFloat(s));
             } catch (NumberFormatException e) {
@@ -153,6 +158,7 @@ public class KeyTypeAction {
 
     public Action<KeyTypeEvent> Double(String key, Predicate<Double> predicate) {
         return Number(key, (s, character) -> {
+            if (s.equals("-")) return true;
             try {
                 return predicate.test(Double.parseDouble(s));
             } catch (NumberFormatException e) {
