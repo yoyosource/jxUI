@@ -1,14 +1,14 @@
 package de.jxui.components;
 
+import de.jxui.components.behaviour.Offset;
+import de.jxui.components.behaviour.Padding;
 import de.jxui.utils.Direction;
-import de.jxui.utils.Offset;
-import de.jxui.utils.Padding;
 import lombok.NonNull;
 
-public abstract class Element<T> implements Component, ComponentPadding<T>, ComponentOffset<T> {
+public abstract class Element<T> implements Component, Padding<T>, Offset<T> {
 
-    protected Padding padding = new Padding(0, 0, 0, 0);
-    protected Offset offset = new Offset();
+    protected de.jxui.utils.Padding padding = new de.jxui.utils.Padding(0, 0, 0, 0);
+    protected de.jxui.utils.Offset offset = new de.jxui.utils.Offset();
 
     protected Element() {
     }
@@ -16,13 +16,13 @@ public abstract class Element<T> implements Component, ComponentPadding<T>, Comp
     @Override
     @SuppressWarnings("unchecked")
     public T padding() {
-        padding = new Padding();
+        padding = new de.jxui.utils.Padding();
         return (T) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public T padding(@NonNull Padding padding) {
+    public T padding(@NonNull de.jxui.utils.Padding padding) {
         this.padding = padding;
         return (T) this;
     }
@@ -43,13 +43,13 @@ public abstract class Element<T> implements Component, ComponentPadding<T>, Comp
     @Override
     @SuppressWarnings("unchecked")
     public T offset() {
-        offset = new Offset();
+        offset = new de.jxui.utils.Offset();
         return (T) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public T offset(@NonNull Offset offset) {
+    public T offset(@NonNull de.jxui.utils.Offset offset) {
         this.offset = offset;
         return (T) this;
     }

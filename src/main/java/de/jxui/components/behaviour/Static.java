@@ -1,4 +1,4 @@
-package de.jxui.components;
+package de.jxui.components.behaviour;
 
 public interface Static<T> {
     T Static();

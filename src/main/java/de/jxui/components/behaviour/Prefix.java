@@ -1,4 +1,6 @@
-package de.jxui.components;
+package de.jxui.components.behaviour;
+
+import de.jxui.components.Component;
 
 import java.util.function.Supplier;
 

@@ -2,6 +2,10 @@ package de.jxui.compounds;
 
 import de.jxui.components.Component;
 import de.jxui.components.*;
+import de.jxui.components.behaviour.Joining;
+import de.jxui.components.behaviour.Prefix;
+import de.jxui.components.behaviour.Static;
+import de.jxui.components.behaviour.Suffix;
 import de.jxui.events.Event;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
