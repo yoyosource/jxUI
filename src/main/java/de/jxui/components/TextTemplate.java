@@ -1,10 +1,11 @@
 package de.jxui.components;
 
-import de.jxui.utils.Size;
-import de.jxui.utils.UserState;
+import de.jxui.utils.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -69,6 +70,90 @@ public class TextTemplate extends Text {
             }
             return current.toString();
         };
+    }
+
+    @Override
+    public TextTemplate padding() {
+        super.padding();
+        return this;
+    }
+
+    @Override
+    public TextTemplate padding(@NonNull Padding padding) {
+        super.padding(padding);
+        return this;
+    }
+
+    @Override
+    public TextTemplate padding(Direction direction, int value) {
+        super.padding(direction, value);
+        return this;
+    }
+
+    @Override
+    public TextTemplate offset() {
+        super.offset();
+        return this;
+    }
+
+    @Override
+    public TextTemplate offset(@NonNull Offset offset) {
+        super.offset(offset);
+        return this;
+    }
+
+    @Override
+    public TextTemplate offset(Direction direction, int value) {
+        super.offset(direction, value);
+        return this;
+    }
+
+    @Override
+    public TextTemplate setColor(Color color) {
+        super.setColor(color);
+        return this;
+    }
+
+    @Override
+    public TextTemplate size(int size) {
+        super.size(size);
+        return this;
+    }
+
+    @Override
+    public TextTemplate style(int style) {
+        super.style(style);
+        return this;
+    }
+
+    @Override
+    public TextTemplate font(String name) {
+        super.font(name);
+        return this;
+    }
+
+    @Override
+    public TextTemplate setFont(Font font) {
+        super.setFont(font);
+        return this;
+    }
+
+    @Override
+    public TextTemplate color(Color color) {
+        super.color(color);
+        return this;
+    }
+
+    @Override
+    public TextTemplate color(int r, int g, int b) {
+        super.color(r, g, b);
+        return this;
+    }
+
+    @Override
+    public TextTemplate minSize(int width, int height) {
+        super.minSize(width, height);
+        return this;
     }
 
     @Override

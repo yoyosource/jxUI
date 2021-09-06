@@ -124,9 +124,7 @@ public interface Action<T extends Event> {
     @SuppressWarnings("unchecked")
     static <K extends Event, T extends Action<K>> T Set(String key, Object value) {
         return (T) (Action<K>) (userState, event) -> {
-            if (!userState.containsKey(key)) {
-                userState.put(key, value);
-            }
+            userState.put(key, value);
             return true;
         };
     }
@@ -134,9 +132,7 @@ public interface Action<T extends Event> {
     @SuppressWarnings("unchecked")
     static <K extends Event, T extends Action<K>> T Set(String key, Function<UserState, Object> valueFunction) {
         return (T) (Action<K>) (userState, event) -> {
-            if (!userState.containsKey(key)) {
-                userState.put(key, valueFunction.apply(userState));
-            }
+            userState.put(key, valueFunction.apply(userState));
             return true;
         };
     }
@@ -144,9 +140,7 @@ public interface Action<T extends Event> {
     @SuppressWarnings("unchecked")
     static <K extends Event, T extends Action<K>> T Set(String key, BiFunction<UserState, K, Object> valueFunction) {
         return (T) (Action<K>) (userState, event) -> {
-            if (!userState.containsKey(key)) {
-                userState.put(key, valueFunction.apply(userState, event));
-            }
+            userState.put(key, valueFunction.apply(userState, event));
             return true;
         };
     }

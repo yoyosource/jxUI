@@ -1,9 +1,10 @@
 package de.jxui.compounds;
 
 import de.jxui.components.*;
+import lombok.NonNull;
 
 public class Centered extends Group<Centered> {
-    public Centered(Component component) {
+    public Centered(@NonNull Component component) {
         super(new VStack(new Spacer(), new HStack(new Spacer(), component, new Spacer()), new Spacer()));
     }
 }

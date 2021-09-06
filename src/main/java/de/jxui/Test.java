@@ -6,6 +6,7 @@ import de.jxui.action.MoveAction;
 import de.jxui.components.*;
 import de.jxui.compounds.Centered;
 import de.jxui.compounds.event.Hover;
+import de.jxui.compounds.event.Input;
 import de.jxui.compounds.event.Keyboard;
 import de.jxui.compounds.Repeat;
 import de.jxui.compounds.event.Submit;
@@ -186,6 +187,13 @@ public class Test {
                                 )
                         )
                 )
+        );
+
+        centered = new Centered(
+                new Input("test", (userState, event) -> {
+                    System.out.println(userState);
+                    return Action.Remove("test").run(userState, event);
+                }).minSize(20, 20)
         );
 
         JxUI jxUI = new JxUI(centered);

@@ -21,7 +21,7 @@ public class TestTicTacToe {
                         return new Button(
                                 cellSet("" + x + y),
                                 new StateComponent<>(
-                                        () -> new TextTemplate("{" + x + y + "|' '}"),
+                                        new TextTemplate("{" + x + y + "|' '}"),
                                         (userState, textTemplate) -> {
                                             textTemplate.size(Math.min(userState.getCanvasHeight(), userState.getCanvasWidth()) / 10);
                                         }

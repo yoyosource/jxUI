@@ -11,6 +11,9 @@ public abstract class Group<T> extends Element<T> {
 
     protected Component component;
 
+    protected Group() {
+    }
+
     protected Group(@NonNull Component component) {
         this.component = component;
     }
