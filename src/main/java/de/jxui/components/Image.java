@@ -22,7 +22,6 @@ public class Image extends Element<Image> {
     public Image(File file) {
         try {
             source = ImageIO.read(file);
-            current = source.getSubimage(0, 0, source.getWidth(), source.getHeight());
         } catch (IOException e) {
             throw new SecurityException(e.getMessage(), e);
         }
@@ -31,10 +30,13 @@ public class Image extends Element<Image> {
     public Image(InputStream inputStream) {
         try {
             source = ImageIO.read(inputStream);
-            current = source.getSubimage(0, 0, source.getWidth(), source.getHeight());
         } catch (IOException e) {
             throw new SecurityException(e.getMessage(), e);
         }
+    }
+
+    public Image(BufferedImage source) {
+        this.source = source;
     }
 
     public static Image fromResource(String resourceIdentifier) {
@@ -47,6 +49,10 @@ public class Image extends Element<Image> {
 
     public static Image fromFile(String fileIdentifier) {
         return new Image(new File(fileIdentifier));
+    }
+
+    public static Image fromImage(BufferedImage source) {
+        return new Image(source);
     }
 
     public Image original() {

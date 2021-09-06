@@ -33,32 +33,7 @@ public class HStack extends Stack<HStack> {
 
     @Override
     public void size(Size size, UserState userState, DrawState drawState) {
-        Size currentSize = size(userState);
-        Size spacerSize = size.copy().substract(currentSize);
-
-        List<Spacer> spacerList = componentList.stream().filter(Spacer.class::isInstance).map(Spacer.class::cast).filter(spacer -> spacer.getSize() == -1).collect(Collectors.toList());
-        int splitSize = spacerList.size() + (spacers(userState, Orientation.HORIZONTAL) - spacerList.size() > 0 ? 1 : 0);
-
-        log.debug("Spacer: {}   Splitting: {}   Size: {}   AllowedSize: {}", spacerList.size(), splitSize, currentSize, size);
-        for (Spacer spacer : spacerList) {
-            spacer.size(size.copy().setWidth(spacerSize.getWidth() / splitSize), userState, drawState);
-        }
-
-        Set<Component> components = componentList.stream().filter(component -> !drawState.getSizeMap().containsKey(component)).filter(component -> component.spacers(userState, Orientation.HORIZONTAL) > 0).collect(Collectors.toSet());
-        int componentSplitSize = spacerSize.getWidth() / (splitSize == 0 ? 1 : splitSize);
-        log.debug("Other Component sizes: {}   Components: {}", componentSplitSize, components.size());
-        componentList.forEach(component -> {
-            if (drawState.getSizeMap().containsKey(component)) {
-                return;
-            }
-            Size current = component.size(userState);
-            current.setHeight(size.getHeight());
-            if (components.contains(component)) {
-                current.setWidth(current.getWidth() + componentSplitSize / components.size());
-            }
-            component.size(current, userState, drawState);
-        });
-        drawState.getSizeMap().put(this, size);
+        sizeImpl(size, userState, drawState, Orientation.HORIZONTAL);
     }
 
     @Override
