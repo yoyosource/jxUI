@@ -179,7 +179,7 @@ public class Test {
                                                             component.color(userState.getOrDefault("color", new Color(128, 128, 128)));
                                                         }
                                                 ),
-                                                new StateComponent<>(() -> {
+                                                new StateComponent<>(userState -> {
                                                     return new TextTemplate("{text|''}");
                                                 })
                                         )

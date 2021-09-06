@@ -6,15 +6,16 @@ import lombok.NonNull;
 
 import java.awt.*;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class StateComponent<T extends Component> implements Component {
 
-    private Supplier<T> componentSupplier;
+    private Function<UserState, T> componentSupplier;
     private T component;
     private BiConsumer<UserState, T> stateChange;
 
-    public StateComponent(Supplier<T> componentSupplier) {
+    public StateComponent(Function<UserState, T> componentSupplier) {
         this.componentSupplier = componentSupplier;
     }
 
@@ -36,7 +37,7 @@ public class StateComponent<T extends Component> implements Component {
     @Override
     public Size size(UserState userState) {
         if (component == null) {
-            component = componentSupplier.get();
+            component = componentSupplier.apply(userState);
         }
         if (stateChange != null) {
             stateChange.accept(userState, component);

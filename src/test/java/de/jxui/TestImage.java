@@ -1,6 +1,7 @@
 package de.jxui;
 
 import de.jxui.components.Image;
+import de.jxui.components.StateComponent;
 import de.jxui.compounds.Centered;
 import de.jxui.utils.JxFrame;
 
@@ -18,9 +19,11 @@ public class TestImage {
 
     private void testSimpleCenteredImage() {
         Centered centeredStack = new Centered(
-                new Image(TestImage.class.getResourceAsStream("/img.png"))
-                        .upscale(10)
-                        .downscale(10)
+                new StateComponent<>(userState -> {
+                    return new Image(TestImage.class.getResourceAsStream("/img.png"))
+                            .upscale(10)
+                            .upscale(10);
+                })
         );
         new JxFrame(centeredStack);
     }

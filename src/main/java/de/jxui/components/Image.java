@@ -12,7 +12,6 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 // TODO: resizing, (overlay)
 public class Image extends Element<Image> {
@@ -65,10 +64,13 @@ public class Image extends Element<Image> {
     }
 
     public Image upscale(int factor) {
+        if (factor <= 0) throw new SecurityException();
         return upscale(factor, factor);
     }
 
     public Image upscale(int widthFactor, int heightFactor) {
+        if (widthFactor <= 0) throw new SecurityException();
+        if (heightFactor <= 0) throw new SecurityException();
         if (current == null) {
             current = upscale(source, widthFactor, heightFactor);
         } else {
@@ -95,10 +97,13 @@ public class Image extends Element<Image> {
     }
 
     public Image downscale(int factor) {
+        if (factor <= 0) throw new SecurityException();
         return downscale(factor, factor);
     }
 
     public Image downscale(int widthFactor, int heightFactor) {
+        if (widthFactor <= 0) throw new SecurityException();
+        if (heightFactor <= 0) throw new SecurityException();
         if (current == null) {
             current = downscale(source, widthFactor, heightFactor);
         } else {
