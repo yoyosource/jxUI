@@ -11,7 +11,9 @@ import java.awt.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class Repeat implements Component, Prefix<Repeat>, Suffix<Repeat>, Joining<Repeat> {
+public class Repeat implements Component, Prefix<Repeat>, Suffix<Repeat>, Joining<Repeat>, Static<Repeat> {
+
+    private boolean staticRepeat = false;
 
     private Orientation orientation = Orientation.VERTICAL;
     private int count;
@@ -61,11 +63,25 @@ public class Repeat implements Component, Prefix<Repeat>, Suffix<Repeat>, Joinin
     }
 
     @Override
+    public Repeat Static() {
+        staticRepeat = true;
+        return this;
+    }
+
+    @Override
+    public Repeat Dynamic() {
+        staticRepeat = false;
+        return this;
+    }
+
+    @Override
     public void cleanUp() {
         if (component != null) {
             component.cleanUp();
         }
-        component = null;
+        if (!staticRepeat) {
+            component = null;
+        }
     }
 
     @Override

@@ -171,12 +171,17 @@ public class Test {
                                     userState.remove("color");
                                     return true;
                                 },
-                                new StateComponent<>(
-                                        new TextTemplate("{text|''}")
-                                                .minSize(20, 20),
-                                        (userState, component) -> {
-                                            component.color(userState.getOrDefault("color", new Color(128, 128, 128)));
-                                        }
+                                new VStack(
+                                        new StateComponent<>(
+                                                new TextTemplate("{text|''}")
+                                                        .minSize(20, 20),
+                                                (userState, component) -> {
+                                                    component.color(userState.getOrDefault("color", new Color(128, 128, 128)));
+                                                }
+                                        ),
+                                        new StateComponent<>(() -> {
+                                            return new TextTemplate("{text|''}");
+                                        })
                                 )
                         )
                 )
