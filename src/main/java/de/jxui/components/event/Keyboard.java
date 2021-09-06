@@ -1,4 +1,4 @@
-package de.jxui.compounds.event;
+package de.jxui.components.event;
 
 import de.jxui.action.Action;
 import de.jxui.components.Component;
@@ -9,12 +9,12 @@ import de.jxui.utils.*;
 
 import java.awt.*;
 
-public class Submit implements Component {
+public class Keyboard implements Component {
 
     private Action<KeyTypeEvent> keyTypeAction;
     private Component component;
 
-    public Submit(Action<KeyTypeEvent> keyTypeAction, Component component) {
+    public Keyboard(Action<KeyTypeEvent> keyTypeAction, Component component) {
         this.keyTypeAction = keyTypeAction;
         this.component = component;
     }
@@ -43,10 +43,6 @@ public class Submit implements Component {
     @Override
     public void event(UserState userState, DrawState drawState, Point point, Event event) {
         if (event instanceof KeyTypeEvent keyTypeEvent) {
-            if (keyTypeEvent.getKeyChar() != '\n') {
-                component.event(userState, drawState, point, event);
-                return;
-            }
             if (!keyTypeAction.run(userState, keyTypeEvent)) {
                 component.event(userState, drawState, point, event);
             }

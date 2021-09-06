@@ -1,8 +1,7 @@
 package de.jxui;
 
 import de.jxui.components.Image;
-import de.jxui.components.StateComponent;
-import de.jxui.compounds.Centered;
+import de.jxui.components.compounds.Centered;
 import de.jxui.utils.JxFrame;
 
 public class TestImage {

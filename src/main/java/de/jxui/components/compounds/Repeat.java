@@ -1,8 +1,10 @@
-package de.jxui.compounds;
+package de.jxui.components.compounds;
 
 import de.jxui.components.Component;
 import de.jxui.components.*;
+import de.jxui.components.behaviour.Joining;
 import de.jxui.components.behaviour.Prefix;
+import de.jxui.components.behaviour.Static;
 import de.jxui.components.behaviour.Suffix;
 import de.jxui.events.Event;
 import de.jxui.utils.Point;
@@ -13,44 +15,77 @@ import java.awt.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Suffix<ComponentList<T>> {
+public class Repeat implements Component, Prefix<Repeat>, Suffix<Repeat>, Joining<Repeat>, Static<Repeat> {
 
-    private Function<T, Component> componentFunction;
-    private java.util.List<T> list;
+    private boolean staticRepeat = false;
 
     private Orientation orientation = Orientation.VERTICAL;
-    private Stack<?> component;
+    private int count;
+    private Function<Integer, Component> componentSupplier;
 
-    private Supplier<Component> prefix = null;
-    private Supplier<Component> suffix = null;
+    private Supplier<Component> prefix;
+    private Supplier<Component> joining;
+    private Supplier<Component> suffix;
 
-    public ComponentList(@NonNull Function<T, Component> componentFunction, @NonNull java.util.List<T> list) {
-        this.componentFunction = componentFunction;
-        this.list = list;
+    private Stack<?> component = null;
+
+    public Repeat(int count, @NonNull Supplier<Component> componentSupplier) {
+        this(count, i -> componentSupplier.get());
     }
 
-    public ComponentList(@NonNull Orientation orientation, @NonNull Function<T, Component> componentFunction, @NonNull java.util.List<T> list) {
+    public Repeat(int count, @NonNull Function<Integer, Component> componentSupplier) {
+        this.count = count;
+        this.componentSupplier = componentSupplier;
+    }
+
+    public Repeat(@NonNull Orientation orientation, int count, @NonNull Supplier<Component> componentSupplier) {
+        this(orientation, count, i -> componentSupplier.get());
+    }
+
+    public Repeat(@NonNull Orientation orientation, int count, @NonNull Function<Integer, Component> componentSupplier) {
         this.orientation = orientation;
-        this.componentFunction = componentFunction;
-        this.list = list;
+        this.count = count;
+        this.componentSupplier = componentSupplier;
     }
 
     @Override
-    public ComponentList<T> Prefix(Supplier<Component> component) {
+    public Repeat Prefix(Supplier<Component> component) {
         this.prefix = component;
         return this;
     }
 
     @Override
-    public ComponentList<T> Suffix(Supplier<Component> component) {
+    public Repeat Joining(Supplier<Component> component) {
+        this.joining = component;
+        return this;
+    }
+
+    @Override
+    public Repeat Suffix(Supplier<Component> component) {
         this.suffix = component;
         return this;
     }
 
     @Override
+    public Repeat Static() {
+        staticRepeat = true;
+        return this;
+    }
+
+    @Override
+    public Repeat Dynamic() {
+        staticRepeat = false;
+        return this;
+    }
+
+    @Override
     public void cleanUp() {
-        component.cleanUp();
-        component = null;
+        if (component != null) {
+            component.cleanUp();
+        }
+        if (!staticRepeat) {
+            component = null;
+        }
     }
 
     @Override
@@ -64,7 +99,12 @@ public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Su
             if (prefix != null) {
                 component.add(prefix.get());
             }
-            list.stream().map(componentFunction).forEach(component::add);
+            for (int i = 0; i < count; i++) {
+                if (i != 0) {
+                    component.add(joining.get());
+                }
+                component.add(componentSupplier.apply(i));
+            }
             if (suffix != null) {
                 component.add(suffix.get());
             }

@@ -1,4 +1,4 @@
-package de.jxui.compounds;
+package de.jxui.components.compounds;
 
 import de.jxui.components.*;
 import lombok.NonNull;

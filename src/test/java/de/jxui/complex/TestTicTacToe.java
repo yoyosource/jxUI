@@ -1,13 +1,12 @@
 package de.jxui.complex;
 
 import de.jxui.action.Action;
-import de.jxui.action.ButtonAction;
 import de.jxui.components.Spacer;
 import de.jxui.components.StateComponent;
 import de.jxui.components.TextTemplate;
-import de.jxui.compounds.Centered;
-import de.jxui.compounds.Repeat;
-import de.jxui.compounds.event.Button;
+import de.jxui.components.compounds.Centered;
+import de.jxui.components.compounds.Repeat;
+import de.jxui.components.event.Button;
 import de.jxui.events.MouseClickEvent;
 import de.jxui.utils.JxFrame;
 import de.jxui.utils.Orientation;

@@ -1,9 +1,11 @@
-package de.jxui.compounds.event;
+package de.jxui.components.eventcompounds;
 
 import de.jxui.action.Action;
 import de.jxui.action.KeyTypeAction;
 import de.jxui.components.Group;
 import de.jxui.components.TextTemplate;
+import de.jxui.components.event.Button;
+import de.jxui.components.event.Keyboard;
 import de.jxui.events.KeyTypeEvent;
 import de.jxui.utils.Direction;
 import de.jxui.utils.ObjectUtils;

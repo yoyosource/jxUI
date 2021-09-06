@@ -1,21 +1,21 @@
-package de.jxui.compounds.event;
+package de.jxui.components.event;
 
 import de.jxui.action.Action;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
-import de.jxui.events.KeyTypeEvent;
+import de.jxui.events.MouseMoveEvent;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 
 import java.awt.*;
 
-public class Keyboard implements Component {
+public class Move implements Component {
 
-    private Action<KeyTypeEvent> keyTypeAction;
+    private Action<MouseMoveEvent> moveAction;
     private Component component;
 
-    public Keyboard(Action<KeyTypeEvent> keyTypeAction, Component component) {
-        this.keyTypeAction = keyTypeAction;
+    public Move(Action<MouseMoveEvent> moveAction, Component component) {
+        this.moveAction = moveAction;
         this.component = component;
     }
 
@@ -42,8 +42,18 @@ public class Keyboard implements Component {
 
     @Override
     public void event(UserState userState, DrawState drawState, Point point, Event event) {
-        if (event instanceof KeyTypeEvent keyTypeEvent) {
-            if (!keyTypeAction.run(userState, keyTypeEvent)) {
+        if (event instanceof MouseMoveEvent mouseMoveEvent) {
+            Size size = drawState.getSizeMap().get(this);
+            Point clickPoint = mouseMoveEvent.getPoint();
+            if (clickPoint.getX() >= point.getX() && clickPoint.getX() <= point.getX() + size.getWidth()) {
+                if (clickPoint.getY() >= point.getY() && clickPoint.getY() <= point.getY() + size.getHeight()) {
+                    if (!moveAction.run(userState, mouseMoveEvent)) {
+                        component.event(userState, drawState, point, event);
+                    }
+                } else {
+                    component.event(userState, drawState, point, event);
+                }
+            } else {
                 component.event(userState, drawState, point, event);
             }
         } else {
@@ -53,7 +63,6 @@ public class Keyboard implements Component {
 
     @Override
     public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
-        debugDraw(g, drawState, point);
         component.draw(g, userState, drawState, point);
     }
 }

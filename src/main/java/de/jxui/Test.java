@@ -2,15 +2,13 @@ package de.jxui;
 
 import de.jxui.action.Action;
 import de.jxui.action.KeyTypeAction;
-import de.jxui.action.MoveAction;
 import de.jxui.components.*;
-import de.jxui.compounds.Centered;
-import de.jxui.compounds.event.Hover;
-import de.jxui.compounds.event.Input;
-import de.jxui.compounds.event.Keyboard;
-import de.jxui.compounds.Repeat;
-import de.jxui.compounds.event.Submit;
-import de.jxui.events.MouseMoveEvent;
+import de.jxui.components.compounds.Centered;
+import de.jxui.components.event.Hover;
+import de.jxui.components.eventcompounds.Input;
+import de.jxui.components.event.Keyboard;
+import de.jxui.components.compounds.Repeat;
+import de.jxui.components.eventcompounds.Submit;
 import de.jxui.utils.Orientation;
 
 import javax.swing.*;

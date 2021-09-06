@@ -4,7 +4,7 @@ import de.jxui.components.HStack;
 import de.jxui.components.Spacer;
 import de.jxui.components.Text;
 import de.jxui.components.VStack;
-import de.jxui.compounds.If;
+import de.jxui.components.compounds.If;
 import de.jxui.utils.JxFrame;
 
 public class TestCompass {

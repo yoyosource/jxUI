@@ -1,21 +1,21 @@
-package de.jxui.compounds.event;
+package de.jxui.components.event;
 
 import de.jxui.action.Action;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
-import de.jxui.events.MouseMoveEvent;
+import de.jxui.events.MouseClickEvent;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 
 import java.awt.*;
 
-public class Move implements Component {
+public class Button implements Component {
 
-    private Action<MouseMoveEvent> moveAction;
+    private Action<MouseClickEvent> buttonAction;
     private Component component;
 
-    public Move(Action<MouseMoveEvent> moveAction, Component component) {
-        this.moveAction = moveAction;
+    public Button(Action<MouseClickEvent> buttonAction, Component component) {
+        this.buttonAction = buttonAction;
         this.component = component;
     }
 
@@ -42,12 +42,12 @@ public class Move implements Component {
 
     @Override
     public void event(UserState userState, DrawState drawState, Point point, Event event) {
-        if (event instanceof MouseMoveEvent mouseMoveEvent) {
+        if (event instanceof MouseClickEvent mouseClickEvent) {
             Size size = drawState.getSizeMap().get(this);
-            Point clickPoint = mouseMoveEvent.getPoint();
+            Point clickPoint = mouseClickEvent.getPoint();
             if (clickPoint.getX() >= point.getX() && clickPoint.getX() <= point.getX() + size.getWidth()) {
                 if (clickPoint.getY() >= point.getY() && clickPoint.getY() <= point.getY() + size.getHeight()) {
-                    if (!moveAction.run(userState, mouseMoveEvent)) {
+                    if (!buttonAction.run(userState, mouseClickEvent)) {
                         component.event(userState, drawState, point, event);
                     }
                 } else {
@@ -63,6 +63,7 @@ public class Move implements Component {
 
     @Override
     public void draw(Graphics2D g, UserState userState, DrawState drawState, Point point) {
+        debugDraw(g, drawState, point);
         component.draw(g, userState, drawState, point);
     }
 }

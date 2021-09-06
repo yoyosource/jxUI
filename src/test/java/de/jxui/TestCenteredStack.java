@@ -3,7 +3,7 @@ package de.jxui;
 import de.jxui.components.HStack;
 import de.jxui.components.Spacer;
 import de.jxui.components.Text;
-import de.jxui.compounds.Centered;
+import de.jxui.components.compounds.Centered;
 import de.jxui.utils.JxFrame;
 
 public class TestCenteredStack {

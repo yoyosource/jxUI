@@ -1,7 +1,7 @@
 package de.jxui.components;
 
-import de.jxui.compounds.event.Button;
-import de.jxui.compounds.Centered;
+import de.jxui.components.event.Button;
+import de.jxui.components.compounds.Centered;
 import de.jxui.utils.DrawState;
 import de.jxui.utils.Point;
 import de.jxui.utils.Size;
