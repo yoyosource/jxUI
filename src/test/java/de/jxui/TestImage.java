@@ -19,11 +19,8 @@ public class TestImage {
 
     private void testSimpleCenteredImage() {
         Centered centeredStack = new Centered(
-                new StateComponent<>(userState -> {
-                    return new Image(TestImage.class.getResourceAsStream("/img.png"))
-                            .upscale(10)
-                            .upscale(10);
-                })
+                new Image(TestImage.class.getResourceAsStream("/img.png"))
+                        .upscale(10)
         );
         new JxFrame(centeredStack);
     }
