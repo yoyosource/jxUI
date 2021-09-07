@@ -4,6 +4,7 @@ import de.jxui.action.Action;
 import de.jxui.action.KeyTypeAction;
 import de.jxui.components.*;
 import de.jxui.components.compounds.Centered;
+import de.jxui.components.compounds.ComponentList;
 import de.jxui.components.compounds.Repeat;
 import de.jxui.components.event.Hover;
 import de.jxui.components.event.Keyboard;
@@ -13,6 +14,8 @@ import de.jxui.utils.Orientation;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Test {
 
@@ -187,11 +190,17 @@ public class Test {
                 )
         );
 
+        List<String> list = new ArrayList<>();
         centered = new Centered(
-                new Input("test", (userState, event) -> {
-                    System.out.println(userState);
-                    return Action.Remove("test").run(userState, event);
-                }).minSize(20, 20)
+                new VStack(
+                        new Input("test", Input.InputType.TEXT, (userState, event) -> {
+                            list.add(userState.get("test"));
+                            return Action.Remove("test").run(userState, event);
+                        }).minSize(20, 20),
+                        new ComponentList<>(s -> {
+                            return new Text(s + "");
+                        }, list).Joining(() -> new Spacer(2)).Prefix(() -> new Spacer(5))
+                )
         );
 
         JxUI jxUI = new JxUI(centered);

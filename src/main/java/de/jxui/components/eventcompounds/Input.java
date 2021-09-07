@@ -11,18 +11,41 @@ import de.jxui.utils.Direction;
 import de.jxui.utils.ObjectUtils;
 import de.jxui.utils.Offset;
 import de.jxui.utils.Padding;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.ExtensionMethod;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.function.Function;
 
 @ExtensionMethod(ObjectUtils.class)
 public class Input extends Group<Input> {
 
     private TextTemplate textTemplate;
 
-    public Input(@NonNull String fieldName, Action<KeyTypeEvent> submitAction) {
+    @AllArgsConstructor
+    public enum InputType {
+        TEXT(KeyTypeAction::Text),
+        BYTE(KeyTypeAction::Byte),
+        SHORT(KeyTypeAction::Short),
+        INT(KeyTypeAction::Int),
+        LONG(KeyTypeAction::Long),
+        FLOAT(KeyTypeAction::Float),
+        DOUBLE(KeyTypeAction::Double);
+
+        private Function<String, Action<KeyTypeEvent>> keyTypeFunction;
+    }
+
+    public Input(@NonNull String fieldName, @NonNull Action<KeyTypeEvent> submitAction) {
+        this(fieldName, InputType.TEXT, submitAction);
+    }
+
+    public Input(@NonNull String fieldName, @NonNull InputType inputType, @NonNull Action<KeyTypeEvent> submitAction) {
+        this(fieldName, inputType.keyTypeFunction.apply(fieldName), submitAction);
+    }
+
+    public Input(@NonNull String fieldName, @NonNull Action<KeyTypeEvent> keyTypeEventAction, @NonNull Action<KeyTypeEvent> submitAction) {
         textTemplate = new TextTemplate("{" + fieldName + "|''}");
         component = new Submit(Action.Chain((userState, event) -> {
             userState.put("@input", null);
@@ -33,7 +56,7 @@ public class Input extends Group<Input> {
                     userState.put("@input", null);
                     return true;
                 }
-                return KeyTypeAction.Text(fieldName).run(userState, event);
+                return keyTypeEventAction.run(userState, event);
             }
             return false;
         }, new Button(Action.Set("@input", fieldName), textTemplate)));

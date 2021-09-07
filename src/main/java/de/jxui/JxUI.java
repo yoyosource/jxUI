@@ -12,7 +12,6 @@ import de.jxui.utils.UserState;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
@@ -128,16 +127,11 @@ public class JxUI {
         canvas.requestFocus();
     }
 
-    private BufferedImage bufferedImage = null;
-
     public void draw(Canvas canvas) {
         log.debug("Cleanup");
         component.cleanUp();
 
-        if (bufferedImage == null || bufferedImage.getWidth() != canvas.getWidth() || bufferedImage.getHeight() != canvas.getHeight()) {
-            bufferedImage = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        }
-
+        BufferedImage bufferedImage = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
         this.canvas = canvas;
         log.debug("Draw: " + canvas.getSize());
         Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
