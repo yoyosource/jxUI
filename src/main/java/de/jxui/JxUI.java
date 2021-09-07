@@ -35,14 +35,8 @@ public class JxUI {
     private Point mouseLocation = null;
     private Size size = new Size(0, 0);
 
-    @Setter
     @Getter
-    @Accessors(chain = true)
-    @NonNull
-    protected UserState userState = new UserState(size, () -> {
-        if (drawState == null) return;
-        drawState.setRepaint(true);
-    });
+    private UserState userState;
 
     private Canvas canvas = null;
     private Runnable repainter = () -> {
@@ -51,10 +45,22 @@ public class JxUI {
     };
 
     protected JxUI() {
+        setUserState(new UserState());
     }
 
     public JxUI(@NonNull Component component) {
         this.component = component;
+        setUserState(new UserState());
+    }
+
+    public JxUI setUserState(@NonNull UserState userState) {
+        userState.setSize(size);
+        userState.setChangeRunnable(() -> {
+            if (drawState == null) return;
+            drawState.setRepaint(true);
+        });
+        this.userState = userState;
+        return this;
     }
 
     public void addListenersTo(Canvas canvas) {
@@ -69,6 +75,7 @@ public class JxUI {
                 log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();
+                    canvas.repaint();
                 }
             }
         });
@@ -83,6 +90,7 @@ public class JxUI {
                 log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();
+                    canvas.repaint();
                 }
             }
 
@@ -96,6 +104,7 @@ public class JxUI {
                 log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();
+                    canvas.repaint();
                 }
             }
         });
@@ -110,6 +119,7 @@ public class JxUI {
                 log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();
+                    canvas.repaint();
                 }
             }
         });

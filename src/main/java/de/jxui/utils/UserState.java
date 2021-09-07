@@ -1,6 +1,6 @@
 package de.jxui.utils;
 
-import lombok.NonNull;
+import lombok.Setter;
 import lombok.experimental.Delegate;
 
 import java.util.HashMap;
@@ -24,12 +24,13 @@ public class UserState {
     private boolean mac = false;
     private boolean linux = false;
 
-    private final Size size;
-    private final Runnable changeRunnable;
+    @Setter
+    private Size size;
 
-    public UserState(@NonNull Size size, @NonNull Runnable changeRunnable) {
-        this.size = size;
-        this.changeRunnable = changeRunnable;
+    @Setter
+    private Runnable changeRunnable;
+
+    public UserState() {
     }
 
     public boolean windows() {

@@ -40,24 +40,26 @@ public class HStack extends Stack<HStack> {
         int splitSize = spacerList.size() + (spacers(userState, Orientation.HORIZONTAL) - spacerList.size() > 0 ? 1 : 0);
 
         log.debug("Spacer: {}   Splitting: {}   Size: {}   AllowedSize: {}", spacerList.size(), splitSize, currentSize, size);
+        SpacerCalculation spacerCalculation = new SpacerCalculation(spacerSize.getWidth(), splitSize);
         for (Spacer spacer : spacerList) {
-            spacer.size(size.copy().setWidth(spacerSize.getWidth() / splitSize), userState, drawState);
+            spacer.size(size.copy().setWidth(spacerCalculation.next()), userState, drawState);
         }
 
         Set<Component> components = componentList.stream().filter(component -> !drawState.getSizeMap().containsKey(component)).filter(component -> component.spacers(userState, Orientation.HORIZONTAL) > 0).collect(Collectors.toSet());
         int componentSplitSize = spacerSize.getWidth() / (splitSize == 0 ? 1 : splitSize);
+        spacerCalculation = new SpacerCalculation(componentSplitSize, components.size());
         log.debug("Other Component sizes: {}   Components: {}", componentSplitSize, components.size());
-        componentList.forEach(component -> {
+        for (Component component : componentList) {
             if (drawState.getSizeMap().containsKey(component)) {
-                return;
+                continue;
             }
             Size current = component.size(userState);
             current.setHeight(size.getHeight());
             if (components.contains(component)) {
-                current.setWidth(current.getWidth() + componentSplitSize / components.size());
+                current.setWidth(current.getWidth() + spacerCalculation.next());
             }
             component.size(current, userState, drawState);
-        });
+        }
         drawState.getSizeMap().put(this, size);
     }
 
