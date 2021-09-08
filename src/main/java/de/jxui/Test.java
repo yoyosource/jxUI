@@ -194,14 +194,18 @@ public class Test {
         List<String> list = new ArrayList<>();
         centered = new Centered(
                 new VStack(
-                        new AbsoluteSize(100, 20,
-                                new HStack(
-                                        new Spacer(),
-                                        new Input("test", Input.InputType.TEXT, (userState, event) -> {
-                                            list.add(userState.get("test"));
-                                            return Action.Remove("test").run(userState, event);
-                                        }).minSize(100, 20)
-                                )
+                        new HStack(
+                                new Spacer(),
+                                new AbsoluteSize(400, 20,
+                                        new HStack(
+                                                new Spacer(),
+                                                new Input("test", Input.InputType.TEXT, (userState, event) -> {
+                                                    list.add(userState.get("test"));
+                                                    return Action.Remove("test").run(userState, event);
+                                                }).minSize(400, 20)
+                                        )
+                                ),
+                                new Spacer()
                         ),
                         new ComponentList<>(s -> {
                             return new Text(s + "");
