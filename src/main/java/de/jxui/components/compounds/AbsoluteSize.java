@@ -46,7 +46,7 @@ public class AbsoluteSize implements Component {
 
     @Override
     public int spacers(UserState userState, Orientation orientation) {
-        return component.spacers(userState, orientation);
+        return 0;
     }
 
     @Override
