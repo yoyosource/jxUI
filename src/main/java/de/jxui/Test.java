@@ -9,7 +9,9 @@ import de.jxui.components.compounds.ComponentList;
 import de.jxui.components.compounds.Repeat;
 import de.jxui.components.event.Hover;
 import de.jxui.components.event.Keyboard;
+import de.jxui.components.eventcompounds.AbsoluteInput;
 import de.jxui.components.eventcompounds.Input;
+import de.jxui.components.eventcompounds.InputType;
 import de.jxui.components.eventcompounds.Submit;
 import de.jxui.utils.Orientation;
 
@@ -196,15 +198,10 @@ public class Test {
                 new VStack(
                         new HStack(
                                 new Spacer(),
-                                new AbsoluteSize(400, 20,
-                                        new HStack(
-                                                new Spacer(),
-                                                new Input("test", Input.InputType.TEXT, (userState, event) -> {
-                                                    list.add(userState.get("test"));
-                                                    return Action.Remove("test").run(userState, event);
-                                                }).minSize(400, 20)
-                                        )
-                                ),
+                                new AbsoluteInput("test", 500, 20, InputType.TEXT, (userState, event) -> {
+                                    list.add(userState.get("test"));
+                                    return Action.Remove("test").run(userState, event);
+                                }).setDefaultText("Input your Text here").defaultTextColor(64, 64, 64),
                                 new Spacer()
                         ),
                         new ComponentList<>(s -> {

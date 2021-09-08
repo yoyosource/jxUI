@@ -41,7 +41,7 @@ public class Text extends Element<Text> {
         this.text = text;
     }
 
-    protected void setText(String text) {
+    public void setText(String text) {
         cachedSize = null;
         this.text = text;
     }

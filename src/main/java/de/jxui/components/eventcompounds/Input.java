@@ -1,41 +1,27 @@
 package de.jxui.components.eventcompounds;
 
 import de.jxui.action.Action;
-import de.jxui.action.KeyTypeAction;
 import de.jxui.components.Group;
+import de.jxui.components.StateComponent;
+import de.jxui.components.Text;
 import de.jxui.components.TextTemplate;
+import de.jxui.components.compounds.If;
 import de.jxui.components.event.Button;
 import de.jxui.components.event.Keyboard;
 import de.jxui.events.KeyTypeEvent;
-import de.jxui.utils.Direction;
 import de.jxui.utils.ObjectUtils;
-import de.jxui.utils.Offset;
-import de.jxui.utils.Padding;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.ExtensionMethod;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.function.Function;
 
 @ExtensionMethod(ObjectUtils.class)
 public class Input extends Group<Input> {
 
     private TextTemplate textTemplate;
-
-    @AllArgsConstructor
-    public enum InputType {
-        TEXT(KeyTypeAction::Text),
-        BYTE(KeyTypeAction::Byte),
-        SHORT(KeyTypeAction::Short),
-        INT(KeyTypeAction::Int),
-        LONG(KeyTypeAction::Long),
-        FLOAT(KeyTypeAction::Float),
-        DOUBLE(KeyTypeAction::Double);
-
-        private Function<String, Action<KeyTypeEvent>> keyTypeFunction;
-    }
+    private Text defaultTextComponent;
+    private String defaultText = null;
 
     public Input(@NonNull String fieldName, @NonNull Action<KeyTypeEvent> submitAction) {
         this(fieldName, InputType.TEXT, submitAction);
@@ -47,55 +33,37 @@ public class Input extends Group<Input> {
 
     public Input(@NonNull String fieldName, @NonNull Action<KeyTypeEvent> keyTypeEventAction, @NonNull Action<KeyTypeEvent> submitAction) {
         textTemplate = new TextTemplate("{" + fieldName + "|''}");
-        component = new Submit(Action.Chain((userState, event) -> {
-            userState.put("@input", null);
-            return true;
-        }, submitAction), new Keyboard((userState, event) -> {
-            if (userState.get("@input").equals(fieldName)) {
-                if (event.getExtendedKeyCode() == KeyEvent.VK_ESCAPE) {
+        defaultTextComponent = new Text("");
+        component = new Submit(Action.Chain(
+                (userState, event) -> {
                     userState.put("@input", null);
                     return true;
-                }
-                return keyTypeEventAction.run(userState, event);
-            }
-            return false;
-        }, new Button(Action.Set("@input", fieldName), textTemplate)));
-    }
-
-    @Override
-    public Input padding() {
-        textTemplate.padding();
-        return this;
-    }
-
-    @Override
-    public Input padding(@NonNull Padding padding) {
-        textTemplate.padding(padding);
-        return this;
-    }
-
-    @Override
-    public Input padding(Direction direction, int value) {
-        textTemplate.padding(direction, value);
-        return this;
-    }
-
-    @Override
-    public Input offset() {
-        textTemplate.offset();
-        return this;
-    }
-
-    @Override
-    public Input offset(@NonNull Offset offset) {
-        textTemplate.offset(offset);
-        return this;
-    }
-
-    @Override
-    public Input offset(Direction direction, int value) {
-        textTemplate.offset(direction, value);
-        return this;
+                }, submitAction),
+                new Keyboard(
+                        (userState, event) -> {
+                            if (userState.get("@input").equals(fieldName)) {
+                                if (event.getExtendedKeyCode() == KeyEvent.VK_ESCAPE) {
+                                    userState.put("@input", null);
+                                    return true;
+                                }
+                                return keyTypeEventAction.run(userState, event);
+                            }
+                            return false;
+                        },
+                        new Button(
+                                Action.Set("@input", fieldName),
+                                new If(
+                                        userState -> defaultText == null || userState.getOrDefault("@input", null).equals(fieldName),
+                                        textTemplate
+                                ).Else(
+                                        new StateComponent<>(
+                                                defaultTextComponent,
+                                                (userState, text) -> text.setText(defaultText)
+                                        )
+                                )
+                        )
+                )
+        );
     }
 
     public Input setColor(Color color) {
@@ -135,6 +103,47 @@ public class Input extends Group<Input> {
 
     public Input minSize(int width, int height) {
         textTemplate.minSize(width, height);
+        defaultTextComponent.minSize(width, height);
+        return this;
+    }
+
+    public Input setDefaultText(String defaultText) {
+        this.defaultText = defaultText;
+        return this;
+    }
+
+    public Input setDefaultTextColor(Color color) {
+        defaultTextComponent.setColor(color);
+        return this;
+    }
+
+    public Input defaultTextSize(int size) {
+        defaultTextComponent.size(size);
+        return this;
+    }
+
+    public Input defaultTextStyle(int style) {
+        defaultTextComponent.style(style);
+        return this;
+    }
+
+    public Input defaultTextFont(String font) {
+        defaultTextComponent.font(font);
+        return this;
+    }
+
+    public Input setDefaultTextFont(Font font) {
+        defaultTextComponent.setFont(font);
+        return this;
+    }
+
+    public Input defaultTextColor(Color color) {
+        defaultTextComponent.color(color);
+        return this;
+    }
+
+    public Input defaultTextColor(int r, int g, int b) {
+        defaultTextComponent.color(r, g, b);
         return this;
     }
 }
