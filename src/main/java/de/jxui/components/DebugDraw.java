@@ -1,5 +1,6 @@
 package de.jxui.components;
 
+import de.jxui.components.compounds.AbsoluteSize;
 import de.jxui.components.event.Button;
 import de.jxui.components.compounds.Centered;
 import de.jxui.utils.DrawState;
@@ -25,6 +26,10 @@ class DebugDraw {
         }
         if (component instanceof Button) {
             drawButton(g, point, drawState.getSizeMap().get(component));
+            return;
+        }
+        if (component instanceof AbsoluteSize) {
+            drawAbsoluteSize(g, point, drawState.getSizeMap().get(component));
             return;
         }
         drawOther(g, point, drawState.getSizeMap().get(component));
@@ -64,7 +69,15 @@ class DebugDraw {
     }
 
     private void drawButton(Graphics2D g, Point point, Size size) {
-        g.setColor(new Color(128, 128, 128, 128));
+        g.setColor(new Color(128, 128, 128, 64));
+        size = size.copy();
+        if (size.getWidth() == 0) size.setWidth(1);
+        if (size.getHeight() == 0) size.setHeight(1);
+        g.fillRect(point.getX(), point.getY(), size.getWidth(), size.getHeight());
+    }
+
+    private void drawAbsoluteSize(Graphics2D g, Point point, Size size) {
+        g.setColor(new Color(128, 0, 128, 64));
         size = size.copy();
         if (size.getWidth() == 0) size.setWidth(1);
         if (size.getHeight() == 0) size.setHeight(1);

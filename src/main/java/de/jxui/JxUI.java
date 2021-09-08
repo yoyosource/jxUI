@@ -148,6 +148,6 @@ public class JxUI {
         graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         component.draw(graphics, userState, drawState, new Point(0, 0));
-        canvas.getGraphics().drawImage(bufferedImage, 0, 0, (img, infoflags, x, y, width, height) -> false);
+        canvas.getGraphics().drawImage(bufferedImage, 0, 0, (img, infoflags, x, y, width, height) -> true);
     }
 }

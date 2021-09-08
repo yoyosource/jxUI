@@ -3,6 +3,7 @@ package de.jxui;
 import de.jxui.action.Action;
 import de.jxui.action.KeyTypeAction;
 import de.jxui.components.*;
+import de.jxui.components.compounds.AbsoluteSize;
 import de.jxui.components.compounds.Centered;
 import de.jxui.components.compounds.ComponentList;
 import de.jxui.components.compounds.Repeat;
@@ -193,10 +194,16 @@ public class Test {
         List<String> list = new ArrayList<>();
         centered = new Centered(
                 new VStack(
-                        new Input("test", Input.InputType.TEXT, (userState, event) -> {
-                            list.add(userState.get("test"));
-                            return Action.Remove("test").run(userState, event);
-                        }).minSize(20, 20),
+                        new AbsoluteSize(100, 20,
+                                new HStack(
+                                        new Spacer(),
+                                        new Input("test", Input.InputType.TEXT, (userState, event) -> {
+                                            list.add(userState.get("test"));
+                                            return Action.Remove("test").run(userState, event);
+                                        }).minSize(100, 20),
+                                        new Spacer()
+                                )
+                        ),
                         new ComponentList<>(s -> {
                             return new Text(s + "");
                         }, list).Joining(() -> new Spacer(2)).Prefix(() -> new Spacer(5))
