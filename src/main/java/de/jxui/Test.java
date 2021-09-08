@@ -200,8 +200,7 @@ public class Test {
                                         new Input("test", Input.InputType.TEXT, (userState, event) -> {
                                             list.add(userState.get("test"));
                                             return Action.Remove("test").run(userState, event);
-                                        }).minSize(100, 20),
-                                        new Spacer()
+                                        }).minSize(100, 20)
                                 )
                         ),
                         new ComponentList<>(s -> {

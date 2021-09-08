@@ -40,8 +40,8 @@ public class AbsoluteSize implements Component {
 
     @Override
     public void size(Size size, UserState userState, DrawState drawState) {
-        component.size(size, userState, drawState);
-        drawState.getSizeMap().put(this, size(userState));
+        component.size(size(userState), userState, drawState);
+        drawState.getSizeMap().put(this, drawState.getSizeMap().get(component));
     }
 
     @Override
@@ -60,10 +60,8 @@ public class AbsoluteSize implements Component {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        int x = point.getX();
-        int y = point.getY();
         component.draw(graphics, userState, drawState, new Point(0, 0));
-        g.drawImage(bufferedImage, x, y, width, height, (img, infoflags, x1, y1, width, height) -> true);
+        g.drawImage(bufferedImage, point.getX(), point.getY(), width, height, (img, infoflags, x1, y1, width, height) -> true);
         point.addX(width);
         point.addY(height);
     }
