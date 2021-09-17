@@ -26,6 +26,8 @@ public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Jo
     private Supplier<Component> joining = null;
     private Supplier<Component> suffix = null;
 
+    private Integer hashCode = null;
+
     public ComponentList(@NonNull Function<T, Component> componentFunction, @NonNull java.util.List<T> list) {
         this.componentFunction = componentFunction;
         this.list = list;
@@ -60,12 +62,15 @@ public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Jo
         if (component != null) {
             component.cleanUp();
         }
-        component = null;
+        if (hashCode == null || hashCode != list.hashCode()) {
+            component = null;
+        }
     }
 
     @Override
     public Size size(UserState userState) {
         if (component == null) {
+            hashCode = list.hashCode();
             if (orientation == Orientation.VERTICAL) {
                 component = new VStack();
             } else {
