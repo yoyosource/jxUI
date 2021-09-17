@@ -14,10 +14,10 @@ import java.awt.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Joining<ComponentList<T>>, Suffix<ComponentList<T>> {
+public class ComponentCollection<T> implements Component, Prefix<ComponentCollection<T>>, Joining<ComponentCollection<T>>, Suffix<ComponentCollection<T>> {
 
     private Function<T, Component> componentFunction;
-    private java.util.List<T> list;
+    private java.util.Collection<T> list;
 
     private Orientation orientation = Orientation.VERTICAL;
     private Stack<?> component;
@@ -28,31 +28,31 @@ public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Jo
 
     private Integer hashCode = null;
 
-    public ComponentList(@NonNull Function<T, Component> componentFunction, @NonNull java.util.List<T> list) {
+    public ComponentCollection(@NonNull Function<T, Component> componentFunction, @NonNull java.util.Collection<T> list) {
         this.componentFunction = componentFunction;
         this.list = list;
     }
 
-    public ComponentList(@NonNull Orientation orientation, @NonNull Function<T, Component> componentFunction, @NonNull java.util.List<T> list) {
+    public ComponentCollection(@NonNull Orientation orientation, @NonNull Function<T, Component> componentFunction, @NonNull java.util.Collection<T> list) {
         this.orientation = orientation;
         this.componentFunction = componentFunction;
         this.list = list;
     }
 
     @Override
-    public ComponentList<T> Prefix(Supplier<Component> component) {
+    public ComponentCollection<T> Prefix(Supplier<Component> component) {
         this.prefix = component;
         return this;
     }
 
     @Override
-    public ComponentList<T> Joining(Supplier<Component> component) {
+    public ComponentCollection<T> Joining(Supplier<Component> component) {
         this.joining = component;
         return this;
     }
 
     @Override
-    public ComponentList<T> Suffix(Supplier<Component> component) {
+    public ComponentCollection<T> Suffix(Supplier<Component> component) {
         this.suffix = component;
         return this;
     }
@@ -79,9 +79,13 @@ public class ComponentList<T> implements Component, Prefix<ComponentList<T>>, Jo
             if (prefix != null) {
                 component.add(prefix.get());
             }
-            for (int i = 0; i < list.size(); i++) {
-                if (i != 0) component.add(joining.get());
-                component.add(componentFunction.apply(list.get(i)));
+            boolean b = false;
+            for (T current : list) {
+                if (b) {
+                    component.add(joining.get());
+                }
+                b = true;
+                component.add(componentFunction.apply(current));
             }
             if (suffix != null) {
                 component.add(suffix.get());

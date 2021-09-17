@@ -3,14 +3,12 @@ package de.jxui;
 import de.jxui.action.Action;
 import de.jxui.action.KeyTypeAction;
 import de.jxui.components.*;
-import de.jxui.components.compounds.AbsoluteSize;
 import de.jxui.components.compounds.Centered;
-import de.jxui.components.compounds.ComponentList;
+import de.jxui.components.compounds.ComponentCollection;
 import de.jxui.components.compounds.Repeat;
 import de.jxui.components.event.Hover;
 import de.jxui.components.event.Keyboard;
 import de.jxui.components.eventcompounds.AbsoluteInput;
-import de.jxui.components.eventcompounds.Input;
 import de.jxui.components.eventcompounds.InputType;
 import de.jxui.components.eventcompounds.Submit;
 import de.jxui.utils.Orientation;
@@ -204,7 +202,7 @@ public class Test {
                                 }).setDefaultText("Input your Text here").defaultTextColor(64, 64, 64),
                                 new Spacer()
                         ),
-                        new ComponentList<>(s -> {
+                        new ComponentCollection<>(s -> {
                             return new Text(s + "");
                         }, list).Joining(() -> new Spacer(2)).Prefix(() -> new Spacer(5))
                 )
