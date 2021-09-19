@@ -5,6 +5,7 @@ import de.jxui.components.Spacer;
 import de.jxui.components.StateComponent;
 import de.jxui.components.TextTemplate;
 import de.jxui.components.compounds.Centered;
+import de.jxui.components.compounds.Grid;
 import de.jxui.components.compounds.Repeat;
 import de.jxui.components.event.Button;
 import de.jxui.events.MouseClickEvent;
@@ -29,7 +30,20 @@ public class TestTicTacToe {
                     }).Prefix(Spacer::new).Joining(Spacer::new).Suffix(Spacer::new).Static();
                 }).Prefix(Spacer::new).Joining(Spacer::new).Suffix(Spacer::new).Static()
         );
-        new JxFrame(centered);
+        Centered other = new Centered(
+                new Grid(3, 3, (x, y) -> {
+                    return new Button(
+                            cellSet("" + x + y),
+                            new StateComponent<>(
+                                    new TextTemplate("{" + x + y + "|' '}"),
+                                    (userState, textTemplate) -> {
+                                        textTemplate.size(Math.min(userState.getCanvasHeight(), userState.getCanvasWidth()) / 10);
+                                    }
+                            )
+                    );
+                }).Prefix(Spacer::new).Joining(Spacer::new).Suffix(Spacer::new).Static()
+        );
+        new JxFrame(other);
     }
 
     private static Action<MouseClickEvent> cellSet(String cellKey) {

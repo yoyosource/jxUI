@@ -6,7 +6,7 @@ Centered{
             .size(20)
         HStack {
             Text("Hello")
-            .padding()
+                .padding()
             Spacer()
             Text("World")
         }
