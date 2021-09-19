@@ -5,6 +5,7 @@ import de.jxui.events.KeyTypeEvent;
 import de.jxui.events.MouseClickEvent;
 import de.jxui.events.MouseDragEvent;
 import de.jxui.events.MouseMoveEvent;
+import de.jxui.other.Consume;
 import de.jxui.utils.DrawState;
 import de.jxui.utils.Point;
 import de.jxui.utils.Size;
@@ -70,7 +71,11 @@ public class JxUI {
                 if (drawState == null) return;
                 MouseClickEvent mouseClickEvent = new MouseClickEvent(e);
                 log.debug("Click: {}", mouseClickEvent);
-                component.event(userState, drawState, new Point(0, 0), mouseClickEvent);
+                try {
+                    component.event(userState, drawState, new Point(0, 0), mouseClickEvent);
+                } catch (Consume consume) {
+                    // Ignored
+                }
                 log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();
@@ -85,7 +90,11 @@ public class JxUI {
                 if (drawState == null) return;
                 MouseDragEvent mouseDragEvent = new MouseDragEvent(e);
                 log.debug("Drag: {}", mouseDragEvent);
-                component.event(userState, drawState, new Point(0, 0), mouseDragEvent);
+                try {
+                    component.event(userState, drawState, new Point(0, 0), mouseDragEvent);
+                } catch (Consume consume) {
+                    // Ignored
+                }
                 log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();
@@ -99,7 +108,11 @@ public class JxUI {
                 if (drawState == null) return;
                 MouseMoveEvent mouseMoveEvent = new MouseMoveEvent(e);
                 log.debug("Move: {}", mouseMoveEvent);
-                component.event(userState, drawState, new Point(0, 0), mouseMoveEvent);
+                try {
+                    component.event(userState, drawState, new Point(0, 0), mouseMoveEvent);
+                } catch (Consume consume) {
+                    // Ignored
+                }
                 log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();
@@ -114,7 +127,11 @@ public class JxUI {
                 if (mouseLocation == null) return;
                 KeyTypeEvent keyTypeEvent = new KeyTypeEvent(e);
                 log.debug("Keyboard: {}", keyTypeEvent);
-                component.event(userState, drawState, new Point(0, 0), keyTypeEvent);
+                try {
+                    component.event(userState, drawState, new Point(0, 0), keyTypeEvent);
+                } catch (Consume consume) {
+                    // Ignored
+                }
                 log.debug("UserState: {}", userState);
                 if (drawState.isRepaint()) {
                     repainter.run();

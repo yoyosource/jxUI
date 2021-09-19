@@ -1,4 +1,4 @@
-package de.jxui.annotation;
+package de.jxui.other;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

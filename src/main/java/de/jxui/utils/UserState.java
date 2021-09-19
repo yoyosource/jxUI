@@ -14,6 +14,7 @@ public class UserState {
         void remove(Object key);
         Object get(Object key);
         Object getOrDefault(Object key, Object defaultValue);
+        void clear();
     }
 
     @Delegate(excludes = Ignored.class)
@@ -92,6 +93,11 @@ public class UserState {
     @SuppressWarnings("unchecked")
     public <T> T getOrDefault(Object key, T defaultValue) {
         return (T) state.getOrDefault(key, defaultValue);
+    }
+
+    public void clear() {
+        state.clear();
+        changeRunnable.run();
     }
 
     public String toString() {

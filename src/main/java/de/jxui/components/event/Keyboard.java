@@ -4,6 +4,7 @@ import de.jxui.action.Action;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
 import de.jxui.events.KeyTypeEvent;
+import de.jxui.other.Consume;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 
@@ -45,6 +46,8 @@ public class Keyboard implements Component {
         if (event instanceof KeyTypeEvent keyTypeEvent) {
             if (!keyTypeAction.run(userState, keyTypeEvent)) {
                 component.event(userState, drawState, point, event);
+            } else {
+                throw new Consume();
             }
         } else {
             component.event(userState, drawState, point, event);

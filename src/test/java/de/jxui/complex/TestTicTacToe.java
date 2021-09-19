@@ -1,11 +1,11 @@
 package de.jxui.complex;
 
 import de.jxui.action.Action;
-import de.jxui.components.Spacer;
-import de.jxui.components.StateComponent;
-import de.jxui.components.TextTemplate;
+import de.jxui.action.UserStatePredicate;
+import de.jxui.components.*;
 import de.jxui.components.compounds.Centered;
 import de.jxui.components.compounds.Grid;
+import de.jxui.components.compounds.If;
 import de.jxui.components.compounds.Repeat;
 import de.jxui.components.event.Button;
 import de.jxui.events.MouseClickEvent;
@@ -16,34 +16,31 @@ public class TestTicTacToe {
 
     public static void main(String[] args) {
         Centered centered = new Centered(
-                new Repeat(Orientation.HORIZONTAL, 3, x -> {
-                    return new Repeat(Orientation.VERTICAL, 3, y -> {
-                        return new Button(
-                                cellSet("" + x + y),
-                                new StateComponent<>(
-                                        new TextTemplate("{" + x + y + "|' '}"),
-                                        (userState, textTemplate) -> {
-                                            textTemplate.size(Math.min(userState.getCanvasHeight(), userState.getCanvasWidth()) / 10);
-                                        }
+                new VStack(
+                        new Grid(3, 3, (x, y) -> {
+                            return new Button(
+                                    cellSet("" + x + y),
+                                    new StateComponent<>(
+                                            new TextTemplate("{" + x + y + "|' '}"),
+                                            (userState, textTemplate) -> {
+                                                textTemplate.size(Math.min(userState.getCanvasHeight(), userState.getCanvasWidth()) / 10);
+                                            }
+                                    )
+                            );
+                        }).Prefix(Spacer::new).Joining(Spacer::new).Suffix(Spacer::new).Static(),
+                        new If(
+                                UserStatePredicate.containsAll("00", "01", "02", "10", "11", "12", "20", "21", "22"),
+                                new Button(
+                                        (userState, event) -> {
+                                            userState.clear();
+                                            return true;
+                                        },
+                                        new Text("Clear")
                                 )
-                        );
-                    }).Prefix(Spacer::new).Joining(Spacer::new).Suffix(Spacer::new).Static();
-                }).Prefix(Spacer::new).Joining(Spacer::new).Suffix(Spacer::new).Static()
+                        )
+                )
         );
-        Centered other = new Centered(
-                new Grid(3, 3, (x, y) -> {
-                    return new Button(
-                            cellSet("" + x + y),
-                            new StateComponent<>(
-                                    new TextTemplate("{" + x + y + "|' '}"),
-                                    (userState, textTemplate) -> {
-                                        textTemplate.size(Math.min(userState.getCanvasHeight(), userState.getCanvasWidth()) / 10);
-                                    }
-                            )
-                    );
-                }).Prefix(Spacer::new).Joining(Spacer::new).Suffix(Spacer::new).Static()
-        );
-        new JxFrame(other);
+        new JxFrame(centered);
     }
 
     private static Action<MouseClickEvent> cellSet(String cellKey) {

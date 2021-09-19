@@ -1,7 +1,7 @@
 package de.jxui.parser;
 
 import de.jxui.JxUIFile;
-import de.jxui.annotation.ComponentInternals;
+import de.jxui.other.ComponentInternals;
 import de.jxui.components.Component;
 import de.jxui.components.*;
 import de.jxui.components.compounds.Centered;

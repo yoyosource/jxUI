@@ -4,6 +4,7 @@ import de.jxui.action.Action;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
 import de.jxui.events.MouseClickEvent;
+import de.jxui.other.Consume;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 
@@ -49,6 +50,8 @@ public class Button implements Component {
                 if (clickPoint.getY() >= point.getY() && clickPoint.getY() <= point.getY() + size.getHeight()) {
                     if (!buttonAction.run(userState, mouseClickEvent)) {
                         component.event(userState, drawState, point, event);
+                    } else {
+                        throw new Consume();
                     }
                 } else {
                     component.event(userState, drawState, point, event);

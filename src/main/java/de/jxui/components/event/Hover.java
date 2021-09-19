@@ -4,6 +4,7 @@ import de.jxui.action.Action;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
 import de.jxui.events.MouseMoveEvent;
+import de.jxui.other.Consume;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 
@@ -53,19 +54,25 @@ public class Hover implements Component {
                     if (hovering) {
                         return;
                     }
-                    enterAction.run(userState, mouseMoveEvent);
-                    hovering = true;
+                    if (enterAction.run(userState, mouseMoveEvent)) {
+                        hovering = true;
+                        throw new Consume();
+                    }
                 } else {
                     if (hovering) {
-                        exitAction.run(userState, mouseMoveEvent);
-                        hovering = false;
+                        if (exitAction.run(userState, mouseMoveEvent)) {
+                            hovering = false;
+                            throw new Consume();
+                        }
                     }
                     component.event(userState, drawState, point, event);
                 }
             } else {
                 if (hovering) {
-                    exitAction.run(userState, mouseMoveEvent);
-                    hovering = false;
+                    if (exitAction.run(userState, mouseMoveEvent)) {
+                        hovering = false;
+                        throw new Consume();
+                    }
                 }
                 component.event(userState, drawState, point, event);
             }
