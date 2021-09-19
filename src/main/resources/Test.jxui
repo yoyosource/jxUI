@@ -1,21 +1,17 @@
-VStack {
-    Text("Hello World")
-        .size(20)
-    Text("Hello World")
-        .size(20)
-    HStack {
-        Text("Hello")
-        Spacer()
+Centered{
+    VStack{
+        Text("Hello World")
+            .size(20)
+        Text("Hello World")
+            .size(20)
+        HStack {
+            Text("Hello")
+            .padding()
+            Spacer()
+            Text("World")
+        }
+        Text("Hello World")
         Text("World")
-    }
-    ZStack {
-        Text("Hello World")
-        Text("Hello World")
-            .size(13)
-    }
-    ZStack {
-        Text("Hello World")
-        Text("Hello World")
-            .size(13)
+        TextTemplate("Hello World   {Hello|'Example Text'}")
     }
 }

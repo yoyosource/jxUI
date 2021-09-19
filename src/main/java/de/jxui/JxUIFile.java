@@ -1,15 +1,14 @@
 package de.jxui;
 
-import de.jxui.components.Component;
+import de.jxui.parser.JxUIParser;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 
 public class JxUIFile extends JxUI {
 
     private File file;
-    private long lastModified;
-
-    private Component oldComponent = null;
 
     public JxUIFile(File file) {
         if (!file.isFile()) {
@@ -19,13 +18,33 @@ public class JxUIFile extends JxUI {
             throw new SecurityException("File does not exist");
         }
         this.file = file;
-        lastModified = file.lastModified();
+        Thread thread = new Thread(() -> {
+            long lastModified = file.lastModified();
+            while (true) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                if (lastModified < file.lastModified()) {
+                    parse();
+                    lastModified = file.lastModified();
+                }
+            }
+        });
+        thread.setName("JxUIFile Updater for '" + file.getAbsolutePath() + "'");
+        thread.setDaemon(true);
+        thread.start();
 
         parse();
     }
 
     private void parse() {
-        oldComponent = component;
-        component = null;
+        try {
+            this.component = new JxUIParser(new BufferedInputStream(new FileInputStream(file))).getComponent();
+            repainter.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

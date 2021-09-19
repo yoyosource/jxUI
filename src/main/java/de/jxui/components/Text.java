@@ -121,7 +121,7 @@ public class Text extends Element<Text> {
             current.addY(g.getFontMetrics().getHeight());
             g.drawString(s, current.getX() + offset.getLeft() + padding.getLeft(), current.getY() + offset.getTop() + padding.getTop());
         });
-        debugDraw(g, drawState, point.add(offset).add(padding));
+        debugDraw(g, drawState, point.add(offset));
         point.add(drawState.getSizeMap().get(this));
     }
 

@@ -38,7 +38,7 @@ public class JxUI {
     private UserState userState;
 
     private Canvas canvas = null;
-    private Runnable repainter = () -> {
+    protected Runnable repainter = () -> {
         if (canvas == null) return;
         draw(canvas);
     };
