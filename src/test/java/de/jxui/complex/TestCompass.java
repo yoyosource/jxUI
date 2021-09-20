@@ -28,7 +28,7 @@ public class TestCompass {
                         ),
                         new Spacer(),
                         new If(
-                                userState -> userState.getCanvasWidth() > 600,
+                                userState -> userState.getCanvasWidth() > 600 && userState.getCanvasHeight() > 200,
                                 new HStack(
                                         new Spacer(),
                                         new Text("Earth")

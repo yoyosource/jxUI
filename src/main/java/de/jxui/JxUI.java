@@ -166,6 +166,7 @@ public class JxUI {
         log.debug("Draw: " + canvas.getSize());
         Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         drawState = new DrawState(debug);
         Size canvasSize = new Size(canvas.getWidth(), canvas.getHeight());
