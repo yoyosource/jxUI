@@ -2,14 +2,18 @@ package de.jxui.utils;
 
 import de.jxui.JxUI;
 import de.jxui.components.Component;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class JxFrame {
 
+    @Getter
+    private JxUI jxUI;
+
     public JxFrame(Component component) {
-        JxUI jxUI = new JxUI(component);
+        jxUI = new JxUI(component);
         jxUI.setDebug(true);
 
         JFrame jFrame = new JFrame();
@@ -26,5 +30,4 @@ public class JxFrame {
         jFrame.pack();
         jFrame.setVisible(true);
     }
-
 }

@@ -8,14 +8,14 @@ import java.awt.event.MouseEvent;
 
 @Getter
 @ToString
-public class MouseDragEvent implements Event {
+public class ClickEvent implements Event {
 
     private MouseButton button;
     private Point point;
     private int modifier;
 
-    public MouseDragEvent(MouseEvent mouseEvent) {
-        if (mouseEvent.getID() != MouseEvent.MOUSE_DRAGGED) {
+    public ClickEvent(MouseEvent mouseEvent) {
+        if (mouseEvent.getID() != MouseEvent.MOUSE_CLICKED) {
             throw new SecurityException();
         }
         button = switch (mouseEvent.getButton()) {

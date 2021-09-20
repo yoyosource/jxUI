@@ -1,10 +1,7 @@
 package de.jxui;
 
 import de.jxui.components.Component;
-import de.jxui.events.KeyTypeEvent;
-import de.jxui.events.MouseClickEvent;
-import de.jxui.events.MouseDragEvent;
-import de.jxui.events.MouseMoveEvent;
+import de.jxui.events.*;
 import de.jxui.other.Consume;
 import de.jxui.utils.DrawState;
 import de.jxui.utils.Point;
@@ -16,10 +13,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 @Slf4j
@@ -64,15 +58,34 @@ public class JxUI {
     }
 
     public void addListenersTo(Canvas canvas) {
+        canvas.addMouseWheelListener(new MouseAdapter() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                mouseLocation = new Point(e.getX(), e.getY());
+                if (drawState == null) return;
+                ScrollEvent scrollEvent = new ScrollEvent(e);
+                log.debug("Wheel: {}", scrollEvent);
+                try {
+                    component.event(userState, drawState, new Point(0, 0), scrollEvent);
+                } catch (Consume consume) {
+                    // Ignored
+                }
+                log.debug("UserState: {}", userState);
+                if (drawState.isRepaint()) {
+                    repainter.run();
+                    canvas.repaint();
+                }
+            }
+        });
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mouseLocation = new Point(e.getX(), e.getY());
                 if (drawState == null) return;
-                MouseClickEvent mouseClickEvent = new MouseClickEvent(e);
-                log.debug("Click: {}", mouseClickEvent);
+                ClickEvent clickEvent = new ClickEvent(e);
+                log.debug("Click: {}", clickEvent);
                 try {
-                    component.event(userState, drawState, new Point(0, 0), mouseClickEvent);
+                    component.event(userState, drawState, new Point(0, 0), clickEvent);
                 } catch (Consume consume) {
                     // Ignored
                 }
@@ -88,10 +101,10 @@ public class JxUI {
             public void mouseDragged(MouseEvent e) {
                 mouseLocation = new Point(e.getX(), e.getY());
                 if (drawState == null) return;
-                MouseDragEvent mouseDragEvent = new MouseDragEvent(e);
-                log.debug("Drag: {}", mouseDragEvent);
+                DragEvent dragEvent = new DragEvent(e);
+                log.debug("Drag: {}", dragEvent);
                 try {
-                    component.event(userState, drawState, new Point(0, 0), mouseDragEvent);
+                    component.event(userState, drawState, new Point(0, 0), dragEvent);
                 } catch (Consume consume) {
                     // Ignored
                 }
@@ -106,10 +119,10 @@ public class JxUI {
             public void mouseMoved(MouseEvent e) {
                 mouseLocation = new Point(e.getX(), e.getY());
                 if (drawState == null) return;
-                MouseMoveEvent mouseMoveEvent = new MouseMoveEvent(e);
-                log.debug("Move: {}", mouseMoveEvent);
+                MoveEvent moveEvent = new MoveEvent(e);
+                log.debug("Move: {}", moveEvent);
                 try {
-                    component.event(userState, drawState, new Point(0, 0), mouseMoveEvent);
+                    component.event(userState, drawState, new Point(0, 0), moveEvent);
                 } catch (Consume consume) {
                     // Ignored
                 }

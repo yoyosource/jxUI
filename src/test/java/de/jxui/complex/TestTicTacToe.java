@@ -6,11 +6,9 @@ import de.jxui.components.*;
 import de.jxui.components.compounds.Centered;
 import de.jxui.components.compounds.Grid;
 import de.jxui.components.compounds.If;
-import de.jxui.components.compounds.Repeat;
 import de.jxui.components.event.Button;
-import de.jxui.events.MouseClickEvent;
+import de.jxui.events.ClickEvent;
 import de.jxui.utils.JxFrame;
-import de.jxui.utils.Orientation;
 
 public class TestTicTacToe {
 
@@ -43,7 +41,7 @@ public class TestTicTacToe {
         new JxFrame(centered);
     }
 
-    private static Action<MouseClickEvent> cellSet(String cellKey) {
+    private static Action<ClickEvent> cellSet(String cellKey) {
         System.out.println(cellKey);
         return (userState, event) -> {
             if (userState.containsKey(cellKey)) {

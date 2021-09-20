@@ -8,11 +8,11 @@ import java.awt.event.MouseEvent;
 
 @Getter
 @ToString
-public class MouseMoveEvent implements Event {
+public class MoveEvent implements Event {
 
     private Point point;
 
-    public MouseMoveEvent(MouseEvent mouseEvent) {
+    public MoveEvent(MouseEvent mouseEvent) {
         if (mouseEvent.getID() != MouseEvent.MOUSE_MOVED) {
             throw new SecurityException();
         }

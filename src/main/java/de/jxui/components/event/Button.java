@@ -3,7 +3,7 @@ package de.jxui.components.event;
 import de.jxui.action.Action;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
-import de.jxui.events.MouseClickEvent;
+import de.jxui.events.ClickEvent;
 import de.jxui.other.Consume;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
@@ -12,10 +12,10 @@ import java.awt.*;
 
 public class Button implements Component {
 
-    private Action<MouseClickEvent> buttonAction;
+    private Action<ClickEvent> buttonAction;
     private Component component;
 
-    public Button(Action<MouseClickEvent> buttonAction, Component component) {
+    public Button(Action<ClickEvent> buttonAction, Component component) {
         this.buttonAction = buttonAction;
         this.component = component;
     }
@@ -43,12 +43,12 @@ public class Button implements Component {
 
     @Override
     public void event(UserState userState, DrawState drawState, Point point, Event event) {
-        if (event instanceof MouseClickEvent mouseClickEvent) {
+        if (event instanceof ClickEvent clickEvent) {
             Size size = drawState.getSizeMap().get(this);
-            Point clickPoint = mouseClickEvent.getPoint();
+            Point clickPoint = clickEvent.getPoint();
             if (clickPoint.getX() >= point.getX() && clickPoint.getX() <= point.getX() + size.getWidth()) {
                 if (clickPoint.getY() >= point.getY() && clickPoint.getY() <= point.getY() + size.getHeight()) {
-                    if (!buttonAction.run(userState, mouseClickEvent)) {
+                    if (!buttonAction.run(userState, clickEvent)) {
                         component.event(userState, drawState, point, event);
                     } else {
                         throw new Consume();

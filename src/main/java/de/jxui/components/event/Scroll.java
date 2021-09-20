@@ -4,19 +4,20 @@ import de.jxui.action.Action;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
 import de.jxui.events.MoveEvent;
+import de.jxui.events.ScrollEvent;
 import de.jxui.other.Consume;
-import de.jxui.utils.Point;
 import de.jxui.utils.*;
+import de.jxui.utils.Point;
 
 import java.awt.*;
 
-public class Move implements Component {
+public class Scroll implements Component {
 
-    private Action<MoveEvent> moveAction;
+    private Action<ScrollEvent> scrollAction;
     private Component component;
 
-    public Move(Action<MoveEvent> moveAction, Component component) {
-        this.moveAction = moveAction;
+    public Scroll(Action<ScrollEvent> scrollAction, Component component) {
+        this.scrollAction = scrollAction;
         this.component = component;
     }
 
@@ -43,12 +44,12 @@ public class Move implements Component {
 
     @Override
     public void event(UserState userState, DrawState drawState, Point point, Event event) {
-        if (event instanceof MoveEvent moveEvent) {
+        if (event instanceof ScrollEvent scrollEvent) {
             Size size = drawState.getSizeMap().get(this);
-            Point clickPoint = moveEvent.getPoint();
+            Point clickPoint = scrollEvent.getPoint();
             if (clickPoint.getX() >= point.getX() && clickPoint.getX() <= point.getX() + size.getWidth()) {
                 if (clickPoint.getY() >= point.getY() && clickPoint.getY() <= point.getY() + size.getHeight()) {
-                    if (!moveAction.run(userState, moveEvent)) {
+                    if (!scrollAction.run(userState, scrollEvent)) {
                         component.event(userState, drawState, point, event);
                     } else {
                         throw new Consume();

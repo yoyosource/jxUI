@@ -3,7 +3,7 @@ package de.jxui.components.event;
 import de.jxui.action.Action;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
-import de.jxui.events.MouseMoveEvent;
+import de.jxui.events.MoveEvent;
 import de.jxui.other.Consume;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
@@ -12,12 +12,12 @@ import java.awt.*;
 
 public class Hover implements Component {
 
-    private Action<MouseMoveEvent> enterAction;
-    private Action<MouseMoveEvent> exitAction;
+    private Action<MoveEvent> enterAction;
+    private Action<MoveEvent> exitAction;
     private boolean hovering = false;
     private Component component;
 
-    public Hover(Action<MouseMoveEvent> enterAction, Action<MouseMoveEvent> exitAction, Component component) {
+    public Hover(Action<MoveEvent> enterAction, Action<MoveEvent> exitAction, Component component) {
         this.enterAction = enterAction;
         this.exitAction = exitAction;
         this.component = component;
@@ -46,21 +46,21 @@ public class Hover implements Component {
 
     @Override
     public void event(UserState userState, DrawState drawState, Point point, Event event) {
-        if (event instanceof MouseMoveEvent mouseMoveEvent) {
+        if (event instanceof MoveEvent moveEvent) {
             Size size = drawState.getSizeMap().get(this);
-            Point clickPoint = mouseMoveEvent.getPoint();
+            Point clickPoint = moveEvent.getPoint();
             if (clickPoint.getX() >= point.getX() && clickPoint.getX() <= point.getX() + size.getWidth()) {
                 if (clickPoint.getY() >= point.getY() && clickPoint.getY() <= point.getY() + size.getHeight()) {
                     if (hovering) {
                         return;
                     }
-                    if (enterAction.run(userState, mouseMoveEvent)) {
+                    if (enterAction.run(userState, moveEvent)) {
                         hovering = true;
                         throw new Consume();
                     }
                 } else {
                     if (hovering) {
-                        if (exitAction.run(userState, mouseMoveEvent)) {
+                        if (exitAction.run(userState, moveEvent)) {
                             hovering = false;
                             throw new Consume();
                         }
@@ -69,7 +69,7 @@ public class Hover implements Component {
                 }
             } else {
                 if (hovering) {
-                    if (exitAction.run(userState, mouseMoveEvent)) {
+                    if (exitAction.run(userState, moveEvent)) {
                         hovering = false;
                         throw new Consume();
                     }
