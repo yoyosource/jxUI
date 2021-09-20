@@ -1,6 +1,6 @@
 package de.jxui.components.eventcompounds;
 
-import de.jxui.action.Action;
+import de.jxui.behaviour.Action;
 import de.jxui.components.Component;
 import de.jxui.components.event.Keyboard;
 import de.jxui.events.KeyTypeEvent;

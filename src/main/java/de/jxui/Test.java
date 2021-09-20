@@ -1,7 +1,7 @@
 package de.jxui;
 
-import de.jxui.action.Action;
-import de.jxui.action.KeyTypeAction;
+import de.jxui.behaviour.Action;
+import de.jxui.behaviour.KeyTypeAction;
 import de.jxui.components.*;
 import de.jxui.components.compounds.Centered;
 import de.jxui.components.compounds.ComponentCollection;

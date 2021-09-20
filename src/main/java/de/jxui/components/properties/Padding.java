@@ -1,4 +1,4 @@
-package de.jxui.components.behaviour;
+package de.jxui.components.properties;
 
 import de.jxui.utils.Direction;
 

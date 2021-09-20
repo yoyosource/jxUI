@@ -1,7 +1,7 @@
 package de.jxui.complex;
 
-import de.jxui.action.Action;
-import de.jxui.action.UserStatePredicate;
+import de.jxui.behaviour.Action;
+import de.jxui.behaviour.UserStatePredicate;
 import de.jxui.components.*;
 import de.jxui.components.compounds.Centered;
 import de.jxui.components.compounds.Grid;

@@ -10,15 +10,15 @@ import java.util.Map;
 public class UserState {
 
     private interface Ignored {
-        void put(Object key, Object value);
-        void remove(Object key);
-        Object get(Object key);
-        Object getOrDefault(Object key, Object defaultValue);
+        void put(String key, Object value);
+        void remove(String key);
+        Object get(String key);
+        Object getOrDefault(String key, Object defaultValue);
         void clear();
     }
 
     @Delegate(excludes = Ignored.class)
-    private Map<Object, Object> state = new HashMap<>();
+    private Map<String, Object> state = new HashMap<>();
 
     private String operatingSystem = null;
     private boolean windows = false;
@@ -71,7 +71,7 @@ public class UserState {
         return size.getHeight();
     }
 
-    public void put(Object key, Object value) {
+    public void put(String key, Object value) {
         Object currentValue = get(key);
         if (currentValue == null && value == null) {
             return;
@@ -80,18 +80,18 @@ public class UserState {
         changeRunnable.run();
     }
 
-    public void remove(Object key) {
+    public void remove(String key) {
         state.remove(key);
         changeRunnable.run();
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T get(Object key) {
+    public <T> T get(String key) {
         return (T) state.get(key);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getOrDefault(Object key, T defaultValue) {
+    public <T> T getOrDefault(String key, T defaultValue) {
         return (T) state.getOrDefault(key, defaultValue);
     }
 

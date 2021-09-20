@@ -1,9 +1,8 @@
 package de.jxui.components.event;
 
-import de.jxui.action.Action;
+import de.jxui.behaviour.Action;
 import de.jxui.components.Component;
 import de.jxui.events.Event;
-import de.jxui.events.MoveEvent;
 import de.jxui.events.ScrollEvent;
 import de.jxui.other.Consume;
 import de.jxui.utils.*;

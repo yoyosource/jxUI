@@ -1,7 +1,7 @@
 package de.jxui.components;
 
-import de.jxui.components.behaviour.Offset;
-import de.jxui.components.behaviour.Padding;
+import de.jxui.components.properties.Offset;
+import de.jxui.components.properties.Padding;
 import de.jxui.utils.Direction;
 import lombok.NonNull;
 

@@ -1,4 +1,4 @@
-package de.jxui.action;
+package de.jxui.behaviour;
 
 import lombok.experimental.UtilityClass;
 

@@ -1,6 +1,6 @@
 package de.jxui.components.eventcompounds;
 
-import de.jxui.action.Action;
+import de.jxui.behaviour.Action;
 import de.jxui.components.Group;
 import de.jxui.components.StateComponent;
 import de.jxui.components.Text;

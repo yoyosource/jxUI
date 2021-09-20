@@ -1,4 +1,4 @@
-package de.jxui.action;
+package de.jxui.behaviour;
 
 import de.jxui.events.KeyTypeEvent;
 import lombok.experimental.UtilityClass;
@@ -16,10 +16,26 @@ public class KeyTypeAction {
                 if (current.length() > 0) {
                     userState.put(key, current.substring(0, current.length() - 1));
                 }
+            } else if (event.getModifier() == KeyEvent.VK_SHIFT && event.getKeyCode() == '\n') {
+                userState.put(key, current + '\n');
             } else {
                 userState.put(key, current + event.getKeyChar());
             }
-            return false;
+            return true;
+        };
+    }
+
+    public Action<KeyTypeEvent> SingleLineText(String key) {
+        return (userState, event) -> {
+            String current = userState.getOrDefault(key, "");
+            if (event.getExtendedKeyCode() == KeyEvent.VK_DELETE || event.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                if (current.length() > 0) {
+                    userState.put(key, current.substring(0, current.length() - 1));
+                }
+            } else if (event.getExtendedKeyCode() != '\n') {
+                userState.put(key, current + event.getKeyChar());
+            }
+            return true;
         };
     }
 
