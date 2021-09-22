@@ -64,6 +64,7 @@ public class ValueComponent<T> implements Component {
             size(userState);
         }
         component.size(size, userState, drawState);
+        drawState.getSizeMap().put(this, drawState.getSizeMap().get(component));
     }
 
     @Override

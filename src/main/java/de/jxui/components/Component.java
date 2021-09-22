@@ -6,7 +6,6 @@ import de.jxui.utils.*;
 
 import java.awt.*;
 
-// @IndexSubclasses
 public interface Component {
     default void cleanUp() {
     }

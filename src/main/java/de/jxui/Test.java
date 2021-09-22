@@ -5,6 +5,7 @@ import de.jxui.behaviour.KeyTypeAction;
 import de.jxui.components.*;
 import de.jxui.components.compounds.Centered;
 import de.jxui.components.compounds.ComponentCollection;
+import de.jxui.components.compounds.ComponentMap;
 import de.jxui.components.compounds.Repeat;
 import de.jxui.components.event.Hover;
 import de.jxui.components.event.Keyboard;
@@ -16,7 +17,9 @@ import de.jxui.utils.Orientation;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Test {
 
@@ -206,6 +209,14 @@ public class Test {
                             return new Text(s + "");
                         }, list).Joining(() -> new Spacer(2)).Prefix(() -> new Spacer(5))
                 )
+        );
+
+        Map<String, String> propertyMap = new HashMap<>();
+        propertyMap.put("Hello", "World");
+        propertyMap.put("This", "not");
+        centered = new Centered(
+                new ComponentMap<>(Text::new, Text::new, propertyMap)
+                        .Prefix(Spacer::new).EntryJoining(() -> new HStack(new Text(": "), new Spacer())).Suffix(Spacer::new).Joining(() -> new Spacer(2))
         );
 
         JxUI jxUI = new JxUI(centered);

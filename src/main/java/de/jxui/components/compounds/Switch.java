@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * Render one or more components, each decided by a {@link Predicate}.
+ */
 public class Switch implements Component {
 
     private List<Case> caseList = new ArrayList<>();

@@ -9,6 +9,9 @@ import lombok.NonNull;
 import java.awt.*;
 import java.util.function.Predicate;
 
+/**
+ * Render one or another component, decided by a {@link Predicate}.
+ */
 public class If implements Component {
 
     private Predicate<UserState> predicate;

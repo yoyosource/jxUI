@@ -11,6 +11,9 @@ import lombok.experimental.Accessors;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Constrains the wrapped component to a specified size.
+ */
 @Accessors(chain = true)
 public class AbsoluteSize implements Component {
 
@@ -60,6 +63,7 @@ public class AbsoluteSize implements Component {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         component.draw(graphics, userState, drawState, new Point(0, 0));
         g.drawImage(bufferedImage, point.getX(), point.getY(), width, height, (img, infoflags, x1, y1, width, height) -> true);
         point.addX(width);

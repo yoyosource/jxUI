@@ -17,6 +17,9 @@ import java.awt.*;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
+/**
+ * Render some kind of Grid, with columns and rows.
+ */
 public class Grid implements Component, Prefix<Grid>, Suffix<Grid>, Joining<Grid>, Static<Grid> {
 
     private boolean staticRepeat = false;

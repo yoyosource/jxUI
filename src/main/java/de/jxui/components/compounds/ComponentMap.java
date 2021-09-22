@@ -8,22 +8,23 @@ import de.jxui.components.properties.Joining;
 import de.jxui.components.properties.Prefix;
 import de.jxui.components.properties.Suffix;
 import de.jxui.events.Event;
-import de.jxui.utils.Point;
 import de.jxui.utils.*;
+import de.jxui.utils.Point;
 import lombok.NonNull;
 
 import java.awt.*;
-import java.util.Collection;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Render some kind of {@link Collection} either vertically or horizontally.
+ * Render some kind of {@link Map} either vertically or horizontally.
  */
-public class ComponentCollection<T> implements Component, Prefix<ComponentCollection<T>>, Joining<ComponentCollection<T>>, Suffix<ComponentCollection<T>> {
+public class ComponentMap<K, V> implements Component, Prefix<ComponentMap<K, V>>, Joining<ComponentMap<K, V>>, Suffix<ComponentMap<K, V>> {
 
-    private Function<T, Component> componentFunction;
-    private Collection<T> list;
+    private Function<K, Component> keyFunction;
+    private Function<V, Component> valueFunction;
+    private Map<K, V> map;
 
     private Orientation orientation = Orientation.VERTICAL;
     private Stack<?> component;
@@ -32,34 +33,55 @@ public class ComponentCollection<T> implements Component, Prefix<ComponentCollec
     private Supplier<Component> joining = null;
     private Supplier<Component> suffix = null;
 
+    private Supplier<Component> entryPrefix = null;
+    private Supplier<Component> entryJoining = null;
+    private Supplier<Component> entrySuffix = null;
+
     private Integer hashCode = null;
 
-    public ComponentCollection(@NonNull Function<T, Component> componentFunction, @NonNull Collection<T> list) {
-        this.componentFunction = componentFunction;
-        this.list = list;
+    public ComponentMap(@NonNull Function<K, Component> keyFunction, @NonNull Function<V, Component> valueFunction, @NonNull Map<K, V> map) {
+        this.keyFunction = keyFunction;
+        this.valueFunction = valueFunction;
+        this.map = map;
     }
 
-    public ComponentCollection(@NonNull Orientation orientation, @NonNull Function<T, Component> componentFunction, @NonNull Collection<T> list) {
+    public ComponentMap(@NonNull Orientation orientation, @NonNull Function<K, Component> keyFunction, @NonNull Function<V, Component> valueFunction, @NonNull Map<K, V> map) {
         this.orientation = orientation;
-        this.componentFunction = componentFunction;
-        this.list = list;
+        this.keyFunction = keyFunction;
+        this.valueFunction = valueFunction;
+        this.map = map;
     }
 
     @Override
-    public ComponentCollection<T> Prefix(Supplier<Component> component) {
+    public ComponentMap<K, V> Prefix(Supplier<Component> component) {
         this.prefix = component;
         return this;
     }
 
     @Override
-    public ComponentCollection<T> Joining(Supplier<Component> component) {
+    public ComponentMap<K, V> Joining(Supplier<Component> component) {
         this.joining = component;
         return this;
     }
 
     @Override
-    public ComponentCollection<T> Suffix(Supplier<Component> component) {
+    public ComponentMap<K, V> Suffix(Supplier<Component> component) {
         this.suffix = component;
+        return this;
+    }
+
+    public ComponentMap<K, V> EntryPrefix(Supplier<Component> component) {
+        this.entryPrefix = component;
+        return this;
+    }
+
+    public ComponentMap<K, V> EntryJoining(Supplier<Component> component) {
+        this.entryJoining = component;
+        return this;
+    }
+
+    public ComponentMap<K, V> EntrySuffix(Supplier<Component> component) {
+        this.entrySuffix = component;
         return this;
     }
 
@@ -68,7 +90,7 @@ public class ComponentCollection<T> implements Component, Prefix<ComponentCollec
         if (component != null) {
             component.cleanUp();
         }
-        if (hashCode == null || hashCode != list.hashCode()) {
+        if (hashCode == null || hashCode != map.hashCode()) {
             component = null;
         }
     }
@@ -76,7 +98,7 @@ public class ComponentCollection<T> implements Component, Prefix<ComponentCollec
     @Override
     public Size size(UserState userState) {
         if (component == null) {
-            hashCode = list.hashCode();
+            hashCode = map.hashCode();
             if (orientation == Orientation.VERTICAL) {
                 component = new VStack();
             } else {
@@ -86,12 +108,29 @@ public class ComponentCollection<T> implements Component, Prefix<ComponentCollec
                 component.add(prefix.get());
             }
             boolean b = false;
-            for (T current : list) {
+            for (Map.Entry<K, V> entry : map.entrySet()) {
                 if (b && joining != null) {
                     component.add(joining.get());
                 }
                 b = true;
-                component.add(componentFunction.apply(current));
+                Stack<?> inner;
+                if (orientation == Orientation.VERTICAL) {
+                    inner = new HStack();
+                } else {
+                    inner = new VStack();
+                }
+                if (entryPrefix != null) {
+                    inner.add(entryPrefix.get());
+                }
+                inner.add(keyFunction.apply(entry.getKey()));
+                if (entryJoining != null) {
+                    inner.add(entryJoining.get());
+                }
+                inner.add(valueFunction.apply(entry.getValue()));
+                if (entrySuffix != null) {
+                    inner.add(entrySuffix.get());
+                }
+                component.add(inner);
             }
             if (suffix != null) {
                 component.add(suffix.get());
