@@ -3,10 +3,7 @@ package de.jxui;
 import de.jxui.behaviour.Action;
 import de.jxui.behaviour.KeyTypeAction;
 import de.jxui.components.*;
-import de.jxui.components.compounds.Centered;
-import de.jxui.components.compounds.ComponentCollection;
-import de.jxui.components.compounds.ComponentMap;
-import de.jxui.components.compounds.Repeat;
+import de.jxui.components.compounds.*;
 import de.jxui.components.event.Hover;
 import de.jxui.components.event.Keyboard;
 import de.jxui.components.eventcompounds.AbsoluteInput;
@@ -217,6 +214,16 @@ public class Test {
         centered = new Centered(
                 new ComponentMap<>(Text::new, Text::new, propertyMap)
                         .Prefix(Spacer::new).EntryJoining(() -> new HStack(new Text(": "), new Spacer())).Suffix(Spacer::new).Joining(() -> new Spacer(2))
+        );
+
+        centered = new Centered(
+                new Rotate(0,
+                        new HStack(
+                                new Spacer(),
+                                new Text("Hello World"),
+                                new Spacer()
+                        )
+                ).setDegree(90)
         );
 
         JxUI jxUI = new JxUI(centered);
