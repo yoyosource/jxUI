@@ -226,6 +226,16 @@ public class Test {
                 ).setDegree(90)
         );
 
+        centered = new Centered(
+                new Flip(
+                        Orientation.VERTICAL,
+                        new Flip(
+                                Orientation.HORIZONTAL,
+                                new Text("Hello World")
+                        )
+                )
+        );
+
         JxUI jxUI = new JxUI(centered);
         // jxUI.getUserState().put("focus", "text");
         jxUI.setDebug(true);

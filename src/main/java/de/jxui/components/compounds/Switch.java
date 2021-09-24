@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * Render one or more components, each decided by a {@link Predicate}.
+ * Render one component, decided by a {@link Predicate}.
  */
 public class Switch implements Component {
 
