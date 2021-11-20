@@ -158,27 +158,8 @@ public class JxUI {
     }
 
     public void draw(Canvas canvas) {
-        log.debug("Cleanup");
-        component.cleanUp();
-
-        BufferedImage bufferedImage = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = JxUIDraw.draw(component, userState, canvas.getWidth(), canvas.getHeight(), newDrawState -> drawState = newDrawState, size, debug);
         this.canvas = canvas;
-        log.debug("Draw: " + canvas.getSize());
-        Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-        drawState = new DrawState(debug);
-        Size canvasSize = new Size(canvas.getWidth(), canvas.getHeight());
-        size.setWidth(canvasSize.getWidth());
-        size.setHeight(canvasSize.getHeight());
-        component.size(canvasSize, userState, drawState);
-        log.debug("DrawState: {}   CanvasSize: {}", drawState.getSizeMap(), canvasSize);
-
-        graphics.setColor(Color.WHITE);
-        graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-        component.draw(graphics, userState, drawState, new Point(0, 0));
         canvas.getGraphics().drawImage(bufferedImage, 0, 0, (img, infoflags, x, y, width, height) -> true);
     }
 }

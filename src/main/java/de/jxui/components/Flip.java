@@ -49,7 +49,16 @@ public class Flip extends Element<Flip> implements Component {
 
     @Override
     public void event(UserState userState, DrawState drawState, Point point, Event event) {
+        if (orientation == Orientation.VERTICAL) {
+
+        } else {
+
+        }
         // TODO: implement flipping behaviour
+    }
+
+    private int flip(int min, int size, int point) {
+        return size - (point - min);
     }
 
     @Override

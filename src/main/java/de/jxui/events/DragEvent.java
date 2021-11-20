@@ -8,11 +8,17 @@ import java.awt.event.MouseEvent;
 
 @Getter
 @ToString
-public class DragEvent implements Event {
+public class DragEvent implements Event<DragEvent> {
 
     private MouseButton button;
     private Point point;
     private int modifier;
+
+    private DragEvent(DragEvent dragEvent) {
+        this.button = dragEvent.button;
+        this.point = dragEvent.point.copy();
+        this.modifier = dragEvent.modifier;
+    }
 
     public DragEvent(MouseEvent mouseEvent) {
         if (mouseEvent.getID() != MouseEvent.MOUSE_DRAGGED) {
@@ -26,5 +32,10 @@ public class DragEvent implements Event {
         };
         point = new Point(mouseEvent.getX(), mouseEvent.getY());
         modifier = mouseEvent.getModifiersEx();
+    }
+
+    @Override
+    public DragEvent copy() {
+        return new DragEvent(this);
     }
 }

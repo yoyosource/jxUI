@@ -1,22 +1,15 @@
 package de.jxui;
 
 import de.jxui.behaviour.Action;
-import de.jxui.behaviour.KeyTypeAction;
 import de.jxui.components.*;
-import de.jxui.components.compounds.*;
+import de.jxui.components.compounds.Centered;
+import de.jxui.components.compounds.Repeat;
+import de.jxui.components.event.Button;
 import de.jxui.components.event.Hover;
-import de.jxui.components.event.Keyboard;
-import de.jxui.components.eventcompounds.AbsoluteInput;
-import de.jxui.components.eventcompounds.InputType;
-import de.jxui.components.eventcompounds.Submit;
 import de.jxui.utils.Orientation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Test {
 
@@ -153,10 +146,26 @@ public class Test {
         */
 
         Centered centered = new Centered(
-                /*new Button(
-                        ButtonAction.NumberIncrement("clicks", 1),
-                        new TextTemplate("Clicks: {clicks|'0'}")
-                )*/
+                new VStack(
+                        new HStack(
+                                new Spacer(),
+                                new Text("First"),
+                                new Spacer()
+                        ),
+                        new Spacer(),
+                        new Divider(),
+                        new Spacer(),
+                        new Hover(
+                                Action.Set("color", new Color(255, 0, 0)),
+                                Action.Remove("color"),
+                                new Button(
+                                        Action.NumberIncrement("clicks", 1),
+                                        new StateComponent<>(new TextTemplate("Clicks: {clicks|'0'}"), (userState, textTemplate) -> {
+                                            textTemplate.setColor(userState.getOrDefault("color", new Color(0, 0, 0)));
+                                        })
+                                )
+                        )
+                )
                 /*new Move(
                         (userState, mouseMoveEvent) -> {
                             System.out.println("Hover");
@@ -164,7 +173,7 @@ public class Test {
                         },
                         new Text("Hello World")
                 )*/
-                new Submit(
+                /*new Submit(
                         Action.Remove("text"),
                         new Keyboard(
                                 Action.Check("focus", "text", KeyTypeAction.Long("text", 16)),
@@ -188,10 +197,10 @@ public class Test {
                                         )
                                 )
                         )
-                )
+                )*/
         );
 
-        List<String> list = new ArrayList<>();
+        /*List<String> list = new ArrayList<>();
         centered = new Centered(
                 new VStack(
                         new HStack(
@@ -206,17 +215,17 @@ public class Test {
                             return new Text(s + "");
                         }, list).Joining(() -> new Spacer(2)).Prefix(() -> new Spacer(5))
                 )
-        );
+        );*/
 
-        Map<String, String> propertyMap = new HashMap<>();
+        /*Map<String, String> propertyMap = new HashMap<>();
         propertyMap.put("Hello", "World");
         propertyMap.put("This", "not");
         centered = new Centered(
                 new ComponentMap<>(Text::new, Text::new, propertyMap)
                         .Prefix(Spacer::new).EntryJoining(() -> new HStack(new Text(": "), new Spacer())).Suffix(Spacer::new).Joining(() -> new Spacer(2))
-        );
+        );*/
 
-        centered = new Centered(
+        /*centered = new Centered(
                 new Rotate(0,
                         new HStack(
                                 new Spacer(),
@@ -224,9 +233,9 @@ public class Test {
                                 new Spacer()
                         )
                 ).setDegree(90)
-        );
+        );*/
 
-        centered = new Centered(
+        /*centered = new Centered(
                 new Flip(
                         Orientation.VERTICAL,
                         new Flip(
@@ -234,11 +243,11 @@ public class Test {
                                 new Text("Hello World")
                         )
                 )
-        );
+        );*/
 
         JxUI jxUI = new JxUI(centered);
         // jxUI.getUserState().put("focus", "text");
-        jxUI.setDebug(true);
+        jxUI.setDebug(false);
 
         JFrame jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

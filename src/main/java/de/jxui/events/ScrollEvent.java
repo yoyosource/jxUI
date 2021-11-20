@@ -9,7 +9,7 @@ import java.awt.event.MouseWheelEvent;
 
 @Getter
 @ToString
-public class ScrollEvent implements Event {
+public class ScrollEvent implements Event<ScrollEvent> {
 
     private int unitsToScroll;
     private int scrollAmount;
@@ -17,6 +17,15 @@ public class ScrollEvent implements Event {
     private int wheelRotation;
     private Point point;
     private int modifier;
+
+    private ScrollEvent(ScrollEvent scrollEvent) {
+        this.unitsToScroll = scrollEvent.unitsToScroll;
+        this.scrollAmount = scrollEvent.scrollAmount;
+        this.preciseWheelRotation = scrollEvent.preciseWheelRotation;
+        this.wheelRotation = scrollEvent.wheelRotation;
+        this.point = scrollEvent.point.copy();
+        this.modifier = scrollEvent.modifier;
+    }
 
     public ScrollEvent(MouseWheelEvent mouseEvent) {
         if (mouseEvent.getID() != MouseEvent.MOUSE_WHEEL) {
@@ -28,5 +37,10 @@ public class ScrollEvent implements Event {
         wheelRotation = mouseEvent.getWheelRotation();
         point = new Point(mouseEvent.getX(), mouseEvent.getY());
         modifier = mouseEvent.getModifiersEx();
+    }
+
+    @Override
+    public ScrollEvent copy() {
+        return new ScrollEvent(this);
     }
 }
