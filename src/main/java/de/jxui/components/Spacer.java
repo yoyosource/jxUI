@@ -11,10 +11,18 @@ public class Spacer implements Component {
     @Getter
     protected int size;
 
+    @Getter
+    protected boolean onlyNegative;
+
     protected Orientation orientation = null;
 
     public Spacer() {
         this.size = -1;
+    }
+
+    public Spacer(boolean onlyNegative) {
+        this.size = -1;
+        this.onlyNegative = onlyNegative;
     }
 
     public Spacer(int size) {
@@ -54,6 +62,7 @@ public class Spacer implements Component {
     @Override
     public int spacers(UserState userState, Orientation orientation) {
         if (size != -1) return 0;
+        if (onlyNegative) return 0;
         return this.orientation == orientation ? 1 : 0;
     }
 

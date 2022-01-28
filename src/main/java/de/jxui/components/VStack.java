@@ -38,6 +38,16 @@ public class VStack extends Stack<VStack> {
 
         List<Spacer> spacerList = componentList.stream().filter(Spacer.class::isInstance).map(Spacer.class::cast).filter(spacer -> spacer.getSize() == -1).collect(Collectors.toList());
         int splitSize = spacerList.size() + (spacers(userState, Orientation.VERTICAL) - spacerList.size() > 0 ? 1 : 0);
+        if (spacerSize.getHeight() > 0) {
+            for (int i = spacerList.size() - 1; i >= 0; i--) {
+                Spacer spacer = spacerList.get(i);
+                if (spacer.onlyNegative) {
+                    spacer.size(new Size(0, 0), userState, drawState);
+                    spacerList.remove(i);
+                    splitSize--;
+                }
+            }
+        }
 
         log.debug("Spacer: {}   Splitting: {}   Size: {}   AllowedSize: {}", spacerList.size(), splitSize, currentSize, size);
         SpacerCalculation spacerCalculation = new SpacerCalculation(spacerSize.getHeight(), splitSize);
