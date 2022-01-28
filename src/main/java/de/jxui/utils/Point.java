@@ -10,18 +10,21 @@ public class Point {
     private int y;
 
     public Point add(Size size) {
+        if (size == null) return this;
         x += size.getWidth();
         y += size.getHeight();
         return this;
     }
 
     public Point add(Offset offset) {
+        if (offset == null) return this;
         x += offset.getLeft();
         y += offset.getTop();
         return this;
     }
 
     public Point add(Padding padding) {
+        if (padding == null) return this;
         x += padding.getLeft();
         y += padding.getTop();
         return this;
