@@ -1,5 +1,6 @@
 package de.jxui.components;
 
+import de.jxui.events.Event;
 import de.jxui.utils.Point;
 import de.jxui.utils.*;
 import lombok.NonNull;
@@ -64,6 +65,13 @@ public class StateComponent<T extends Component> implements Component {
             size(userState);
         }
         return component.spacers(userState, orientation);
+    }
+
+    @Override
+    public void event(UserState userState, DrawState drawState, Point point, Event event) {
+        if (component != null) {
+            component.event(userState, drawState, point, event);
+        }
     }
 
     @Override

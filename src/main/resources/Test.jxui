@@ -13,5 +13,6 @@ Centered{
         Text("Hello World")
         Text("World")
         TextTemplate("Hello World   {Hello|'Example Text'}")
+        Text("Hallo Welt!")
     }
 }
